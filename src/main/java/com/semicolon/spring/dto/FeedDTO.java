@@ -1,5 +1,6 @@
 package com.semicolon.spring.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ public class FeedDTO {
     @NoArgsConstructor
     @Getter
     public static class getFeed{
+        private int feedId;
         private String clubName;
         private String profileImage;
         private boolean isFollow;
@@ -20,5 +22,22 @@ public class FeedDTO {
         private String content;
         private List<String> media;
         private int flags;
+    }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class writeFeed{
+        private String content;
+        @JsonProperty
+        private boolean isPin;
+    }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class writeFeedResponse{
+        private String msg;
+        private int feedId;
     }
 }
