@@ -6,6 +6,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface FeedService {
-    void fileUpload(MultipartFile file);
+    void fileUpload(MultipartFile file, int feedId);
     FeedDTO.writeFeedResponse writeFeed(FeedDTO.writeFeed request);
 }
