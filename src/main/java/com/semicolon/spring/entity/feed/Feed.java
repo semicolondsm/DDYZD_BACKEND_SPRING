@@ -37,5 +37,5 @@ public class Feed {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
     @JsonBackReference
-    private Club club_id;
+    private Club clubId;
 }
