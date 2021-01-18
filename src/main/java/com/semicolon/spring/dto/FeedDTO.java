@@ -2,6 +2,7 @@ package com.semicolon.spring.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ public class FeedDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
+    @Builder
     public static class getFeed{
         private int feedId;
         private String clubName;
