@@ -1,6 +1,8 @@
 package com.semicolon.spring.service.feed;
 
 import com.semicolon.spring.dto.FeedDTO;
+import com.semicolon.spring.entity.feed.Feed;
+import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
