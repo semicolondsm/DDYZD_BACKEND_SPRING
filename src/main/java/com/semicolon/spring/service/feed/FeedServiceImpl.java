@@ -115,7 +115,7 @@ public class FeedServiceImpl implements FeedService{
 
     public Page<Feed> getFeedClub(int page, int club_id){
         Club club = clubRepository.findById(club_id).orElseThrow(ClubNotExistException::new);
-        PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("id").descending().and(Sort.by("uploadAt").descending()));
+        PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("pin").descending().and(Sort.by("uploadAt").descending()));
         return feedRepository.findByClubId(club, pageRequest);
     }
 }
