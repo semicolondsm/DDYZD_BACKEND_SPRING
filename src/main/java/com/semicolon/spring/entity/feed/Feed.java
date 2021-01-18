@@ -8,8 +8,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity(name = "feed")
@@ -28,6 +30,9 @@ public class Feed {
     @OneToMany(mappedBy = "feed_id", fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<FeedMedium> media;
+
+    @CreationTimestamp
+    private Date uploadAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
