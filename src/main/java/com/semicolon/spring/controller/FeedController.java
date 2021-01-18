@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.websocket.server.PathParam;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,5 +22,10 @@ public class FeedController {
     @PostMapping("/feed/test")
     public FeedDTO.writeFeedResponse feedUpload(@RequestBody FeedDTO.writeFeed request){
         return feedService.writeFeed(request);
+    }
+
+    @GetMapping("/club/feed/list")
+    public List<FeedDTO.getFeed> getFeedList(@RequestParam("page") int page){
+        return feedService.getFeedList(page);
     }
 }
