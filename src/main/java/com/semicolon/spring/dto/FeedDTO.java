@@ -29,6 +29,22 @@ public class FeedDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
+    @Builder
+    public static class getFeedClub{
+        private int feedId;
+        private String clubName;
+        private String profileImage;
+        private boolean isFollow;
+        private Date uploadAt;
+        private String content;
+        private List<String> media;
+        private int flags;
+        private boolean isPin;
+    }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
     public static class writeFeed{
         private String content;
         @JsonProperty
