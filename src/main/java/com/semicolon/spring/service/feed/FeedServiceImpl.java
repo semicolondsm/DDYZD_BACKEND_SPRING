@@ -9,6 +9,7 @@ import com.semicolon.spring.entity.feed_medium.FeedMedium;
 import com.semicolon.spring.entity.feed_medium.FeedMediumRepository;
 import com.semicolon.spring.exception.ClubNotExistException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -27,14 +28,17 @@ public class FeedServiceImpl implements FeedService{
     private final FeedMediumRepository feedMediumRepository;
     private final ClubRepository clubRepository;
 
+    @Value("${file.path}")
+    private final String PATH;
+
     @Override
     public void fileUpload(MultipartFile file, int feedId) {
         try{
-            file.transferTo(new File("C:/Semicolon/DDYZD_V2_BACKEND_SPRING/"+file.getOriginalFilename()));
+            file.transferTo(new File(PATH+file.getOriginalFilename()));
             feedRepository.findById(feedId)
                     .map(feed-> feedMediumRepository.save(FeedMedium.builder()
                             .feed_id(feed)
-                            .medium_path("C:/Semicolon/DDYZD_V2_BACKEND_SPRING/"+file.getOriginalFilename())
+                            .medium_path(PATH+file.getOriginalFilename())
                             .build())
                     );
         }catch (IOException e){
