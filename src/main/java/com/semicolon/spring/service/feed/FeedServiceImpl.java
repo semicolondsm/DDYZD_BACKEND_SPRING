@@ -7,7 +7,11 @@ import com.semicolon.spring.entity.feed.Feed;
 import com.semicolon.spring.entity.feed.FeedRepository;
 import com.semicolon.spring.entity.feed_medium.FeedMedium;
 import com.semicolon.spring.entity.feed_medium.FeedMediumRepository;
+import com.semicolon.spring.exception.ClubNotExistException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -45,7 +49,7 @@ public class FeedServiceImpl implements FeedService{
                     Feed.builder()
                         .contents(request.getContent())
                         .pin(request.isPin())
-                        .club_id(clubRepository.findById(1).orElseThrow(RuntimeException::new)) // 차후에 수정 필요
+                        .clubId(clubRepository.findById(1).orElseThrow(ClubNotExistException::new)) // 차후에 수정 필요
                         .build()
                 ).getId());
 
@@ -53,18 +57,22 @@ public class FeedServiceImpl implements FeedService{
 
     @Override
     public List<FeedDTO.getFeed> getFeedList(int page) {
-        return feedToRepose(feedRepository.findByIdLessThanOrderByIdDesc(page));
+        return feedToRepose(getFeed(page).getContent());
+    }
+
+    @Override
+    public List<FeedDTO.getFeedClub> getFeedClubList(int page, int club_id) {
+        return feedClubToRepose(getFeedClub(page, club_id).getContent());
     }
 
     public List<FeedDTO.getFeed> feedToRepose(List<Feed> feeds){
         List<FeedDTO.getFeed> response = new ArrayList<>();
-        for(int i=0;i<feeds.size();i++){
-            Feed feed = feeds.get(i);
+        for(Feed feed : feeds){
             response.add(
                     FeedDTO.getFeed.builder()
                     .feedId(feed.getId())
-                    .clubName(feed.getClub_id().getClub_name())
-                    .profileImage(feed.getClub_id().getProfile_image())
+                    .clubName(feed.getClubId().getClub_name())
+                    .profileImage(feed.getClubId().getProfile_image())
                     .content(feed.getContents())
                     .media(getMediaPath(feed.getMedia()))
                     .uploadAt(feed.getUploadAt())
@@ -74,12 +82,40 @@ public class FeedServiceImpl implements FeedService{
         return response;
     }
 
-    public List<String> getMediaPath(List<FeedMedium> feedMedia){
-        List<String> response = new ArrayList<>();
-        for(int i=0;i<feedMedia.size();i++){
-            FeedMedium medium = feedMedia.get(i);
-            response.add(medium.getMedium_path());
+    public List<FeedDTO.getFeedClub> feedClubToRepose(List<Feed> feeds){
+        List<FeedDTO.getFeedClub> response = new ArrayList<>();
+        for(Feed feed : feeds){
+            response.add(
+                    FeedDTO.getFeedClub.builder()
+                            .feedId(feed.getId())
+                            .clubName(feed.getClubId().getClub_name())
+                            .profileImage(feed.getClubId().getProfile_image())
+                            .content(feed.getContents())
+                            .media(getMediaPath(feed.getMedia()))
+                            .uploadAt(feed.getUploadAt())
+                            .isPin(feed.isPin())
+                            .build()
+            );
         }
         return response;
+    }
+
+    public List<String> getMediaPath(List<FeedMedium> feedMedia){
+        List<String> response = new ArrayList<>();
+        for(FeedMedium feedMedium : feedMedia){
+            response.add(feedMedium.getMedium_path());
+        }
+        return response;
+    }
+
+    public Page<Feed> getFeed(int page){
+        PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("uploadAt").descending());
+        return feedRepository.findAll(pageRequest);
+    }
+
+    public Page<Feed> getFeedClub(int page, int club_id){
+        Club club = clubRepository.findById(club_id).orElseThrow(ClubNotExistException::new);
+        PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("id").descending().and(Sort.by("uploadAt").descending()));
+        return feedRepository.findByClubId(club, pageRequest);
     }
 }
