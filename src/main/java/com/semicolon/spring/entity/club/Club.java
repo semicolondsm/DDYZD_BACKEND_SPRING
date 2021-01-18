@@ -43,7 +43,7 @@ public class Club {
     @Column(nullable = false)
     private String hongbo_image;
 
-    @OneToMany(mappedBy = "club_id", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "clubId", fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<Feed> feeds;
 
