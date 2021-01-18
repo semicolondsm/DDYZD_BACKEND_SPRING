@@ -8,4 +8,5 @@ import java.util.List;
 public interface FeedService {
     void fileUpload(MultipartFile file, int feedId);
     FeedDTO.writeFeedResponse writeFeed(FeedDTO.writeFeed request);
+    FeedDTO.getFeed getFeedList(int page);
 }
