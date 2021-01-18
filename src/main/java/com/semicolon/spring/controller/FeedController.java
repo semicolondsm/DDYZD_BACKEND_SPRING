@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.websocket.server.PathParam;
+
 import java.util.List;
 
 @RestController
@@ -14,7 +14,7 @@ import java.util.List;
 public class FeedController {
     private final FeedService feedService;
 
-    @PostMapping("/club/{feedId}/medium")
+    @PostMapping("/feed/{feedId}/medium")
     public void fileUpload(@RequestParam("file")MultipartFile file, @PathVariable("feedId") int feedId){
         feedService.fileUpload(file, feedId);
     }
@@ -24,8 +24,13 @@ public class FeedController {
         return feedService.writeFeed(request);
     }
 
-    @GetMapping("/club/feed/list")
+    @GetMapping("feed/list")
     public List<FeedDTO.getFeed> getFeedList(@RequestParam("page") int page){
         return feedService.getFeedList(page);
+    }
+
+    @GetMapping("/feed/{club_id}/list")
+    public List<FeedDTO.getFeedClub> getFeedClubList(@RequestParam("page") int page, @PathVariable("club_id") int club_id){
+        return feedService.getFeedClubList(page, club_id);
     }
 }
