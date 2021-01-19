@@ -20,7 +20,7 @@ public class FeedController {
     }
 
     @PostMapping("/feed/test")
-    public FeedDTO.writeFeedResponse feedUpload(@RequestBody FeedDTO.writeFeed request){
+    public FeedDTO.writeFeedResponse feedUpload(@RequestBody FeedDTO.feed request){
         return feedService.writeFeed(request);
     }
 
@@ -32,5 +32,10 @@ public class FeedController {
     @GetMapping("/feed/{club_id}/list")
     public List<FeedDTO.getFeedClub> getFeedClubList(@RequestParam("page") int page, @PathVariable("club_id") int club_id){
         return feedService.getFeedClubList(page, club_id);
+    }
+
+    @PutMapping("/feed/{feed_id}")
+    public FeedDTO.messageResponse feedModify(@RequestBody FeedDTO.feed request, @PathVariable("feed_id") int feedId){
+        return feedService.feedModify(request, feedId);
     }
 }
