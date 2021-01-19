@@ -1,4 +1,4 @@
-package com.semicolon.spring.entity.feed_flag;
+package com.semicolon.spring.entity.feed.feed_flag;
 
 import com.semicolon.spring.entity.feed.Feed;
 import com.semicolon.spring.entity.user.User;
