@@ -3,7 +3,8 @@ package com.semicolon.spring.entity.feed;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.semicolon.spring.entity.club.Club;
-import com.semicolon.spring.entity.feed_medium.FeedMedium;
+import com.semicolon.spring.entity.feed.feed_flag.FeedFlag;
+import com.semicolon.spring.entity.feed.feed_medium.FeedMedium;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,6 +41,10 @@ public class Feed {
     private Club clubId;
 
     private int flag;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "feed_id")
+    @JsonManagedReference
+    private List<FeedFlag> feedFlags;
 
     public void modify(String contents, boolean isPin){
         this.contents = contents;
