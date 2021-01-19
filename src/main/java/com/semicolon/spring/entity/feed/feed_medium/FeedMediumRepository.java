@@ -1,4 +1,4 @@
-package com.semicolon.spring.entity.feed_medium;
+package com.semicolon.spring.entity.feed.feed_medium;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
