@@ -40,7 +40,12 @@ public class FeedController {
     }
 
     @PostMapping("/feed/{feed_id}/flag")
-    public FeedDTO.messageResponse feedFlag(@PathVariable("feed_id") int feedId){
-        return feedService.feedFlag(feedId);
+    public FeedDTO.messageResponse addFeedFlag(@PathVariable("feed_id") int feedId){
+        return feedService.addFeedFlag(feedId);
+    }
+
+    @DeleteMapping("/feed/{feed_id}/flag")
+    public FeedDTO.messageResponse deleteFeedFlag(@PathVariable("feed_id") int feedId){
+        return feedService.deleteFeedFlag(feedId);
     }
 }
