@@ -83,10 +83,21 @@ public class FeedServiceImpl implements FeedService{
     }
 
     @Override
-    public FeedDTO.messageResponse feedFlag(int feedId) { //User가 flag를 달았을 시 feed_flag에 추가, feed_flag에 있는지 확인 추가.
+    public FeedDTO.messageResponse addFeedFlag(int feedId) { //User가 flag를 달았을 시 feed_flag에 추가, feed_flag에 있는지 확인 추가.
         feedRepository.findById(feedId)
                 .map(feed -> {
-                    feed.setFlag();
+                    feed.addFlag();
+                    feedRepository.save(feed);
+                    return feed;
+                });
+        return new FeedDTO.messageResponse("Success");
+    }
+
+    @Override
+    public FeedDTO.messageResponse deleteFeedFlag(int feedId) {
+        feedRepository.findById(feedId)
+                .map(feed -> {
+                    feed.deleteFlag();
                     feedRepository.save(feed);
                     return feed;
                 });
