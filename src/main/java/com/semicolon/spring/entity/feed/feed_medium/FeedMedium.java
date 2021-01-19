@@ -1,4 +1,4 @@
-package com.semicolon.spring.entity.feed_medium;
+package com.semicolon.spring.entity.feed.feed_medium;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.semicolon.spring.entity.feed.Feed;
