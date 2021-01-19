@@ -46,7 +46,11 @@ public class Feed {
         this.pin = isPin;
     }
 
-    public void setFlag(){
+    public void addFlag(){
         flag++;
+    }
+
+    public void deleteFlag(){
+        flag--;
     }
 }
