@@ -9,7 +9,6 @@ import com.semicolon.spring.entity.feed_medium.FeedMedium;
 import com.semicolon.spring.entity.feed_medium.FeedMediumRepository;
 import com.semicolon.spring.exception.ClubNotExistException;
 import com.semicolon.spring.exception.FeedNotExistException;
-import com.semicolon.spring.exception.NoAuthorityException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
