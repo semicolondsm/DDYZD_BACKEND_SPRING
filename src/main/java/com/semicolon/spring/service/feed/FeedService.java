@@ -11,5 +11,6 @@ public interface FeedService {
     List<FeedDTO.getFeed> getFeedList(int page);
     List<FeedDTO.getFeedClub> getFeedClubList(int page, int club_id);
     FeedDTO.messageResponse feedModify(FeedDTO.feed request, int feedId);
-    FeedDTO.messageResponse feedFlag(int feedId);
+    FeedDTO.messageResponse addFeedFlag(int feedId);
+    FeedDTO.messageResponse deleteFeedFlag(int feedId);
 }
