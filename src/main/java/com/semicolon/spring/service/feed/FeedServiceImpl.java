@@ -5,9 +5,9 @@ import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.club.ClubRepository;
 import com.semicolon.spring.entity.feed.Feed;
 import com.semicolon.spring.entity.feed.FeedRepository;
-import com.semicolon.spring.entity.feed_flag.FeedFlagRepository;
-import com.semicolon.spring.entity.feed_medium.FeedMedium;
-import com.semicolon.spring.entity.feed_medium.FeedMediumRepository;
+import com.semicolon.spring.entity.feed.feed_flag.FeedFlagRepository;
+import com.semicolon.spring.entity.feed.feed_medium.FeedMedium;
+import com.semicolon.spring.entity.feed.feed_medium.FeedMediumRepository;
 import com.semicolon.spring.exception.ClubNotExistException;
 import com.semicolon.spring.exception.FeedNotExistException;
 import lombok.RequiredArgsConstructor;
@@ -106,7 +106,7 @@ public class FeedServiceImpl implements FeedService{
         return new FeedDTO.messageResponse("Success");
     }
 
-    public List<FeedDTO.getFeed> feedToRepose(List<Feed> feeds){
+    public List<FeedDTO.getFeed> feedToRepose(List<Feed> feeds){ // 유저 정보가 있을 때 isFlag, isFollow
         List<FeedDTO.getFeed> response = new ArrayList<>();
         for(Feed feed : feeds){
             response.add(
@@ -124,7 +124,7 @@ public class FeedServiceImpl implements FeedService{
         return response;
     }
 
-    public List<FeedDTO.getFeedClub> feedClubToRepose(List<Feed> feeds){
+    public List<FeedDTO.getFeedClub> feedClubToRepose(List<Feed> feeds){ // 유저 정보가 있을 때 isFlag, isFollow
         List<FeedDTO.getFeedClub> response = new ArrayList<>();
         for(Feed feed : feeds){
             response.add(
