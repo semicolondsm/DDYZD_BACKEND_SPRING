@@ -8,6 +8,8 @@ import com.semicolon.spring.entity.feed.FeedRepository;
 import com.semicolon.spring.entity.feed_medium.FeedMedium;
 import com.semicolon.spring.entity.feed_medium.FeedMediumRepository;
 import com.semicolon.spring.exception.ClubNotExistException;
+import com.semicolon.spring.exception.FeedNotExistException;
+import com.semicolon.spring.exception.NoAuthorityException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -29,10 +31,10 @@ public class FeedServiceImpl implements FeedService{
     private final ClubRepository clubRepository;
 
     @Value("${file.path}")
-    private final String PATH;
+    private String PATH;
 
     @Override
-    public void fileUpload(MultipartFile file, int feedId) {
+    public void fileUpload(MultipartFile file, int feedId) { // feed가 자기 클럽이 쓴것인지 확인.
         try{
             file.transferTo(new File(PATH+file.getOriginalFilename()));
             feedRepository.findById(feedId)
@@ -47,7 +49,7 @@ public class FeedServiceImpl implements FeedService{
     }
 
     @Override
-    public FeedDTO.writeFeedResponse writeFeed(FeedDTO.writeFeed request) {
+    public FeedDTO.writeFeedResponse writeFeed(FeedDTO.feed request) {
         return new FeedDTO.writeFeedResponse("feed writing success",
                 feedRepository.save(
                     Feed.builder()
@@ -67,6 +69,17 @@ public class FeedServiceImpl implements FeedService{
     @Override
     public List<FeedDTO.getFeedClub> getFeedClubList(int page, int club_id) {
         return feedClubToRepose(getFeedClub(page, club_id).getContent());
+    }
+
+    @Override
+    public FeedDTO.messageResponse feedModify(FeedDTO.feed request, int feedId) { // feed를 쓴 클럽인지 확인절차 추가.
+        feedRepository.findById(feedId)
+                .map(feed -> {
+                    feed.modify(request.getContent(), request.isPin());
+                    feedRepository.save(feed);
+                    return feed;
+                }).orElseThrow(FeedNotExistException::new);
+        return new FeedDTO.messageResponse("feed writing success");
     }
 
     public List<FeedDTO.getFeed> feedToRepose(List<Feed> feeds){
