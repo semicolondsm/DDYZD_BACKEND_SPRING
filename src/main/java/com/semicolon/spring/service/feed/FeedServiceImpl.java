@@ -55,6 +55,7 @@ public class FeedServiceImpl implements FeedService{
                         .contents(request.getContent())
                         .pin(request.isPin())
                         .clubId(clubRepository.findById(1).orElseThrow(ClubNotExistException::new)) // 차후에 수정 필요
+                        .flag(0)
                         .build()
                 ).getId());
 
@@ -81,6 +82,17 @@ public class FeedServiceImpl implements FeedService{
         return new FeedDTO.messageResponse("feed writing success");
     }
 
+    @Override
+    public FeedDTO.messageResponse feedFlag(int feedId) { //User가 flag를 달았을 시 feed_flag에 추가, feed_flag에 있는지 확인 추가.
+        feedRepository.findById(feedId)
+                .map(feed -> {
+                    feed.setFlag();
+                    feedRepository.save(feed);
+                    return feed;
+                });
+        return new FeedDTO.messageResponse("Success");
+    }
+
     public List<FeedDTO.getFeed> feedToRepose(List<Feed> feeds){
         List<FeedDTO.getFeed> response = new ArrayList<>();
         for(Feed feed : feeds){
@@ -92,6 +104,7 @@ public class FeedServiceImpl implements FeedService{
                     .content(feed.getContents())
                     .media(getMediaPath(feed.getMedia()))
                     .uploadAt(feed.getUploadAt())
+                    .flags(feed.getFlag())
                     .build()
             );
         }
@@ -110,6 +123,7 @@ public class FeedServiceImpl implements FeedService{
                             .media(getMediaPath(feed.getMedia()))
                             .uploadAt(feed.getUploadAt())
                             .isPin(feed.isPin())
+                            .flags(feed.getFlag())
                             .build()
             );
         }
