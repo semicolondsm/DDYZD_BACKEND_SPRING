@@ -5,6 +5,7 @@ import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.club.ClubRepository;
 import com.semicolon.spring.entity.feed.Feed;
 import com.semicolon.spring.entity.feed.FeedRepository;
+import com.semicolon.spring.entity.feed_flag.FeedFlagRepository;
 import com.semicolon.spring.entity.feed_medium.FeedMedium;
 import com.semicolon.spring.entity.feed_medium.FeedMediumRepository;
 import com.semicolon.spring.exception.ClubNotExistException;
@@ -28,6 +29,7 @@ public class FeedServiceImpl implements FeedService{
     private final FeedRepository feedRepository;
     private final FeedMediumRepository feedMediumRepository;
     private final ClubRepository clubRepository;
+    private final FeedFlagRepository feedFlagRepository;
 
     @Value("${file.path}")
     private String PATH;
