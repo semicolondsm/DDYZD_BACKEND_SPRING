@@ -38,4 +38,9 @@ public class Feed {
     @JoinColumn(name = "club_id")
     @JsonBackReference
     private Club clubId;
+
+    public void modify(String contents, boolean isPin){
+        this.contents = contents;
+        this.pin = isPin;
+    }
 }
