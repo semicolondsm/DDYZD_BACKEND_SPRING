@@ -38,4 +38,9 @@ public class FeedController {
     public FeedDTO.messageResponse feedModify(@RequestBody FeedDTO.feed request, @PathVariable("feed_id") int feedId){
         return feedService.feedModify(request, feedId);
     }
+
+    @PostMapping("/feed/{feed_id}/flag")
+    public FeedDTO.messageResponse feedFlag(@PathVariable("feed_id") int feedId){
+        return feedService.feedFlag(feedId);
+    }
 }
