@@ -39,8 +39,14 @@ public class Feed {
     @JsonBackReference
     private Club clubId;
 
+    private int flag;
+
     public void modify(String contents, boolean isPin){
         this.contents = contents;
         this.pin = isPin;
+    }
+
+    public void setFlag(){
+        flag++;
     }
 }
