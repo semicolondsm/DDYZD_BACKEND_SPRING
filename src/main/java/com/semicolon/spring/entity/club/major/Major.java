@@ -1,0 +1,28 @@
+package com.semicolon.spring.entity.club.major;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.semicolon.spring.entity.club.Club;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+
+@Entity(name = "major")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Builder
+public class Major {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "club_id")
+    @JsonBackReference
+    private Club club;
+
+    @Column(length = 45)
+    private String majorName;
+}
