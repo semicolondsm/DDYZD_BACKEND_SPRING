@@ -45,7 +45,7 @@ public class FeedDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class writeFeed{
+    public static class feed{
         private String content;
         @JsonProperty
         private boolean isPin;
@@ -57,5 +57,12 @@ public class FeedDTO {
     public static class writeFeedResponse{
         private String msg;
         private int feedId;
+    }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class messageResponse{
+        private String msg;
     }
 }
