@@ -1,6 +1,8 @@
 package com.semicolon.spring.entity.club;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.semicolon.spring.entity.club.club_head.ClubHead;
+import com.semicolon.spring.entity.club.major.Major;
 import com.semicolon.spring.entity.feed.Feed;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,7 +21,7 @@ import java.util.List;
 public class Club {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer club_id;
+    private Integer clubId;
 
     @Column(nullable = false, length = 45)
     private String club_name;
@@ -46,6 +48,18 @@ public class Club {
     @OneToMany(mappedBy = "clubId", fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<Feed> feeds;
+
+    @OneToOne
+    @JoinColumn(name = "club_id")
+    private ClubHead clubHead;
+
+    @OneToMany(mappedBy = "club_id", fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private List<Major> majors;
+
+    public void setClose_at(Date close_at){
+        this.close_at = close_at;
+    }
 
 }
 
