@@ -19,9 +19,9 @@ public class FeedController {
         feedService.fileUpload(file, feedId);
     }
 
-    @PostMapping("/feed/test")
-    public FeedDTO.writeFeedResponse feedUpload(@RequestBody FeedDTO.feed request){
-        return feedService.writeFeed(request);
+    @PostMapping("/feed/{club_id}")
+    public FeedDTO.writeFeedResponse feedUpload(@RequestBody FeedDTO.feed request, @PathVariable("club_id") int club_id){
+        return feedService.writeFeed(request, club_id);
     }
 
     @GetMapping("feed/list")
