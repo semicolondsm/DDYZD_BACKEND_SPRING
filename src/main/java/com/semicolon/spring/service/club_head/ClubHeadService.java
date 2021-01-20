@@ -8,4 +8,5 @@ public interface ClubHeadService {
     ClubDTO.messageResponse clubProfile(MultipartFile file, int club_id);
     ClubDTO.messageResponse clubHongbo(MultipartFile file, int club_id);
     ClubDTO.messageResponse clubBanner(MultipartFile file, int club_id);
+    ClubDTO.messageResponse modifyClub(ClubDTO.modify request, int club_id);
 }
