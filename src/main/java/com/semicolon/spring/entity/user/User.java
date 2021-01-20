@@ -2,6 +2,7 @@ package com.semicolon.spring.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.semicolon.spring.entity.club.application.Application;
+import com.semicolon.spring.entity.club.club_follow.ClubFollow;
 import com.semicolon.spring.entity.club.club_head.ClubHead;
 import com.semicolon.spring.entity.feed.feed_flag.FeedFlag;
 import lombok.AllArgsConstructor;
@@ -50,4 +51,8 @@ public class User {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     @JsonManagedReference
     private Set<Application> applications = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @JsonManagedReference
+    private Set<ClubFollow> follows = new HashSet<>();
 }
