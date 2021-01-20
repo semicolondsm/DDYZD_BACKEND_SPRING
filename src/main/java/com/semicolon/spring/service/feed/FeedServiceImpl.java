@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +41,7 @@ public class FeedServiceImpl implements FeedService{
             file.transferTo(new File(PATH+file.getOriginalFilename()));
             feedRepository.findById(feedId)
                     .map(feed-> feedMediumRepository.save(FeedMedium.builder()
-                            .feed_id(feed)
+                            .feed(feed)
                             .medium_path(PATH+file.getOriginalFilename())
                             .build())
                     );
@@ -56,7 +57,7 @@ public class FeedServiceImpl implements FeedService{
                     Feed.builder()
                         .contents(request.getContent())
                         .pin(request.isPin())
-                        .clubId(clubRepository.findById(1).orElseThrow(ClubNotExistException::new)) // 차후에 수정 필요
+                        .club(clubRepository.findById(1).orElseThrow(ClubNotExistException::new)) // 차후에 수정 필요
                         .flag(0)
                         .build()
                 ).getId());
@@ -112,8 +113,8 @@ public class FeedServiceImpl implements FeedService{
             response.add(
                     FeedDTO.getFeed.builder()
                     .feedId(feed.getId())
-                    .clubName(feed.getClubId().getClub_name())
-                    .profileImage(feed.getClubId().getProfile_image())
+                    .clubName(feed.getClub().getClub_name())
+                    .profileImage(feed.getClub().getProfile_image())
                     .content(feed.getContents())
                     .media(getMediaPath(feed.getMedia()))
                     .uploadAt(feed.getUploadAt())
@@ -130,8 +131,8 @@ public class FeedServiceImpl implements FeedService{
             response.add(
                     FeedDTO.getFeedClub.builder()
                             .feedId(feed.getId())
-                            .clubName(feed.getClubId().getClub_name())
-                            .profileImage(feed.getClubId().getProfile_image())
+                            .clubName(feed.getClub().getClub_name())
+                            .profileImage(feed.getClub().getProfile_image())
                             .content(feed.getContents())
                             .media(getMediaPath(feed.getMedia()))
                             .uploadAt(feed.getUploadAt())
@@ -143,7 +144,7 @@ public class FeedServiceImpl implements FeedService{
         return response;
     }
 
-    public List<String> getMediaPath(List<FeedMedium> feedMedia){
+    public List<String> getMediaPath(Set<FeedMedium> feedMedia){
         List<String> response = new ArrayList<>();
         for(FeedMedium feedMedium : feedMedia){
             response.add(feedMedium.getMedium_path());
@@ -159,6 +160,6 @@ public class FeedServiceImpl implements FeedService{
     public Page<Feed> getFeedClub(int page, int club_id){
         Club club = clubRepository.findById(club_id).orElseThrow(ClubNotExistException::new);
         PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("pin").descending().and(Sort.by("uploadAt").descending()));
-        return feedRepository.findByClubId(club, pageRequest);
+        return feedRepository.findByClub(club, pageRequest);
     }
 }
