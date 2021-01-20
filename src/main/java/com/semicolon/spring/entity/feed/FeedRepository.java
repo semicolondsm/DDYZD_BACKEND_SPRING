@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface FeedRepository extends CrudRepository<Feed, Integer> {
     Page<Feed> findAll(Pageable pageable);
-    Page<Feed> findByClubId(Club clubId, Pageable pageable);
+    Page<Feed> findByClub(Club club, Pageable pageable);
 }
