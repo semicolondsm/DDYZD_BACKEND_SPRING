@@ -13,6 +13,11 @@ public class AuthenticationFacade {
     }
 
     public User getUser(){
-        return ((AuthDetails)this.getAuthentication().getPrincipal()).getUser();
+        try{
+            return ((AuthDetails)this.getAuthentication().getPrincipal()).getUser();
+        }catch (Exception e){
+            return null;
+        }
+
     }
 }
