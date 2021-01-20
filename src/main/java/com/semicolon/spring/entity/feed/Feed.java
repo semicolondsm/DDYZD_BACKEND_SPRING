@@ -13,7 +13,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity(name = "feed")
 @AllArgsConstructor
@@ -28,9 +29,9 @@ public class Feed {
 
     private boolean pin;
 
-    @OneToMany(mappedBy = "feed_id", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "feed", fetch = FetchType.EAGER)
     @JsonManagedReference
-    private List<FeedMedium> media;
+    private Set<FeedMedium> media = new HashSet<>();
 
     @CreationTimestamp
     private Date uploadAt;
@@ -38,13 +39,13 @@ public class Feed {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
     @JsonBackReference
-    private Club clubId;
+    private Club club;
 
     private int flag;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "feed_id")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "feed")
     @JsonManagedReference
-    private List<FeedFlag> feedFlags;
+    private Set<FeedFlag> feedFlags = new HashSet<>();
 
     public void modify(String contents, boolean isPin){
         this.contents = contents;
