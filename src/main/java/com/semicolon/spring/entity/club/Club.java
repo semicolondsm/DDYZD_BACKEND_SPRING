@@ -1,6 +1,7 @@
 package com.semicolon.spring.entity.club;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.semicolon.spring.entity.club.application.Application;
 import com.semicolon.spring.entity.club.club_head.ClubHead;
 import com.semicolon.spring.entity.club.major.Major;
 import com.semicolon.spring.entity.feed.Feed;
@@ -57,6 +58,10 @@ public class Club {
     @OneToMany(mappedBy = "club", fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<Major> majors = new HashSet<>();
+
+    @OneToMany(mappedBy = "club", fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private Set<Application> applications = new HashSet<>();
 
     public void setClose_at(Date close_at){
         this.close_at = close_at;
