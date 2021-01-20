@@ -85,6 +85,25 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         }
     }
 
+    @Override
+    public ClubDTO.messageResponse clubBanner(MultipartFile file, int club_id) {
+        if(!isClubHead(club_id))
+            throw new NoAuthorityException();
+        try{
+            file.transferTo(new File(PATH+file.getOriginalFilename()));
+            clubRepository.findById(club_id)
+                    .map(club -> {
+                        club.setBanner_image(PATH+file.getOriginalFilename());
+                        clubRepository.save(club);
+                        return club;
+                    });
+            return new ClubDTO.messageResponse("club banner write success");
+        }catch (IOException e){
+            e.printStackTrace();
+            throw new FileNotSaveException();
+        }
+    }
+
     private boolean isClubHead(int club_id){
         User user = authenticationFacade.getUser();
         return clubRepository.findById(club_id)
