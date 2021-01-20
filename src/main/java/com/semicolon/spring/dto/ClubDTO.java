@@ -29,4 +29,11 @@ public class ClubDTO {
     public static class modify{
         private String clubName;
     }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class changeHead{
+        private String userGcn;
+    }
 }
