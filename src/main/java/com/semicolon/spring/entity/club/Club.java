@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity(name = "club")
 @AllArgsConstructor
@@ -45,17 +46,17 @@ public class Club {
     @Column(nullable = false)
     private String hongbo_image;
 
-    @OneToMany(mappedBy = "clubId", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "club", fetch = FetchType.EAGER)
     @JsonManagedReference
-    private List<Feed> feeds;
+    private Set<Feed> feeds = new HashSet<>();
 
     @OneToOne
     @JoinColumn(name = "club_id")
     private ClubHead clubHead;
 
-    @OneToMany(mappedBy = "club_id", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "club", fetch = FetchType.EAGER)
     @JsonManagedReference
-    private List<Major> majors;
+    private Set<Major> majors = new HashSet<>();
 
     public void setClose_at(Date close_at){
         this.close_at = close_at;
@@ -63,6 +64,10 @@ public class Club {
 
     public void setProfile_image(String path){
         this.profile_image = path;
+    }
+
+    public void setHongbo_image (String path){
+        this.hongbo_image = path;
     }
 
 }
