@@ -31,4 +31,9 @@ public class ClubController {
     public ClubDTO.messageResponse banner(@RequestParam("file") MultipartFile file, @PathVariable("club_id") int club_id){
         return clubHeadService.clubBanner(file, club_id);
     }
+
+    @PutMapping("/club/{club_id}")
+    public ClubDTO.messageResponse modify(@RequestBody ClubDTO.modify request, @PathVariable("club_id") int club_id){
+        return clubHeadService.modifyClub(request, club_id);
+    }
 }
