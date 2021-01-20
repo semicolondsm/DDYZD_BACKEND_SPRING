@@ -3,8 +3,8 @@ package com.semicolon.spring.service.feed;
 import com.semicolon.spring.dto.FeedDTO;
 import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.club.ClubRepository;
-import com.semicolon.spring.entity.club.application.Application;
 import com.semicolon.spring.entity.club.application.ApplicationRepository;
+import com.semicolon.spring.entity.club.club_follow.ClubFollowRepository;
 import com.semicolon.spring.entity.feed.Feed;
 import com.semicolon.spring.entity.feed.FeedRepository;
 import com.semicolon.spring.entity.feed.feed_flag.FeedFlag;
@@ -39,6 +39,7 @@ public class FeedServiceImpl implements FeedService{
     private final ClubRepository clubRepository;
     private final ApplicationRepository applicationRepository;
     private final FeedFlagRepository feedFlagRepository;
+    private final ClubFollowRepository clubFollowRepository;
     private final AuthenticationFacade authenticationFacade;
 
     @Value("${file.path}")
@@ -149,14 +150,16 @@ public class FeedServiceImpl implements FeedService{
     }
 
     private boolean isFlag(User user, Feed feed){
-        return feedFlagRepository.findByUserAndFeed(user, feed).isPresent();
+        if(user!=null)
+            return feedFlagRepository.findByUserAndFeed(user, feed).isPresent();
+        else throw new NoAuthorityException();
     }
 
     public List<FeedDTO.getFeed> feedToRepose(List<Feed> feeds){ // 유저 정보가 있을 때 isFlag, isFollow
         List<FeedDTO.getFeed> response = new ArrayList<>();
         for(Feed feed : feeds){
-            response.add(
-                    FeedDTO.getFeed.builder()
+            User user = authenticationFacade.getUser();
+            FeedDTO.getFeed getFeed = FeedDTO.getFeed.builder()
                     .feedId(feed.getId())
                     .clubName(feed.getClub().getClub_name())
                     .profileImage(feed.getClub().getProfile_image())
@@ -164,8 +167,13 @@ public class FeedServiceImpl implements FeedService{
                     .media(getMediaPath(feed.getMedia()))
                     .uploadAt(feed.getUploadAt())
                     .flags(feed.getFlag())
-                    .build()
-            );
+                    .build();
+
+            if(user!=null){
+                getFeed.setIsFlag(isFlag(user, feed));
+                getFeed.setIsFollow(clubFollowRepository.findByUserAndClub(user, feed.getClub()).isPresent());
+            }
+            response.add(getFeed);
         }
         return response;
     }
@@ -209,13 +217,8 @@ public class FeedServiceImpl implements FeedService{
     }
 
     private boolean isNotClubMember(int club_id){ // user가 속해있지 않은 club_id를 보내는 테스트 해야함.
-        try{
-            User user = authenticationFacade.getUser();
-            Club club = clubRepository.findByClubId(club_id);
-            Application application = applicationRepository.findByUserAndClub(user, club);
-            return false;
-        }catch (Exception e){
-            return true;
-        }
+        User user = authenticationFacade.getUser();
+        Club club = clubRepository.findByClubId(club_id);
+        return applicationRepository.findByUserAndClub(user, club) == null;
     }
 }
