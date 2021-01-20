@@ -1,6 +1,7 @@
 package com.semicolon.spring.controller;
 
 import com.semicolon.spring.dto.ClubDTO;
+import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.service.club_head.ClubHeadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -24,5 +25,10 @@ public class ClubController {
     @PostMapping("/club/{club_id}/hongbo")
     public ClubDTO.messageResponse hongbo(@RequestParam("file") MultipartFile file, @PathVariable("club_id") int club_id){
         return clubHeadService.clubHongbo(file, club_id);
+    }
+
+    @PostMapping("/club/{club_id}/banner")
+    public ClubDTO.messageResponse banner(@RequestParam("file") MultipartFile file, @PathVariable("club_id") int club_id){
+        return clubHeadService.clubBanner(file, club_id);
     }
 }
