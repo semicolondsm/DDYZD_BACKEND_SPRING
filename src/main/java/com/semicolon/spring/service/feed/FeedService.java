@@ -13,4 +13,5 @@ public interface FeedService {
     FeedDTO.messageResponse feedModify(FeedDTO.feed request, int feedId);
     FeedDTO.messageResponse addFeedFlag(int feedId);
     FeedDTO.messageResponse deleteFeedFlag(int feedId);
+    FeedDTO.messageResponse feedFlag(int feedId);
 }
