@@ -70,5 +70,9 @@ public class Club {
         this.hongbo_image = path;
     }
 
+    public void setBanner_image(String path){
+        this.banner_image = path;
+    }
+
 }
 
