@@ -1,7 +1,6 @@
 package com.semicolon.spring.controller;
 
 import com.semicolon.spring.dto.ClubDTO;
-import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.service.club_head.ClubHeadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
