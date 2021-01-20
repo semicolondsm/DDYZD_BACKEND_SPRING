@@ -104,6 +104,19 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         }
     }
 
+    @Override
+    public ClubDTO.messageResponse modifyClub(ClubDTO.modify request, int club_id) {
+        if(!isClubHead(club_id))
+            throw new NoAuthorityException();
+        clubRepository.findById(club_id)
+                .map(club -> {
+                    club.setClub_name(request.getClubName());
+                    clubRepository.save(club);
+                    return club;
+                });
+        return new ClubDTO.messageResponse("club modify success");
+    }
+
     private boolean isClubHead(int club_id){
         User user = authenticationFacade.getUser();
         return clubRepository.findById(club_id)
