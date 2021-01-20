@@ -59,7 +59,8 @@ public class FeedServiceImpl implements FeedService{
                     Feed.builder()
                         .contents(request.getContent())
                         .pin(request.isPin())
-                        .club(clubRepository.findById(1).orElseThrow(ClubNotExistException::new)) // 차후에 수정 필요
+                        //.club(clubRepository.findById(1).orElseThrow(ClubNotExistException::new)) // 차후에 수정 필요
+                        .club(clubRepository.findByClubId(club_id))
                         .flag(0)
                         .build()
                 ).getId());
@@ -163,5 +164,9 @@ public class FeedServiceImpl implements FeedService{
         Club club = clubRepository.findById(club_id).orElseThrow(ClubNotExistException::new);
         PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("pin").descending().and(Sort.by("uploadAt").descending()));
         return feedRepository.findByClub(club, pageRequest);
+    }
+
+    private boolean isClubMember(int club_id){
+
     }
 }
