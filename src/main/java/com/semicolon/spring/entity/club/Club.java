@@ -61,5 +61,9 @@ public class Club {
         this.close_at = close_at;
     }
 
+    public void setProfile_image(String path){
+        this.profile_image = path;
+    }
+
 }
 
