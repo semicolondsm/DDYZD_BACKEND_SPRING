@@ -1,6 +1,5 @@
 package com.semicolon.spring.entity.user;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.semicolon.spring.entity.club.club_head.ClubHead;
 import com.semicolon.spring.entity.feed.feed_flag.FeedFlag;
@@ -11,7 +10,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity(name = "user")
 @AllArgsConstructor
@@ -40,11 +40,11 @@ public class User {
     @Length(max = 4096)
     private String device_token;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user_id")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     @JsonManagedReference
-    private List<ClubHead> head;
+    private Set<ClubHead> head = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "club_id")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     @JsonManagedReference
-    private List<FeedFlag> feedFlags;
+    private Set<FeedFlag> feedFlags = new HashSet<>();
 }
