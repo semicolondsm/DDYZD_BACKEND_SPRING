@@ -24,6 +24,6 @@ public class FeedMedium {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "feed_id")
     @JsonBackReference
-    private Feed feed_id;
+    private Feed feed;
 
 }
