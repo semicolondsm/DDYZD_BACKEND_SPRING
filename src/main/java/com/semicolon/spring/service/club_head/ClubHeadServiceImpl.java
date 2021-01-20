@@ -11,6 +11,7 @@ import com.semicolon.spring.entity.user.User;
 import com.semicolon.spring.entity.user.UserRepository;
 import com.semicolon.spring.exception.FileNotSaveException;
 import com.semicolon.spring.exception.NoAuthorityException;
+import com.semicolon.spring.exception.UserNotFoundException;
 import com.semicolon.spring.security.AuthenticationFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -142,9 +143,8 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
     private boolean isClubHead(int club_id){
         User user = authenticationFacade.getUser();
+        if(user == null) throw new UserNotFoundException();
         return clubRepository.findById(club_id)
-                .map(club -> {
-                    return user.getHead().contains(club.getClubHead());
-                }).orElseThrow(NoAuthorityException::new);
+                .map(club -> user.getHead().contains(club.getClubHead())).orElseThrow(NoAuthorityException::new);
     }
 }
