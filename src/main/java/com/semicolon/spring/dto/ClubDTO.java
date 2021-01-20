@@ -22,4 +22,11 @@ public class ClubDTO {
         private List<String> major;
         private Date closeAt;
     }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class modify{
+        private String clubName;
+    }
 }
