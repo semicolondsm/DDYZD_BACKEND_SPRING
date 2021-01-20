@@ -4,6 +4,7 @@ import com.semicolon.spring.entity.feed.Feed;
 import com.semicolon.spring.entity.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Getter
 public class FeedFlag {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer flag_id;
