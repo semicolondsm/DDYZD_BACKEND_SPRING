@@ -1,5 +1,6 @@
 package com.semicolon.spring.entity.club.application;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.user.User;
 import lombok.AllArgsConstructor;
@@ -20,9 +21,11 @@ public class Application {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
+    @JsonBackReference
     private Club club;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 }
