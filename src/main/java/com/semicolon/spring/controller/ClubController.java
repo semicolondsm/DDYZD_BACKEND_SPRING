@@ -17,7 +17,12 @@ public class ClubController {
     }
 
     @PostMapping("/club/{club_id}/profile")
-    public ClubDTO.messageResponse profile(@RequestParam("file")MultipartFile file, @PathVariable("club_id") int club_id){
+    public ClubDTO.messageResponse profile(@RequestParam("file") MultipartFile file, @PathVariable("club_id") int club_id){
         return clubHeadService.clubProfile(file, club_id);
+    }
+
+    @PostMapping("/club/{club_id}/hongbo")
+    public ClubDTO.messageResponse hongbo(@RequestParam("file") MultipartFile file, @PathVariable("club_id") int club_id){
+        return clubHeadService.clubHongbo(file, club_id);
     }
 }
