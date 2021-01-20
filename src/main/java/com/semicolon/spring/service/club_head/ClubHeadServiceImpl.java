@@ -3,9 +3,12 @@ package com.semicolon.spring.service.club_head;
 import com.semicolon.spring.dto.ClubDTO;
 import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.club.ClubRepository;
+import com.semicolon.spring.entity.club.club_head.ClubHead;
+import com.semicolon.spring.entity.club.club_head.ClubHeadRepository;
 import com.semicolon.spring.entity.club.major.Major;
 import com.semicolon.spring.entity.club.major.MajorRepository;
 import com.semicolon.spring.entity.user.User;
+import com.semicolon.spring.entity.user.UserRepository;
 import com.semicolon.spring.exception.FileNotSaveException;
 import com.semicolon.spring.exception.NoAuthorityException;
 import com.semicolon.spring.security.AuthenticationFacade;
@@ -21,7 +24,9 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class ClubHeadServiceImpl implements ClubHeadService{
     private final ClubRepository clubRepository;
+    private final ClubHeadRepository clubHeadRepository;
     private final MajorRepository majorRepository;
+    private final UserRepository userRepository;
     private final AuthenticationFacade authenticationFacade;
 
     @Value("${file.club.path}")
@@ -115,6 +120,24 @@ public class ClubHeadServiceImpl implements ClubHeadService{
                     return club;
                 });
         return new ClubDTO.messageResponse("club modify success");
+    }
+
+    @Override
+    public ClubDTO.messageResponse changeHead(ClubDTO.changeHead request, int club_id) {
+        if(!isClubHead(club_id))
+            throw new NoAuthorityException();
+        clubRepository.findById(club_id)
+                .map(club -> {
+                    clubHeadRepository.delete(club.getClubHead());
+                    clubHeadRepository.save(
+                            ClubHead.builder()
+                            .club(club)
+                            .user(userRepository.findByGcn(request.getUserGcn()))
+                            .build()
+                    );
+                    return club;
+                });
+        return new ClubDTO.messageResponse("club head change success");
     }
 
     private boolean isClubHead(int club_id){
