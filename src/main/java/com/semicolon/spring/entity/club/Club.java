@@ -74,5 +74,9 @@ public class Club {
         this.banner_image = path;
     }
 
+    public void setClub_name(String name){
+        this.club_name = name;
+    }
+
 }
 
