@@ -28,10 +28,8 @@ public class User {
     @Column(length = 5)
     private String gcn;
 
-    @Column(length = 45)
     private String image_path;
 
-    @Column(length = 45)
     private String github_url;
 
     @Column(length = 50)
