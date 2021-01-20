@@ -3,13 +3,20 @@ package com.semicolon.spring.service.feed;
 import com.semicolon.spring.dto.FeedDTO;
 import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.club.ClubRepository;
+import com.semicolon.spring.entity.club.application.Application;
+import com.semicolon.spring.entity.club.application.ApplicationRepository;
 import com.semicolon.spring.entity.feed.Feed;
 import com.semicolon.spring.entity.feed.FeedRepository;
+import com.semicolon.spring.entity.feed.feed_flag.FeedFlag;
 import com.semicolon.spring.entity.feed.feed_flag.FeedFlagRepository;
 import com.semicolon.spring.entity.feed.feed_medium.FeedMedium;
 import com.semicolon.spring.entity.feed.feed_medium.FeedMediumRepository;
+import com.semicolon.spring.entity.user.User;
+import com.semicolon.spring.exception.BadRequestException;
 import com.semicolon.spring.exception.ClubNotExistException;
 import com.semicolon.spring.exception.FeedNotExistException;
+import com.semicolon.spring.exception.NoAuthorityException;
+import com.semicolon.spring.security.AuthenticationFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -30,7 +37,9 @@ public class FeedServiceImpl implements FeedService{
     private final FeedRepository feedRepository;
     private final FeedMediumRepository feedMediumRepository;
     private final ClubRepository clubRepository;
+    private final ApplicationRepository applicationRepository;
     private final FeedFlagRepository feedFlagRepository;
+    private final AuthenticationFacade authenticationFacade;
 
     @Value("${file.path}")
     private String PATH;
@@ -39,6 +48,8 @@ public class FeedServiceImpl implements FeedService{
 
     @Override
     public void fileUpload(MultipartFile file, int feedId) { // feed가 자기 클럽이 쓴것인지 확인.
+        if(isNotClubMember(feedRepository.findById(feedId).orElseThrow(FeedNotExistException::new).getClub().getClubId()))
+            throw new NoAuthorityException();
         try{
             file.transferTo(new File(PATH+file.getOriginalFilename()));
             feedRepository.findById(feedId)
@@ -54,6 +65,8 @@ public class FeedServiceImpl implements FeedService{
 
     @Override
     public FeedDTO.writeFeedResponse writeFeed(FeedDTO.feed request, int club_id) {
+        if(isNotClubMember(club_id))
+            throw new NoAuthorityException();
         return new FeedDTO.writeFeedResponse("feed writing success",
                 feedRepository.save(
                     Feed.builder()
@@ -79,6 +92,8 @@ public class FeedServiceImpl implements FeedService{
 
     @Override
     public FeedDTO.messageResponse feedModify(FeedDTO.feed request, int feedId) { // feed를 쓴 클럽인지 확인절차 추가.
+        if(isNotClubMember(feedRepository.findById(feedId).orElseThrow(FeedNotExistException::new).getClub().getClubId()))
+            throw new NoAuthorityException();
         feedRepository.findById(feedId)
                 .map(feed -> {
                     feed.modify(request.getContent(), request.isPin());
@@ -108,6 +123,33 @@ public class FeedServiceImpl implements FeedService{
                     return feed;
                 });
         return new FeedDTO.messageResponse("Success");
+    }
+
+    @Override
+    public FeedDTO.messageResponse feedFlag(int feedId) {
+        User user = authenticationFacade.getUser();
+        Feed feed = feedRepository.findById(feedId).orElseThrow(FeedNotExistException::new);
+        if(isFlag(user, feed)){
+            feedFlagRepository.delete(feedFlagRepository.findByUserAndFeed(user, feed).orElseThrow(BadRequestException::new));
+            feed.deleteFlag();
+            feedRepository.save(feed);
+            return new FeedDTO.messageResponse("Add Feed Flag Success");
+        }else{
+            feedFlagRepository.save(
+                    FeedFlag.builder()
+                    .user(user)
+                    .feed(feed)
+                    .build()
+            );
+            feed.addFlag();
+            feedRepository.save(feed);
+            return new FeedDTO.messageResponse("Remove Feed Flag Success");
+        }
+
+    }
+
+    private boolean isFlag(User user, Feed feed){
+        return feedFlagRepository.findByUserAndFeed(user, feed).isPresent();
     }
 
     public List<FeedDTO.getFeed> feedToRepose(List<Feed> feeds){ // 유저 정보가 있을 때 isFlag, isFollow
@@ -166,7 +208,14 @@ public class FeedServiceImpl implements FeedService{
         return feedRepository.findByClub(club, pageRequest);
     }
 
-    private boolean isClubMember(int club_id){
-
+    private boolean isNotClubMember(int club_id){ // user가 속해있지 않은 club_id를 보내는 테스트 해야함.
+        try{
+            User user = authenticationFacade.getUser();
+            Club club = clubRepository.findByClubId(club_id);
+            Application application = applicationRepository.findByUserAndClub(user, club);
+            return false;
+        }catch (Exception e){
+            return true;
+        }
     }
 }
