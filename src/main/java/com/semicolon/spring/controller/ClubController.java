@@ -36,4 +36,9 @@ public class ClubController {
     public ClubDTO.messageResponse modify(@RequestBody ClubDTO.modify request, @PathVariable("club_id") int club_id){
         return clubHeadService.modifyClub(request, club_id);
     }
+
+    @PutMapping("/club/{club_id}/head")
+    public ClubDTO.messageResponse changeHead(@RequestBody ClubDTO.changeHead request, @PathVariable("club_id") int club_id){
+        return clubHeadService.changeHead(request, club_id);
+    }
 }
