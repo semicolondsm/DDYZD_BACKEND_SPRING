@@ -41,7 +41,6 @@ public class Feed {
     @JsonBackReference
     private Club club;
 
-    private int flag;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "feed")
     @JsonManagedReference
@@ -52,11 +51,4 @@ public class Feed {
         this.pin = isPin;
     }
 
-    public void addFlag(){
-        flag++;
-    }
-
-    public void deleteFlag(){
-        flag--;
-    }
 }
