@@ -5,6 +5,7 @@ import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.club.ClubRepository;
 import com.semicolon.spring.entity.club.application.ApplicationRepository;
 import com.semicolon.spring.entity.club.club_follow.ClubFollowRepository;
+import com.semicolon.spring.entity.club.club_head.ClubHeadRepository;
 import com.semicolon.spring.entity.feed.Feed;
 import com.semicolon.spring.entity.feed.FeedRepository;
 import com.semicolon.spring.entity.feed.feed_flag.FeedFlag;
@@ -40,6 +41,7 @@ public class FeedServiceImpl implements FeedService{
     private final ApplicationRepository applicationRepository;
     private final FeedFlagRepository feedFlagRepository;
     private final ClubFollowRepository clubFollowRepository;
+    private final ClubHeadRepository clubHeadRepository;
     private final AuthenticationFacade authenticationFacade;
 
     @Value("${file.path}")
@@ -219,6 +221,8 @@ public class FeedServiceImpl implements FeedService{
     private boolean isNotClubMember(int club_id){ // user가 속해있지 않은 club_id를 보내는 테스트 해야함.
         User user = authenticationFacade.getUser();
         Club club = clubRepository.findByClubId(club_id);
-        return applicationRepository.findByUserAndClub(user, club) == null;
+        if(user == null || club == null)
+            throw new BadRequestException();
+        return applicationRepository.findByUserAndClub(user, club) == null && !user.getHead().contains(club.getClubHead());
     }
 }
