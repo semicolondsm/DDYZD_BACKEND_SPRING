@@ -111,8 +111,7 @@ public class FeedServiceImpl implements FeedService{
         Feed feed = feedRepository.findById(feedId).orElseThrow(FeedNotExistException::new);
         if(isFlag(user, feed)){
             feedFlagRepository.delete(feedFlagRepository.findByUserAndFeed(user, feed).orElseThrow(BadRequestException::new));
-            feedRepository.save(feed);
-            return new FeedDTO.messageResponse("Add Feed Flag Success");
+            return new FeedDTO.messageResponse("Remove Feed Flag Success");
         }else{
             feedFlagRepository.save(
                     FeedFlag.builder()
@@ -120,8 +119,7 @@ public class FeedServiceImpl implements FeedService{
                     .feed(feed)
                     .build()
             );
-            feedRepository.save(feed);
-            return new FeedDTO.messageResponse("Remove Feed Flag Success");
+            return new FeedDTO.messageResponse("Add Feed Flag Success");
         }
 
     }
