@@ -75,7 +75,6 @@ public class FeedServiceImpl implements FeedService{
                         .pin(request.isPin())
                         //.club(clubRepository.findById(1).orElseThrow(ClubNotExistException::new)) // 차후에 수정 필요
                         .club(clubRepository.findByClubId(club_id))
-                        .flag(0)
                         .build()
                 ).getId());
 
@@ -105,34 +104,11 @@ public class FeedServiceImpl implements FeedService{
     }
 
     @Override
-    public FeedDTO.messageResponse addFeedFlag(int feedId) { //User가 flag를 달았을 시 feed_flag에 추가, feed_flag에 있는지 확인 추가.
-        feedRepository.findById(feedId)
-                .map(feed -> {
-                    feed.addFlag();
-                    feedRepository.save(feed);
-                    return feed;
-                });
-        return new FeedDTO.messageResponse("Success");
-    }
-
-    @Override
-    public FeedDTO.messageResponse deleteFeedFlag(int feedId) {
-        feedRepository.findById(feedId)
-                .map(feed -> {
-                    feed.deleteFlag();
-                    feedRepository.save(feed);
-                    return feed;
-                });
-        return new FeedDTO.messageResponse("Success");
-    }
-
-    @Override
     public FeedDTO.messageResponse feedFlag(int feedId) {
         User user = authenticationFacade.getUser();
         Feed feed = feedRepository.findById(feedId).orElseThrow(FeedNotExistException::new);
         if(isFlag(user, feed)){
             feedFlagRepository.delete(feedFlagRepository.findByUserAndFeed(user, feed).orElseThrow(BadRequestException::new));
-            feed.deleteFlag();
             feedRepository.save(feed);
             return new FeedDTO.messageResponse("Add Feed Flag Success");
         }else{
@@ -142,7 +118,6 @@ public class FeedServiceImpl implements FeedService{
                     .feed(feed)
                     .build()
             );
-            feed.addFlag();
             feedRepository.save(feed);
             return new FeedDTO.messageResponse("Remove Feed Flag Success");
         }
@@ -157,8 +132,8 @@ public class FeedServiceImpl implements FeedService{
 
     public List<FeedDTO.getFeed> feedToRepose(List<Feed> feeds){ // 유저 정보가 있을 때 isFlag, isFollow
         List<FeedDTO.getFeed> response = new ArrayList<>();
+        User user = authenticationFacade.getUser();
         for(Feed feed : feeds){
-            User user = authenticationFacade.getUser();
             FeedDTO.getFeed getFeed = FeedDTO.getFeed.builder()
                     .feedId(feed.getId())
                     .clubName(feed.getClub().getClub_name())
@@ -166,7 +141,7 @@ public class FeedServiceImpl implements FeedService{
                     .content(feed.getContents())
                     .media(getMediaPath(feed.getMedia()))
                     .uploadAt(feed.getUploadAt())
-                    .flags(feed.getFlag())
+                    .flags(feedFlagRepository.countByFeed(feed))
                     .build();
 
             if(user!=null){
@@ -180,19 +155,23 @@ public class FeedServiceImpl implements FeedService{
 
     public List<FeedDTO.getFeedClub> feedClubToRepose(List<Feed> feeds){ // 유저 정보가 있을 때 isFlag, isFollow
         List<FeedDTO.getFeedClub> response = new ArrayList<>();
+        User user = authenticationFacade.getUser();
         for(Feed feed : feeds){
-            response.add(
-                    FeedDTO.getFeedClub.builder()
-                            .feedId(feed.getId())
-                            .clubName(feed.getClub().getClub_name())
-                            .profileImage(feed.getClub().getProfile_image())
-                            .content(feed.getContents())
-                            .media(getMediaPath(feed.getMedia()))
-                            .uploadAt(feed.getUploadAt())
-                            .isPin(feed.isPin())
-                            .flags(feed.getFlag())
-                            .build()
-            );
+            FeedDTO.getFeedClub getFeedClub = FeedDTO.getFeedClub.builder()
+                    .feedId(feed.getId())
+                    .clubName(feed.getClub().getClub_name())
+                    .profileImage(feed.getClub().getProfile_image())
+                    .content(feed.getContents())
+                    .media(getMediaPath(feed.getMedia()))
+                    .uploadAt(feed.getUploadAt())
+                    .isPin(feed.isPin())
+                    .flags(feedFlagRepository.countByFeed(feed))
+                    .build();
+            if(user!=null){
+                getFeedClub.setIsFlag(isFlag(user, feed));
+                getFeedClub.setIsFollow(clubFollowRepository.findByUserAndClub(user, feed.getClub()).isPresent());
+            }
+            response.add(getFeedClub);
         }
         return response;
     }
