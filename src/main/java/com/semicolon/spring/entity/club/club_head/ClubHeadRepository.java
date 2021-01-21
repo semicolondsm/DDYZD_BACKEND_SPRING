@@ -11,4 +11,5 @@ import java.util.List;
 public interface ClubHeadRepository extends CrudRepository<ClubHead, Integer> {
     List<ClubHead> findByUser(User user);
     List<ClubHead> findByClub(Club club);
+    ClubHead findByClubAndUser(Club club, User user);
 }

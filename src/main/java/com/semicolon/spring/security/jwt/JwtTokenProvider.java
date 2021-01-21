@@ -4,6 +4,7 @@ import com.semicolon.spring.exception.InvalidTokenException;
 import com.semicolon.spring.security.jwt.auth.AuthDetails;
 import com.semicolon.spring.security.jwt.auth.AuthDetailsService;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 @Component
 @RequiredArgsConstructor
@@ -32,6 +34,16 @@ public class JwtTokenProvider {
     private Long refreshTokenExpiration;
 
     private final AuthDetailsService authDetailsService;
+
+    public String generateAccessToken(Integer id){
+        return Jwts.builder()
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + accessTokenExpiration))
+                .setSubject(id.toString())
+                .claim("type", "access")
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
+    }
 
     public String resolveToken(HttpServletRequest request){
         String bearer = request.getHeader(header);
