@@ -38,7 +38,7 @@ public class JwtTokenProvider {
     public String generateAccessToken(Integer id){
         return Jwts.builder()
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + accessTokenExpiration))
+                .setExpiration(new Date(System.currentTimeMillis() + accessTokenExpiration * 1000))
                 .setSubject(id.toString())
                 .claim("type", "access")
                 .signWith(SignatureAlgorithm.HS256, secretKey)
