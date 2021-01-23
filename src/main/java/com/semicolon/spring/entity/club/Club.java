@@ -53,7 +53,7 @@ public class Club {
     private Set<Feed> feeds = new HashSet<>();
 
     @OneToOne
-    @JoinColumn(name = "club_id")
+    @JsonManagedReference
     private ClubHead clubHead;
 
     @OneToMany(mappedBy = "club", fetch = FetchType.EAGER)
