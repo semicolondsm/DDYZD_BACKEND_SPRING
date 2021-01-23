@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface FeedService {
-    void fileUpload(MultipartFile file, int feedId);
+    FeedDTO.messageResponse fileUpload(MultipartFile file, int feedId);
     FeedDTO.writeFeedResponse writeFeed(FeedDTO.feed request, int club_id);
     List<FeedDTO.getFeed> getFeedList(int page);
     List<FeedDTO.getFeedClub> getFeedClubList(int page, int club_id);
