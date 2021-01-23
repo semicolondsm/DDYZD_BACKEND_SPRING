@@ -28,4 +28,8 @@ public class ClubHead {
     @JoinColumn(name = "user_id")
     @JsonBackReference
     private User user;
+
+    public void setUser(User user){
+        this.user = user;
+    }
 }
