@@ -47,8 +47,17 @@ public class FeedDTO {
         private Date uploadAt;
         private String content;
         private List<String> media;
+        private boolean isFlag;
         private int flags;
         private boolean isPin;
+
+        public void setIsFollow(boolean value){
+            this.isFollow = value;
+        }
+
+        public void setIsFlag(boolean value){
+            this.isFlag = value;
+        }
     }
 
     @AllArgsConstructor

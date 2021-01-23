@@ -21,9 +21,10 @@ public class ClubHead {
 
     @OneToOne
     @JoinColumn(name = "club_id")
+    @JsonBackReference
     private Club club;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     @JsonBackReference
     private User user;

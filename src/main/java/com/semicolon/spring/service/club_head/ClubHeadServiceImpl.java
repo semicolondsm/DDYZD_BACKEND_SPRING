@@ -9,6 +9,7 @@ import com.semicolon.spring.entity.club.major.Major;
 import com.semicolon.spring.entity.club.major.MajorRepository;
 import com.semicolon.spring.entity.user.User;
 import com.semicolon.spring.entity.user.UserRepository;
+import com.semicolon.spring.exception.ClubNotExistException;
 import com.semicolon.spring.exception.FileNotSaveException;
 import com.semicolon.spring.exception.NoAuthorityException;
 import com.semicolon.spring.exception.UserNotFoundException;
@@ -20,6 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -143,8 +146,10 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
     private boolean isClubHead(int club_id){
         User user = authenticationFacade.getUser();
-        if(user == null) throw new UserNotFoundException();
-        return clubRepository.findById(club_id)
-                .map(club -> user.getHead().contains(club.getClubHead())).orElseThrow(NoAuthorityException::new);
+        Club club = clubRepository.findById(club_id).orElseThrow(ClubNotExistException::new);
+        ClubHead clubHead = clubHeadRepository.findByClubAndUser(club, user);
+        if(clubHead == null)
+            throw new NoAuthorityException();
+        else return true;
     }
 }

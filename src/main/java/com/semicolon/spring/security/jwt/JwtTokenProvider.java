@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Base64;
 import java.util.Date;
 
 @Component
@@ -37,11 +38,12 @@ public class JwtTokenProvider {
 
     public String generateAccessToken(Integer id){
         return Jwts.builder()
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + accessTokenExpiration))
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .setHeaderParam("typ", "JWT")
                 .setSubject(id.toString())
                 .claim("type", "access")
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + accessTokenExpiration * 1000))
                 .compact();
     }
 
@@ -56,7 +58,7 @@ public class JwtTokenProvider {
     public boolean validateToken(String token){
         try{
             Jwts.parser()
-                    .setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+                    .setSigningKey(getSigningKey()).parseClaimsJws(token).getBody().getSubject();
             return true;
         }catch (Exception e){
             throw new InvalidTokenException();
@@ -66,7 +68,7 @@ public class JwtTokenProvider {
     public String getId(String token){
         try{
             return Jwts.parser()
-                    .setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+                    .setSigningKey(getSigningKey()).parseClaimsJws(token).getBody().getSubject();
         }catch (Exception e){
             throw new InvalidTokenException();
         }
@@ -75,5 +77,9 @@ public class JwtTokenProvider {
     public Authentication authentication(String token){
         AuthDetails authDetails = authDetailsService.loadUserByUsername(getId(token));
         return new UsernamePasswordAuthenticationToken(authDetails, "", authDetails.getAuthorities());
+    }
+
+    private String getSigningKey() {
+        return Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
 }
