@@ -1,11 +1,10 @@
 package com.semicolon.spring.exception;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import com.semicolon.spring.error.exception.BusinessException;
+import com.semicolon.spring.error.exception.ErrorCode;
 
-@ResponseStatus(value = HttpStatus.UNAUTHORIZED, reason = "InvalidToken")
-public class InvalidTokenException extends RuntimeException{
+public class InvalidTokenException extends BusinessException {
     public InvalidTokenException(){
-        super("InvalidTokenException");
+        super(ErrorCode.INVALID_TOKEN);
     }
 }
