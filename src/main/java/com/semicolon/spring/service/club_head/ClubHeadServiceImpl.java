@@ -9,6 +9,7 @@ import com.semicolon.spring.entity.club.major.Major;
 import com.semicolon.spring.entity.club.major.MajorRepository;
 import com.semicolon.spring.entity.user.User;
 import com.semicolon.spring.entity.user.UserRepository;
+import com.semicolon.spring.exception.ClubNotExistException;
 import com.semicolon.spring.exception.FileNotSaveException;
 import com.semicolon.spring.exception.NoAuthorityException;
 import com.semicolon.spring.exception.UserNotFoundException;
@@ -20,6 +21,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -47,6 +50,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
                     .build()
             );
         }
+        club.setStart_at();
         club.setClose_at(request.getCloseAt());
         clubRepository.save(club);
         return new ClubDTO.messageResponse("recruitment success");
@@ -129,22 +133,33 @@ public class ClubHeadServiceImpl implements ClubHeadService{
             throw new NoAuthorityException();
         clubRepository.findById(club_id)
                 .map(club -> {
-                    clubHeadRepository.delete(club.getClubHead());
-                    clubHeadRepository.save(
-                            ClubHead.builder()
-                            .club(club)
-                            .user(userRepository.findByGcn(request.getUserGcn()))
-                            .build()
-                    );
+                    ClubHead clubHead = club.getClubHead();
+                    clubHead.setUser(userRepository.findByGcn(request.getUserGcn()));
+                    clubHeadRepository.save(clubHead);
                     return club;
                 });
         return new ClubDTO.messageResponse("club head change success");
     }
 
+    @Override
+    public ClubDTO.messageResponse clubDescription(ClubDTO.description request, int club_id) {
+        if(!isClubHead(club_id))
+            throw new NoAuthorityException();
+        clubRepository.findById(club_id)
+                .map(club -> {
+                    club.setDescription(request.getDescription());
+                    clubRepository.save(club);
+                    return club;
+                });
+        return new ClubDTO.messageResponse("description write success");
+    }
+
     private boolean isClubHead(int club_id){
         User user = authenticationFacade.getUser();
-        if(user == null) throw new UserNotFoundException();
-        return clubRepository.findById(club_id)
-                .map(club -> user.getHead().contains(club.getClubHead())).orElseThrow(NoAuthorityException::new);
+        Club club = clubRepository.findById(club_id).orElseThrow(ClubNotExistException::new);
+        ClubHead clubHead = clubHeadRepository.findByClubAndUser(club, user);
+        if(clubHead == null)
+            throw new NoAuthorityException();
+        else return true;
     }
 }

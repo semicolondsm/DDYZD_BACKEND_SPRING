@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -48,12 +49,15 @@ public class Club {
     @Column(nullable = false)
     private String hongbo_image;
 
+    @ColumnDefault("")
+    private String description;
+
     @OneToMany(mappedBy = "club", fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<Feed> feeds = new HashSet<>();
 
-    @OneToOne
-    @JoinColumn(name = "club_id")
+    @OneToOne(mappedBy = "club")
+    @JsonManagedReference
     private ClubHead clubHead;
 
     @OneToMany(mappedBy = "club", fetch = FetchType.EAGER)
@@ -86,6 +90,14 @@ public class Club {
 
     public void setClub_name(String name){
         this.club_name = name;
+    }
+
+    public void setStart_at(){
+        this.start_at = new Date();
+    }
+
+    public void setDescription(String description){
+        this.description = description;
     }
 
 }
