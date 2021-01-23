@@ -36,4 +36,11 @@ public class ClubDTO {
     public static class changeHead{
         private String userGcn;
     }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class description{
+        private String description;
+    }
 }
