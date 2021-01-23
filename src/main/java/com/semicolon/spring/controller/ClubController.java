@@ -40,4 +40,9 @@ public class ClubController {
     public ClubDTO.messageResponse changeHead(@RequestBody ClubDTO.changeHead request, @PathVariable("club_id") int club_id){
         return clubHeadService.changeHead(request, club_id);
     }
+
+    @PostMapping("/club/{club_id}/description")
+    public ClubDTO.messageResponse description(@RequestBody ClubDTO.description request, @PathVariable("club_id") int club_id){
+        return clubHeadService.clubDescription(request, club_id);
+    }
 }
