@@ -1,11 +1,10 @@
 package com.semicolon.spring.exception;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import com.semicolon.spring.error.exception.BusinessException;
+import com.semicolon.spring.error.exception.ErrorCode;
 
-@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "BadRequest")
-public class BadRequestException extends RuntimeException{
+public class BadRequestException extends BusinessException {
     public BadRequestException(){
-        super("BadRequestException");
+        super(ErrorCode.BAD_REQUEST);
     }
 }
