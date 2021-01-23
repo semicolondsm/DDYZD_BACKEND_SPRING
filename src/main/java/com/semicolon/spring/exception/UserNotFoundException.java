@@ -1,11 +1,10 @@
 package com.semicolon.spring.exception;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import com.semicolon.spring.error.exception.BusinessException;
+import com.semicolon.spring.error.exception.ErrorCode;
 
-@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "UserNotFound")
-public class UserNotFoundException extends RuntimeException{
+public class UserNotFoundException extends BusinessException {
     public UserNotFoundException(){
-        super("UserNotFoundException");
+        super(ErrorCode.USER_NOT_FOUND);
     }
 }
