@@ -1,11 +1,10 @@
 package com.semicolon.spring.exception;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import com.semicolon.spring.error.exception.BusinessException;
+import com.semicolon.spring.error.exception.ErrorCode;
 
-@ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "NoAuthority")
-public class NoAuthorityException extends RuntimeException{
+public class NoAuthorityException extends BusinessException {
     public NoAuthorityException(){
-        super("NoAuthorityException");
+        super(ErrorCode.NO_AUTHORITY);
     }
 }
