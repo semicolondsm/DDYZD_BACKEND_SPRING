@@ -50,6 +50,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
                     .build()
             );
         }
+        club.setStart_at();
         club.setClose_at(request.getCloseAt());
         clubRepository.save(club);
         return new ClubDTO.messageResponse("recruitment success");
@@ -132,16 +133,25 @@ public class ClubHeadServiceImpl implements ClubHeadService{
             throw new NoAuthorityException();
         clubRepository.findById(club_id)
                 .map(club -> {
-                    clubHeadRepository.delete(club.getClubHead());
-                    clubHeadRepository.save(
-                            ClubHead.builder()
-                            .club(club)
-                            .user(userRepository.findByGcn(request.getUserGcn()))
-                            .build()
-                    );
+                    ClubHead clubHead = club.getClubHead();
+                    clubHead.setUser(userRepository.findByGcn(request.getUserGcn()));
+                    clubHeadRepository.save(clubHead);
                     return club;
                 });
         return new ClubDTO.messageResponse("club head change success");
+    }
+
+    @Override
+    public ClubDTO.messageResponse clubDescription(ClubDTO.description request, int club_id) {
+        if(!isClubHead(club_id))
+            throw new NoAuthorityException();
+        clubRepository.findById(club_id)
+                .map(club -> {
+                    club.setDescription(request.getDescription());
+                    clubRepository.save(club);
+                    return club;
+                });
+        return new ClubDTO.messageResponse("description write success");
     }
 
     private boolean isClubHead(int club_id){
