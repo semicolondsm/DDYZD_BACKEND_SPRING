@@ -8,6 +8,7 @@ import com.semicolon.spring.entity.club.club_follow.ClubFollowRepository;
 import com.semicolon.spring.entity.club.club_head.ClubHeadRepository;
 import com.semicolon.spring.entity.feed.Feed;
 import com.semicolon.spring.entity.feed.FeedRepository;
+import com.semicolon.spring.entity.feed.MediaComparator;
 import com.semicolon.spring.entity.feed.feed_flag.FeedFlag;
 import com.semicolon.spring.entity.feed.feed_flag.FeedFlagRepository;
 import com.semicolon.spring.entity.feed.feed_medium.FeedMedium;
@@ -26,10 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -186,8 +184,10 @@ public class FeedServiceImpl implements FeedService{
     }
 
     public List<String> getMediaPath(Set<FeedMedium> feedMedia){
+        List<FeedMedium> list = new ArrayList<>(feedMedia);
         List<String> response = new ArrayList<>();
-        for(FeedMedium feedMedium : feedMedia){
+        Collections.sort(list, new MediaComparator());
+        for(FeedMedium feedMedium : list){
             response.add(feedMedium.getMedium_path());
         }
         return response;
