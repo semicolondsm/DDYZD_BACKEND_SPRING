@@ -1,5 +1,6 @@
 package com.semicolon.spring.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,7 @@ public class ClubDTO {
     @Getter
     public static class recruitment{
         private List<String> major;
+        @JsonFormat(timezone = "Asia/Seoul")
         private Date closeAt;
     }
 

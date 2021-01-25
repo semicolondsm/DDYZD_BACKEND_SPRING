@@ -1,5 +1,6 @@
 package com.semicolon.spring.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,6 +21,7 @@ public class FeedDTO {
         private String clubName;
         private String profileImage;
         private boolean isFollow;
+        @JsonFormat(timezone = "Asia/Seoul")
         private Date uploadAt;
         private String content;
         private List<String> media;
@@ -44,6 +46,7 @@ public class FeedDTO {
         private String clubName;
         private String profileImage;
         private boolean isFollow;
+        @JsonFormat(timezone = "Asia/Seoul")
         private Date uploadAt;
         private String content;
         private List<String> media;
