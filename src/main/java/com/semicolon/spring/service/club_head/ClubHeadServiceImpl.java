@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -54,7 +55,6 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         clubRepository.save(club);
         log.info("make recruitment club_id : " + club_id);
         return new ClubDTO.messageResponse("recruitment success");
-
     }
 
     @Override
@@ -62,10 +62,12 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         if(!isClubHead(club_id))
             throw new NotClubHeadException();
         try{
+            Random random = new Random(System.currentTimeMillis());
+            String fileString = random.nextInt() + file.getOriginalFilename();
             file.transferTo(new File(PATH+file.getOriginalFilename()));
             clubRepository.findById(club_id)
                     .map(club-> {
-                        club.setProfile_image(PATH+file.getOriginalFilename());
+                        club.setProfile_image("club/" + fileString);
                         clubRepository.save(club);
                         return club;
                     });
@@ -82,10 +84,12 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         if(!isClubHead(club_id))
             throw new NotClubHeadException();
         try{
+            Random random = new Random(System.currentTimeMillis());
+            String fileString = random.nextInt() + file.getOriginalFilename();
             file.transferTo(new File(PATH+file.getOriginalFilename()));
             clubRepository.findById(club_id)
                     .map(club -> {
-                        club.setHongbo_image(PATH+file.getOriginalFilename());
+                        club.setHongbo_image("club/" + fileString);
                         clubRepository.save(club);
                         return club;
                     });
@@ -102,10 +106,12 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         if(!isClubHead(club_id))
             throw new NotClubHeadException();
         try{
+            Random random = new Random(System.currentTimeMillis());
+            String fileString = random.nextInt() + file.getOriginalFilename();
             file.transferTo(new File(PATH+file.getOriginalFilename()));
             clubRepository.findById(club_id)
                     .map(club -> {
-                        club.setBanner_image(PATH+file.getOriginalFilename());
+                        club.setBanner_image("club/" + fileString);
                         clubRepository.save(club);
                         return club;
                     });

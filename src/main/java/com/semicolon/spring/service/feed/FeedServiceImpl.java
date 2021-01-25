@@ -55,12 +55,12 @@ public class FeedServiceImpl implements FeedService{
             throw new NotClubMemberException();
         try{
             Random random = new Random(System.currentTimeMillis());
-            String fileString = PATH + random.nextInt() + file.getOriginalFilename();
-            file.transferTo(new File(fileString));
+            String fileString = random.nextInt() + file.getOriginalFilename();
+            file.transferTo(new File(PATH + fileString));
             feedRepository.findById(feedId)
                     .map(feed-> feedMediumRepository.save(FeedMedium.builder()
                             .feed(feed)
-                            .medium_path(fileString)
+                            .medium_path("feed/" + fileString)
                             .build())
                     );
             log.info("fileUpload feed_id : " + feedId);
