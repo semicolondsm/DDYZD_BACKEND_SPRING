@@ -1,7 +1,9 @@
 package com.semicolon.spring.security.jwt;
 
+import com.semicolon.spring.exception.InvalidTokenException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
 
@@ -19,10 +21,14 @@ public class JwtTokenFilter extends GenericFilterBean {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        String token = jwtTokenProvider.resolveToken((HttpServletRequest)request);
-        if(token!=null && jwtTokenProvider.validateToken(token)){
-            Authentication auth = jwtTokenProvider.authentication(token);
-            SecurityContextHolder.getContext().setAuthentication(auth);
+        try {
+            String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
+            if (token != null && jwtTokenProvider.validateToken(token)) {
+                Authentication auth = jwtTokenProvider.authentication(token);
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            }
+        }catch (InvalidTokenException e){
+            SecurityContextHolder.clearContext();
         }
         chain.doFilter(request, response);
     }
