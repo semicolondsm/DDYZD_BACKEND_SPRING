@@ -2,6 +2,7 @@ package com.semicolon.spring.security.config;
 
 import com.semicolon.spring.security.jwt.JwtConfigure;
 import com.semicolon.spring.security.jwt.JwtTokenProvider;
+import com.semicolon.spring.security.jwt.RestAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final RestAuthenticationEntryPoint authenticationEntryPoint;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -31,6 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 .antMatchers("/feed/{club_id}/list").permitAll()
                 .anyRequest().authenticated()
                 .and().apply(new JwtConfigure(jwtTokenProvider));
+        http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
 
     }
 
