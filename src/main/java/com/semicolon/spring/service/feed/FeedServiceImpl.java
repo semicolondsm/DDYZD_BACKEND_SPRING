@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 @Service
@@ -53,11 +54,13 @@ public class FeedServiceImpl implements FeedService{
         if(isNotClubMember(feedRepository.findById(feedId).orElseThrow(FeedNotFoundException::new).getClub().getClubId()))
             throw new NotClubMemberException();
         try{
-            file.transferTo(new File(PATH+file.getOriginalFilename()));
+            Random random = new Random(System.currentTimeMillis());
+            String fileString = PATH + random.nextInt() + file.getOriginalFilename();
+            file.transferTo(new File(fileString));
             feedRepository.findById(feedId)
                     .map(feed-> feedMediumRepository.save(FeedMedium.builder()
                             .feed(feed)
-                            .medium_path(PATH+file.getOriginalFilename())
+                            .medium_path(fileString)
                             .build())
                     );
             log.info("fileUpload feed_id : " + feedId);
