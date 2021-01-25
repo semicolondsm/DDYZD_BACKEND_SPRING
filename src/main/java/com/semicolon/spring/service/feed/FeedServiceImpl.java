@@ -85,12 +85,12 @@ public class FeedServiceImpl implements FeedService{
 
     @Override
     public List<FeedDTO.getFeed> getFeedList(int page) {
-        return feedToRepose(getFeed(page).getContent());
+        return feedToRepose(getFeed(page).getContent(), page);
     }
 
     @Override
     public List<FeedDTO.getFeedClub> getFeedClubList(int page, int club_id) {
-        return feedClubToRepose(getFeedClub(page, club_id).getContent());
+        return feedClubToRepose(getFeedClub(page, club_id).getContent(), page);
     }
 
     @Override
@@ -134,7 +134,7 @@ public class FeedServiceImpl implements FeedService{
         else throw new UserNotFoundException();
     }
 
-    public List<FeedDTO.getFeed> feedToRepose(List<Feed> feeds){ // 유저 정보가 있을 때 isFlag, isFollow
+    public List<FeedDTO.getFeed> feedToRepose(List<Feed> feeds, int page){ // 유저 정보가 있을 때 isFlag, isFollow
         List<FeedDTO.getFeed> response = new ArrayList<>();
         User user = authenticationFacade.getUser();
         for(Feed feed : feeds){
@@ -154,11 +154,11 @@ public class FeedServiceImpl implements FeedService{
             }
             response.add(getFeed);
         }
-        log.info("get feedList");
+        log.info("get feedList page : " + page);
         return response;
     }
 
-    public List<FeedDTO.getFeedClub> feedClubToRepose(List<Feed> feeds){ // 유저 정보가 있을 때 isFlag, isFollow
+    public List<FeedDTO.getFeedClub> feedClubToRepose(List<Feed> feeds, int page){ // 유저 정보가 있을 때 isFlag, isFollow
         List<FeedDTO.getFeedClub> response = new ArrayList<>();
         User user = authenticationFacade.getUser();
         for(Feed feed : feeds){
@@ -178,7 +178,7 @@ public class FeedServiceImpl implements FeedService{
             }
             response.add(getFeedClub);
         }
-        log.info("get feedClubList");
+        log.info("get feedClubList page : " + page);
         return response;
     }
 
