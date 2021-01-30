@@ -38,7 +38,7 @@ public class JwtTokenProvider {
 
     public String generateAccessToken(Integer id){
         return Jwts.builder()
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .signWith(SignatureAlgorithm.HS256, getSigningKey())
                 .setHeaderParam("typ", "JWT")
                 .setSubject(id.toString())
                 .claim("type", "access")
