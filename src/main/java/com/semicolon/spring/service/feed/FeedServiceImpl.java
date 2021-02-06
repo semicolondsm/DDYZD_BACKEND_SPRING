@@ -134,7 +134,7 @@ public class FeedServiceImpl implements FeedService{
         User user = authenticationFacade.getUser();
         return feedRepository.findById(feedId)
                 .map(feed -> {
-                    return FeedDTO.getFeed.builder()
+                    FeedDTO.getFeed getFeed = FeedDTO.getFeed.builder()
                             .feedId(feed.getId())
                             .clubName(feed.getClub().getClub_name())
                             .profileImage(feed.getClub().getProfile_image())
@@ -143,8 +143,13 @@ public class FeedServiceImpl implements FeedService{
                             .uploadAt(feed.getUploadAt())
                             .flags(feedFlagRepository.countByFeed(feed))
                             .build();
+                    if(user!=null){
+                        getFeed.setIsFlag(isFlag(user, feed));
+                        getFeed.setIsFollow(clubFollowRepository.findByUserAndClub(user, feed.getClub()).isPresent());
+                    }
+                    log.info("getFeed feedId : " + feedId);
+                    return getFeed;
                 }).orElseThrow(FeedNotFoundException::new);
-
     }
 
     private boolean isFlag(User user, Feed feed){
