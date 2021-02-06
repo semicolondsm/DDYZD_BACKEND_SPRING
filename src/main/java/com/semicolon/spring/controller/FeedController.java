@@ -43,4 +43,9 @@ public class FeedController {
     public FeedDTO.messageResponse feedFlag(@PathVariable("feed_id") int feedId){
         return feedService.feedFlag(feedId);
     }
+
+    @GetMapping("/feed/{feed_id}")
+    public FeedDTO.getFeed getFeed(@PathVariable("feed_id") int feed_id){
+        return feedService.getFeed(feed_id);
+    }
 }
