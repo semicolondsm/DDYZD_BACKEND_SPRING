@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
         http.authorizeRequests()
                 .antMatchers(HttpMethod.GET,"/feed/list").permitAll()
                 .antMatchers(HttpMethod.GET,"/feed/{club_id}/list").permitAll()
-                .antMatchers(HttpMethod.GET, "feed/{feed_id}").permitAll()
+                .antMatchers(HttpMethod.GET, "/feed/{feed_id}").permitAll()
                 .anyRequest().authenticated()
                 .and().apply(new JwtConfigure(jwtTokenProvider));
         http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
