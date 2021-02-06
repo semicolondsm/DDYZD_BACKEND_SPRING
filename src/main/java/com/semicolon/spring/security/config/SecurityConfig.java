@@ -6,6 +6,7 @@ import com.semicolon.spring.security.jwt.RestAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -29,8 +30,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 .sessionManagement().disable()
                 .csrf().disable();
         http.authorizeRequests()
-                .antMatchers("/feed/list").permitAll()
-                .antMatchers("/feed/{club_id}/list").permitAll()
+                .antMatchers(HttpMethod.GET,"/feed/list").permitAll()
+                .antMatchers(HttpMethod.GET,"/feed/{club_id}/list").permitAll()
+                .antMatchers(HttpMethod.GET, "feed/{feed_id}").permitAll()
                 .anyRequest().authenticated()
                 .and().apply(new JwtConfigure(jwtTokenProvider));
         http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
