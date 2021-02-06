@@ -86,7 +86,7 @@ public class FeedServiceImpl implements FeedService{
 
     @Override
     public List<FeedDTO.getFeed> getFeedList(int page) {
-        return feedToResponse(getFeed(page).getContent(), page);
+        return feedToResponse(getFeeds(page).getContent(), page);
     }
 
     @Override
@@ -126,6 +126,24 @@ public class FeedServiceImpl implements FeedService{
             log.info("Add Feed Flag user_id : " + user.getUser_id());
             return new FeedDTO.messageResponse("Add Feed Flag Success");
         }
+
+    }
+
+    @Override
+    public FeedDTO.getFeed getFeed(int feedId) {
+        User user = authenticationFacade.getUser();
+        return feedRepository.findById(feedId)
+                .map(feed -> {
+                    return FeedDTO.getFeed.builder()
+                            .feedId(feed.getId())
+                            .clubName(feed.getClub().getClub_name())
+                            .profileImage(feed.getClub().getProfile_image())
+                            .content(feed.getContents())
+                            .media(getMediaPath(feed.getMedia()))
+                            .uploadAt(feed.getUploadAt())
+                            .flags(feedFlagRepository.countByFeed(feed))
+                            .build();
+                }).orElseThrow(FeedNotFoundException::new);
 
     }
 
@@ -193,7 +211,7 @@ public class FeedServiceImpl implements FeedService{
         return response;
     }
 
-    public Page<Feed> getFeed(int page){
+    public Page<Feed> getFeeds(int page){
         PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("uploadAt").descending());
         return feedRepository.findAll(pageRequest);
     }
