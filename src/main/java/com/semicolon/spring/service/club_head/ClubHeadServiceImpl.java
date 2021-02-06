@@ -64,7 +64,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         try{
             Random random = new Random(System.currentTimeMillis());
             String fileString = random.nextInt() + file.getOriginalFilename();
-            file.transferTo(new File(PATH+file.getOriginalFilename()));
+            file.transferTo(new File(PATH+ fileString));
             clubRepository.findById(club_id)
                     .map(club-> {
                         club.setProfile_image("club/" + fileString);
@@ -86,7 +86,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         try{
             Random random = new Random(System.currentTimeMillis());
             String fileString = random.nextInt() + file.getOriginalFilename();
-            file.transferTo(new File(PATH+file.getOriginalFilename()));
+            file.transferTo(new File(PATH+ fileString));
             clubRepository.findById(club_id)
                     .map(club -> {
                         club.setHongbo_image("club/" + fileString);
@@ -108,7 +108,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         try{
             Random random = new Random(System.currentTimeMillis());
             String fileString = random.nextInt() + file.getOriginalFilename();
-            file.transferTo(new File(PATH+file.getOriginalFilename()));
+            file.transferTo(new File(PATH+ fileString));
             clubRepository.findById(club_id)
                     .map(club -> {
                         club.setBanner_image("club/" + fileString);
