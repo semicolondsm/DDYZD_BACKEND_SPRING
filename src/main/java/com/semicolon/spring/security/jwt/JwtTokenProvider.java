@@ -50,7 +50,7 @@ public class JwtTokenProvider {
     public String resolveToken(HttpServletRequest request){
         String bearer = request.getHeader(header);
         if(bearer!=null && bearer.startsWith(prefix)){
-            if(!bearer.substring(7).isEmpty()){
+            if(bearer.length()!=7){
                 return bearer.substring(7);
             }else throw new InvalidTokenException();
         }
