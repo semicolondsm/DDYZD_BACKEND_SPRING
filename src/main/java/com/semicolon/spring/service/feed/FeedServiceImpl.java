@@ -158,6 +158,7 @@ public class FeedServiceImpl implements FeedService{
         if(isNotClubMember(feed.getClub().getClubId()))
             throw new NotClubMemberException();
         feedRepository.delete(feed);
+        log.info("deleteFeed feedId : " + feedId);
         return new FeedDTO.messageResponse("Feed delete success.");
     }
 
