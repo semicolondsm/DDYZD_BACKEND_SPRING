@@ -27,6 +27,7 @@ public class FeedDTO {
         private List<String> media;
         private boolean isFlag;
         private int flags;
+        private boolean isOwner;
 
         public void setIsFollow(boolean value){
             this.isFollow = value;
@@ -35,6 +36,11 @@ public class FeedDTO {
         public void setIsFlag(boolean value){
             this.isFlag = value;
         }
+
+        public void setOwner(boolean value){
+            this.isOwner = value;
+        }
+
     }
 
     @AllArgsConstructor
@@ -53,6 +59,7 @@ public class FeedDTO {
         private boolean isFlag;
         private int flags;
         private boolean isPin;
+        private boolean isOwner;
 
         public void setIsFollow(boolean value){
             this.isFollow = value;
@@ -60,6 +67,10 @@ public class FeedDTO {
 
         public void setIsFlag(boolean value){
             this.isFlag = value;
+        }
+
+        public void setOwner(boolean value){
+            this.isOwner = value;
         }
     }
 
