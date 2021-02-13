@@ -29,7 +29,7 @@ public class Feed {
 
     private boolean pin;
 
-    @OneToMany(mappedBy = "feed", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "feed", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private Set<FeedMedium> media = new HashSet<>();
 
@@ -42,7 +42,7 @@ public class Feed {
     private Club club;
 
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "feed")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "feed", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private Set<FeedFlag> feedFlags = new HashSet<>();
 
