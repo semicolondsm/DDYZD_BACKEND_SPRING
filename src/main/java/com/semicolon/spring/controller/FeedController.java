@@ -48,4 +48,10 @@ public class FeedController {
     public FeedDTO.getFeed getFeed(@PathVariable("feed_id") int feed_id){
         return feedService.getFeed(feed_id);
     }
+
+    @DeleteMapping("/feed/{feed_id}")
+    public FeedDTO.messageResponse deleteFeed(@PathVariable("feed_id") int feed_id){
+        return feedService.deleteFeed(feed_id);
+    }
+
 }
