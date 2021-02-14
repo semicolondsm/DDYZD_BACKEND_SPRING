@@ -77,6 +77,9 @@ public class FeedServiceImpl implements FeedService{
         if(request.isPin()&&!isClubHead(club_id)){
             throw new NoAuthorityException();
         }
+        if(request.isPin()&&feedRepository.findByClubAndPinIsTrue(clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new)).size()>=1){
+            throw new BadRequestException();
+        }
         log.info("writeFeed club_id : " + club_id);
         return new FeedDTO.writeFeedResponse("feed writing success",
                 feedRepository.save(
