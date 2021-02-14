@@ -106,7 +106,7 @@ public class FeedServiceImpl implements FeedService{
         if(request.isPin()&&!isClubHead(club.getClubId())){
             throw new NoAuthorityException();
         }
-        if(feedRepository.findByClubAndPinIsTrue(club).size()>=1){
+        if(request.isPin()&&feedRepository.findByClubAndPinIsTrue(club).size()>=1){
             throw new BadRequestException();
         }
         feedRepository.findById(feedId)
@@ -180,7 +180,7 @@ public class FeedServiceImpl implements FeedService{
         if(!isClubHead(feed.getClub().getClubId())){
             throw new NoAuthorityException();
         }
-        if(feedRepository.findByClubAndPinIsTrue(feed.getClub()).size()>=1){
+        if(!feed.isPin()&&feedRepository.findByClubAndPinIsTrue(feed.getClub()).size()>=1){
             throw new BadRequestException();
         }
 
