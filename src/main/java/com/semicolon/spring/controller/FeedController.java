@@ -54,4 +54,9 @@ public class FeedController {
         return feedService.deleteFeed(feed_id);
     }
 
+    @PutMapping("/feed/{feed_id}/pin")
+    public FeedDTO.messageResponse feedPin(@PathVariable("feed_id") int feedId){
+        return feedService.feedPin(feedId);
+    }
+
 }
