@@ -100,10 +100,14 @@ public class FeedServiceImpl implements FeedService{
 
     @Override
     public FeedDTO.messageResponse feedModify(FeedDTO.feed request, int feedId) { // feed를 쓴 클럽인지 확인절차 추가.
-        if(isNotClubMember(feedRepository.findById(feedId).orElseThrow(FeedNotFoundException::new).getClub().getClubId()))
+        Club club = feedRepository.findById(feedId).orElseThrow(FeedNotFoundException::new).getClub();
+        if(isNotClubMember(club.getClubId()))
             throw new NotClubMemberException();
-        if(request.isPin()&&!isClubHead(feedRepository.findById(feedId).orElseThrow(FeedNotFoundException::new).getClub().getClubId())){
+        if(request.isPin()&&!isClubHead(club.getClubId())){
             throw new NoAuthorityException();
+        }
+        if(feedRepository.findByClubAndPinIsTrue(club).size()>=1){
+            throw new BadRequestException();
         }
         feedRepository.findById(feedId)
                 .map(feed -> {
@@ -175,6 +179,9 @@ public class FeedServiceImpl implements FeedService{
 
         if(!isClubHead(feed.getClub().getClubId())){
             throw new NoAuthorityException();
+        }
+        if(feedRepository.findByClubAndPinIsTrue(feed.getClub()).size()>=1){
+            throw new BadRequestException();
         }
 
         feed.changePin();
