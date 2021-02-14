@@ -169,6 +169,21 @@ public class FeedServiceImpl implements FeedService{
         return new FeedDTO.messageResponse("Feed delete success.");
     }
 
+    @Override
+    public FeedDTO.messageResponse feedPin(int feedId) {
+        Feed feed = feedRepository.findById(feedId).orElseThrow(FeedNotFoundException::new);
+
+        if(!isClubHead(feed.getClub().getClubId())){
+            throw new NoAuthorityException();
+        }
+
+        feed.changePin();
+        feedRepository.save(feed);
+        log.info("feed pin change success feedId : " + feedId);
+
+        return new FeedDTO.messageResponse("feed pin change success");
+    }
+
     private boolean isFlag(User user, Feed feed){
         if(user!=null)
             return feedFlagRepository.findByUserAndFeed(user, feed).isPresent();
