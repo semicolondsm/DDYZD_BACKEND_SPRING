@@ -5,6 +5,7 @@ import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.club.ClubRepository;
 import com.semicolon.spring.entity.club.application.ApplicationRepository;
 import com.semicolon.spring.entity.club.club_follow.ClubFollowRepository;
+import com.semicolon.spring.entity.club.club_head.ClubHead;
 import com.semicolon.spring.entity.club.club_head.ClubHeadRepository;
 import com.semicolon.spring.entity.feed.Feed;
 import com.semicolon.spring.entity.feed.FeedRepository;
@@ -73,6 +74,9 @@ public class FeedServiceImpl implements FeedService{
     public FeedDTO.writeFeedResponse writeFeed(FeedDTO.feed request, int club_id) {
         if(isNotClubMember(club_id))
             throw new NotClubMemberException();
+        if(request.isPin()&&!isClubHead(club_id)){
+            throw new NoAuthorityException();
+        }
         log.info("writeFeed club_id : " + club_id);
         return new FeedDTO.writeFeedResponse("feed writing success",
                 feedRepository.save(
@@ -82,7 +86,7 @@ public class FeedServiceImpl implements FeedService{
                         .club(clubRepository.findByClubId(club_id))
                         .build()
                 ).getId());
-        }
+    }
 
     @Override
     public List<FeedDTO.getFeed> getFeedList(int page) {
@@ -98,6 +102,9 @@ public class FeedServiceImpl implements FeedService{
     public FeedDTO.messageResponse feedModify(FeedDTO.feed request, int feedId) { // feed를 쓴 클럽인지 확인절차 추가.
         if(isNotClubMember(feedRepository.findById(feedId).orElseThrow(FeedNotFoundException::new).getClub().getClubId()))
             throw new NotClubMemberException();
+        if(request.isPin()&&!isClubHead(feedRepository.findById(feedId).orElseThrow(FeedNotFoundException::new).getClub().getClubId())){
+            throw new NoAuthorityException();
+        }
         feedRepository.findById(feedId)
                 .map(feed -> {
                     feed.modify(request.getContent(), request.isPin());
@@ -247,5 +254,14 @@ public class FeedServiceImpl implements FeedService{
         if(club == null)
             throw new ClubNotFoundException();
         return applicationRepository.findByUserAndClub(user, club) == null && !user.getHead().contains(club.getClubHead());
+    }
+
+    private boolean isClubHead(int club_id){
+        User user = authenticationFacade.getUser();
+        Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
+        ClubHead clubHead = clubHeadRepository.findByClubAndUser(club, user);
+        if(clubHead == null)
+            throw new NotClubHeadException();
+        else return true;
     }
 }
