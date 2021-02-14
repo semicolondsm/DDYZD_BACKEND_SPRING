@@ -51,4 +51,8 @@ public class Feed {
         this.pin = isPin;
     }
 
+    public void changePin(){
+        this.pin = !this.pin;
+    }
+
 }
