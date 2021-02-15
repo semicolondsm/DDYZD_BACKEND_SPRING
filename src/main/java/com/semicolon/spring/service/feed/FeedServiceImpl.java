@@ -184,7 +184,11 @@ public class FeedServiceImpl implements FeedService{
             throw new NoAuthorityException();
         }
         if(!feed.isPin()&&feedRepository.findByClubAndPinIsTrue(feed.getClub()).size()>=1){
-            throw new BadRequestException();
+            List<Feed> feedList = feedRepository.findByClubAndPinIsTrue(feed.getClub());
+            for(Feed value : feedList){
+                value.changePin();
+                feedRepository.save(value);
+            }
         }
 
         feed.changePin();
