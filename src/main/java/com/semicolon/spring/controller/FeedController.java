@@ -24,7 +24,7 @@ public class FeedController {
         return feedService.writeFeed(request, club_id);
     }
 
-    @GetMapping("feed/list")
+    @GetMapping("/feed/list")
     public List<FeedDTO.getFeed> getFeedList(@RequestParam("page") int page){
         return feedService.getFeedList(page);
     }
