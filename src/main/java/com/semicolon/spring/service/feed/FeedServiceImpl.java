@@ -55,8 +55,7 @@ public class FeedServiceImpl implements FeedService{
         try{
             Random random = new Random(System.currentTimeMillis());
             for(MultipartFile file : files){
-                log.info(file.getOriginalFilename());
-                if(file.getOriginalFilename()==null)
+                if(file.getOriginalFilename()==null||file.getOriginalFilename().length()==0)
                     throw new FileNotFoundException();
                 int index = file.getOriginalFilename().lastIndexOf(".");
                 String extension = file.getOriginalFilename().substring(index + 1);
