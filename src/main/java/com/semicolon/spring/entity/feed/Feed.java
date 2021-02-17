@@ -46,9 +46,8 @@ public class Feed {
     @JsonManagedReference
     private Set<FeedFlag> feedFlags = new HashSet<>();
 
-    public void modify(String contents, boolean isPin){
+    public void modify(String contents){
         this.contents = contents;
-        this.pin = isPin;
     }
 
     public void changePin(){
