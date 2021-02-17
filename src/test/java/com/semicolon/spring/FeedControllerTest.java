@@ -1,4 +1,4 @@
-package com.semicolon.spring.feed;
+package com.semicolon.spring;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.semicolon.spring.dto.FeedDTO;
@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
-@SpringBootTest(properties = {"spring.config.location=classpath:application-test.properties"})
+@SpringBootTest
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
