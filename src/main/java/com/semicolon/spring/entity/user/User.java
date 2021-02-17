@@ -40,7 +40,7 @@ public class User {
     @Length(max = 4096)
     private String device_token;
 
-    private String description;
+    private String bio;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     @JsonManagedReference
