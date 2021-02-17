@@ -49,7 +49,6 @@ public class Club {
     @Column(nullable = false)
     private String hongbo_image;
 
-    @ColumnDefault("")
     private String description;
 
     @OneToMany(mappedBy = "club", fetch = FetchType.EAGER)
