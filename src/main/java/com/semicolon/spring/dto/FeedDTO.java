@@ -79,8 +79,6 @@ public class FeedDTO {
     @Getter
     public static class feed{
         private String content;
-        @JsonProperty
-        private boolean isPin;
     }
 
     @AllArgsConstructor
