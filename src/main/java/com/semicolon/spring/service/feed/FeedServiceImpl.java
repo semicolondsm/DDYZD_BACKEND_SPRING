@@ -55,6 +55,15 @@ public class FeedServiceImpl implements FeedService{
         try{
             Random random = new Random(System.currentTimeMillis());
             for(MultipartFile file : files){
+                if(file.getOriginalFilename()==null)
+                    throw new FileNotFoundException();
+                int index = file.getOriginalFilename().lastIndexOf(".");
+                String extension = file.getOriginalFilename().substring(index + 1);
+
+                if(!(extension.contains("jpg")||extension.contains("HEIC")||extension.contains("jpeg"))){
+                    throw new BadFileExtensionException();
+                }
+
                 String fileString = random.nextInt() + file.getOriginalFilename();
                 file.transferTo(new File(PATH + fileString));
                 feedRepository.findById(feedId)
