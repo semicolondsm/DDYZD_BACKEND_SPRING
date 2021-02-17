@@ -49,19 +49,21 @@ public class FeedServiceImpl implements FeedService{
     //Security Context에서 가져오는 User정보가 null이 아니라면 is follow와 isflag를 return한다. 만약 User정보가 null이라면 둘 다 false를 return한다.
 
     @Override
-    public FeedDTO.messageResponse fileUpload(MultipartFile file, int feedId) { // feed가 자기 클럽이 쓴것인지 확인.
+    public FeedDTO.messageResponse fileUpload(MultipartFile[] files, int feedId) { // feed가 자기 클럽이 쓴것인지 확인.
         if(isNotClubMember(feedRepository.findById(feedId).orElseThrow(FeedNotFoundException::new).getClub().getClubId()))
             throw new NotClubMemberException();
         try{
             Random random = new Random(System.currentTimeMillis());
-            String fileString = random.nextInt() + file.getOriginalFilename();
-            file.transferTo(new File(PATH + fileString));
-            feedRepository.findById(feedId)
-                    .map(feed-> feedMediumRepository.save(FeedMedium.builder()
-                            .feed(feed)
-                            .medium_path("feed/" + fileString)
-                            .build())
-                    );
+            for(MultipartFile file : files){
+                String fileString = random.nextInt() + file.getOriginalFilename();
+                file.transferTo(new File(PATH + fileString));
+                feedRepository.findById(feedId)
+                        .map(feed-> feedMediumRepository.save(FeedMedium.builder()
+                                .feed(feed)
+                                .medium_path("feed/" + fileString)
+                                .build())
+                        );
+            }
             log.info("fileUpload feed_id : " + feedId);
             return new FeedDTO.messageResponse("File upload success.");
         }catch (IOException e){
