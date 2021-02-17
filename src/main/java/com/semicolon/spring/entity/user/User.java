@@ -40,6 +40,8 @@ public class User {
     @Length(max = 4096)
     private String device_token;
 
+    private String description;
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     @JsonManagedReference
     private Set<ClubHead> head = new HashSet<>();
