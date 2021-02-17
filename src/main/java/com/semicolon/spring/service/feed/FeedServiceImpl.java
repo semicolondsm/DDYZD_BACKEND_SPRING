@@ -85,18 +85,11 @@ public class FeedServiceImpl implements FeedService{
     public FeedDTO.writeFeedResponse writeFeed(FeedDTO.feed request, int club_id) {
         if(isNotClubMember(club_id))
             throw new NotClubMemberException();
-        if(request.isPin()&&!isClubHead(club_id)){
-            throw new NoAuthorityException();
-        }
-        if(request.isPin()&&feedRepository.findByClubAndPinIsTrue(clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new)).size()>=1){
-            throw new BadRequestException();
-        }
         log.info("writeFeed club_id : " + club_id);
         return new FeedDTO.writeFeedResponse("feed writing success",
                 feedRepository.save(
                     Feed.builder()
                         .contents(request.getContent())
-                        .pin(request.isPin())
                         .club(clubRepository.findByClubId(club_id))
                         .build()
                 ).getId());
@@ -117,15 +110,9 @@ public class FeedServiceImpl implements FeedService{
         Club club = feedRepository.findById(feedId).orElseThrow(FeedNotFoundException::new).getClub();
         if(isNotClubMember(club.getClubId()))
             throw new NotClubMemberException();
-        if(request.isPin()&&!isClubHead(club.getClubId())){
-            throw new NoAuthorityException();
-        }
-        if(request.isPin()&&feedRepository.findByClubAndPinIsTrue(club).size()>=1){
-            throw new BadRequestException();
-        }
         feedRepository.findById(feedId)
                 .map(feed -> {
-                    feed.modify(request.getContent(), request.isPin());
+                    feed.modify(request.getContent());
                     feedRepository.save(feed);
                     return feed;
                 }).orElseThrow(FeedNotFoundException::new);
