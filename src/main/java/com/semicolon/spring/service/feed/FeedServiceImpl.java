@@ -60,7 +60,7 @@ public class FeedServiceImpl implements FeedService{
                 int index = file.getOriginalFilename().lastIndexOf(".");
                 String extension = file.getOriginalFilename().substring(index + 1);
 
-                if(!(extension.contains("jpg")||extension.contains("HEIC")||extension.contains("jpeg"))){
+                if(!(extension.contains("jpg")||extension.contains("HEIC")||extension.contains("jpeg")||extension.contains("png"))){
                     throw new BadFileExtensionException();
                 }
 
