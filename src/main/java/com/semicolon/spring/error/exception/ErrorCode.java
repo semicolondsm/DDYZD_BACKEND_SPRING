@@ -26,7 +26,10 @@ public enum ErrorCode {
     //File
     FILE_SAVE_FAIL(400, "File Save Fail."),
     FILE_NOT_FOUND(404, "File Not Fail."),
-    BAD_FILE_EXTENSION(400, "Bad File Extension");
+    BAD_FILE_EXTENSION(400, "Bad File Extension"),
+
+    //Club
+    BAD_RECRUITMENT_TIME(400, "Bad Recruitment Time.");
 
     private final int status;
     private final String message;
