@@ -9,6 +9,7 @@ import com.semicolon.spring.entity.club.major.Major;
 import com.semicolon.spring.entity.club.major.MajorRepository;
 import com.semicolon.spring.entity.user.User;
 import com.semicolon.spring.entity.user.UserRepository;
+import com.semicolon.spring.exception.BadRecruitmentTimeException;
 import com.semicolon.spring.exception.ClubNotFoundException;
 import com.semicolon.spring.exception.FileSaveFailException;
 import com.semicolon.spring.exception.NotClubHeadException;
@@ -21,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Random;
 
 @Service
@@ -50,7 +52,11 @@ public class ClubHeadServiceImpl implements ClubHeadService{
                     .build()
             );
         }
+        if(request.getCloseAt().before(new Date())){
+            throw new BadRecruitmentTimeException();
+        }
         club.setStart_at();
+
         club.setClose_at(request.getCloseAt());
         clubRepository.save(club);
         log.info("make recruitment club_id : " + club_id);
