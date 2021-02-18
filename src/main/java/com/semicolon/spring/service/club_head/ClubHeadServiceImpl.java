@@ -23,7 +23,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -43,8 +45,12 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         if(!isClubHead(club_id)){
             throw new NotClubHeadException();
         }
+        if(request.getCloseAt().before(new Date())){
+            throw new BadRecruitmentTimeException();
+        }
         Club club = clubRepository.findByClubId(club_id);
-        for(String major : request.getMajor()){
+        Set<String> majorList = new HashSet<>(request.getMajor());
+        for(String major : majorList){
             majorRepository.save(
                     Major.builder()
                             .club(club)
@@ -52,9 +58,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
                     .build()
             );
         }
-        if(request.getCloseAt().before(new Date())){
-            throw new BadRecruitmentTimeException();
-        }
+
         club.setStart_at();
 
         club.setClose_at(request.getCloseAt());
