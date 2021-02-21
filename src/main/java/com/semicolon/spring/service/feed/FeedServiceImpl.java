@@ -72,6 +72,7 @@ public class FeedServiceImpl implements FeedService{
                                 .medium_path("feed/" + fileString)
                                 .build())
                         );
+                log.info("file_name : " + fileString + ", feed_id : " + feedId);
             }
             log.info("fileUpload feed_id : " + feedId);
             return new FeedDTO.messageResponse("File upload success.");
@@ -280,6 +281,7 @@ public class FeedServiceImpl implements FeedService{
             throw new UserNotFoundException();
         if(club == null)
             throw new ClubNotFoundException();
+        log.info("isNotClubMember user_name : " + user.getName());
         return applicationRepository.findByUserAndClub(user, club) == null && !user.getHead().contains(club.getClubHead());
     }
 
