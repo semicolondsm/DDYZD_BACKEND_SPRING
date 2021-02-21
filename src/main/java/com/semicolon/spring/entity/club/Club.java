@@ -55,7 +55,7 @@ public class Club {
     @JsonManagedReference
     private Set<Feed> feeds = new HashSet<>();
 
-    @OneToOne(mappedBy = "club")
+    @OneToOne(mappedBy = "club", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private ClubHead clubHead;
 
