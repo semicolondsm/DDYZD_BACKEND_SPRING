@@ -50,6 +50,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         }
         Club club = clubRepository.findByClubId(club_id);
         majorRepository.deleteByClub(club);
+        club.setMajors();
         Set<String> majorList = new HashSet<>(request.getMajor());
         for(String major : majorList){
             majorRepository.save(
