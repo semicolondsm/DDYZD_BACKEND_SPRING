@@ -49,6 +49,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
             throw new BadRecruitmentTimeException();
         }
         Club club = clubRepository.findByClubId(club_id);
+        majorRepository.deleteAllByClub(club);
         Set<String> majorList = new HashSet<>(request.getMajor());
         for(String major : majorList){
             majorRepository.save(
