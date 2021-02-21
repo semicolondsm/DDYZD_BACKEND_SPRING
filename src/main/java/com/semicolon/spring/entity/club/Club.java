@@ -99,5 +99,9 @@ public class Club {
         this.description = description;
     }
 
+    public void setMajors(){
+        this.majors = new HashSet<>();
+    }
+
 }
 
