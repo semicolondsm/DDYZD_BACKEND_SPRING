@@ -9,5 +9,5 @@ import javax.transaction.Transactional;
 @Repository
 public interface MajorRepository extends CrudRepository<Major, Integer> {
     @Transactional
-    void deleteAllByClub(Club club);
+    void deleteByClub(Club club);
 }
