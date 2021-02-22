@@ -53,7 +53,6 @@ public class FeedServiceImpl implements FeedService{
         if(isNotClubMember(feedRepository.findById(feedId).orElseThrow(FeedNotFoundException::new).getClub().getClubId()))
             throw new NotClubMemberException();
         try{
-            Random random = new Random(System.currentTimeMillis());
             for(MultipartFile file : files){
                 if(file.getOriginalFilename()==null||file.getOriginalFilename().length()==0)
                     throw new FileNotFoundException();
