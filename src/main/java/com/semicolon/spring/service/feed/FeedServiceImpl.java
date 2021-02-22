@@ -64,7 +64,7 @@ public class FeedServiceImpl implements FeedService{
                     throw new BadFileExtensionException();
                 }
 
-                String fileString = random.nextInt() + file.getOriginalFilename();
+                String fileString = UUID.randomUUID().toString()+"."+extension;
                 file.transferTo(new File(PATH + fileString));
                 feedRepository.findById(feedId)
                         .map(feed-> feedMediumRepository.save(FeedMedium.builder()
