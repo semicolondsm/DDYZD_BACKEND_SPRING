@@ -55,7 +55,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         if(application == null)
             throw new ApplicationNotFoundException();
-        if(!application.isPass())
+        if(application.isPass())
             throw new AlreadyPassedUserException();
 
         applicationRepository.deleteByUserAndClub(user, club);
