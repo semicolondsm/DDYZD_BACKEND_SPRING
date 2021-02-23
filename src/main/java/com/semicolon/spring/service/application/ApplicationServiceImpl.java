@@ -14,8 +14,6 @@ import com.semicolon.spring.security.AuthenticationFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 public class ApplicationServiceImpl implements ApplicationService {
@@ -29,7 +27,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     @Override
     public ApplicationDTO.MessageResponse cancelApplication(int club_id) {
-        User user = getUserId();
+        User user = getUser();
         Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
 
         Application application = applicationRepository.findByUserAndClub(user, club);
@@ -69,8 +67,13 @@ public class ApplicationServiceImpl implements ApplicationService {
             throw new NotClubHeadException();
         }
 
+
         User user = userRepository.findById(user_id).orElseThrow(UserNotFoundException::new);
         Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
+
+        if(user.getUser_id().equals(getUser().getUser_id())){
+            throw new DontKickYourSelfException();
+        }
 
         Application application = applicationRepository.findByUserAndClub(user, club);
 
@@ -83,7 +86,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
 
-    private User getUserId(){
+    private User getUser(){
         return authenticationFacade.getUser();
     }
 
