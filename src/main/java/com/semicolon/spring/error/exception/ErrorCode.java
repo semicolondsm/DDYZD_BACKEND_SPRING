@@ -29,7 +29,10 @@ public enum ErrorCode {
     BAD_FILE_EXTENSION(400, "Bad File Extension"),
 
     //Club
-    BAD_RECRUITMENT_TIME(400, "Bad Recruitment Time.");
+    BAD_RECRUITMENT_TIME(400, "Bad Recruitment Time."),
+
+    //Erp
+    BAD_SUPPLY_LINK(400, "Bad Supply Link");
 
     private final int status;
     private final String message;
