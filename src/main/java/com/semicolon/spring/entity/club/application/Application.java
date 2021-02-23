@@ -28,4 +28,12 @@ public class Application {
     @JoinColumn(name = "user_id")
     @JsonBackReference
     private User user;
+
+    public boolean isPass(){
+        return this.result;
+    }
+
+    public int getId(){
+        return this.application_id;
+    }
 }
