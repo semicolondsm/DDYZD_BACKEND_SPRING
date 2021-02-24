@@ -179,7 +179,7 @@ public class FeedServiceImpl implements FeedService{
         Feed feed = feedRepository.findById(feedId).orElseThrow(FeedNotFoundException::new);
 
         if(!isClubHead(feed.getClub().getClubId())){
-            throw new NoAuthorityException();
+            throw new NotClubHeadException();
         }
         if(!feed.isPin()&&feedRepository.findByClubAndPinIsTrue(feed.getClub()).size()>=1){
             List<Feed> feedList = feedRepository.findByClubAndPinIsTrue(feed.getClub());
