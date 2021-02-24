@@ -14,7 +14,6 @@ public enum ErrorCode {
     INTERNAL_SERVER_ERROR(500, "Internal Server Error."),
 
     //Auth
-    NO_AUTHORITY(403, "No Authority."),
     INVALID_TOKEN(401, "Invalid Token."),
 
     //Main
