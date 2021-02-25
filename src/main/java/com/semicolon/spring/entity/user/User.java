@@ -5,6 +5,7 @@ import com.semicolon.spring.entity.club.application.Application;
 import com.semicolon.spring.entity.club.club_follow.ClubFollow;
 import com.semicolon.spring.entity.club.club_head.ClubHead;
 import com.semicolon.spring.entity.feed.feed_flag.FeedFlag;
+import com.sun.istack.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,6 +42,8 @@ public class User {
     private String device_token;
 
     private String bio;
+
+    private String session_id;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     @JsonManagedReference
