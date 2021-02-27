@@ -27,10 +27,12 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.4.1'
     compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
     implementation group: 'org.jsoup', name: 'jsoup', version: '1.13.1'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     compile group: 'org.hibernate', name: 'hibernate-validator', version: '7.0.0.Final'
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.2'
 
+    implementation group: 'com.google.firebase', name: 'firebase-admin', version: '7.1.0'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'com.h2database:h2'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
