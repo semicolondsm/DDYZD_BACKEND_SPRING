@@ -3,8 +3,8 @@ package com.semicolon.spring.service.application;
 import com.semicolon.spring.dto.ApplicationDTO;
 import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.club.ClubRepository;
-import com.semicolon.spring.entity.club.application.Application;
-import com.semicolon.spring.entity.club.application.ApplicationRepository;
+import com.semicolon.spring.entity.club.club_member.ClubMember;
+import com.semicolon.spring.entity.club.club_member.ClubMemberRepository;
 import com.semicolon.spring.entity.club.club_head.ClubHead;
 import com.semicolon.spring.entity.club.club_head.ClubHeadRepository;
 import com.semicolon.spring.entity.user.User;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 public class ApplicationServiceImpl implements ApplicationService {
 
     private final AuthenticationFacade authenticationFacade;
-    private final ApplicationRepository applicationRepository;
+    private final ClubMemberRepository applicationRepository;
     private final ClubRepository clubRepository;
     private final ClubHeadRepository clubHeadRepository;
     private final UserRepository userRepository;
@@ -30,7 +30,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         User user = getUser();
         Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
 
-        Application application = applicationRepository.findByUserAndClub(user, club);
+        ClubMember application = applicationRepository.findByUserAndClub(user, club);
 
         if(application == null)
             throw new ApplicationNotFoundException();
@@ -49,12 +49,10 @@ public class ApplicationServiceImpl implements ApplicationService {
         User user = userRepository.findById(user_id).orElseThrow(UserNotFoundException::new);
         Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
 
-        Application application = applicationRepository.findByUserAndClub(user, club);
+        ClubMember application = applicationRepository.findByUserAndClub(user, club);
 
         if(application == null)
             throw new ApplicationNotFoundException();
-        if(application.isPass())
-            throw new AlreadyPassedUserException();
 
         applicationRepository.deleteByUserAndClub(user, club);
 
@@ -67,15 +65,14 @@ public class ApplicationServiceImpl implements ApplicationService {
             throw new NotClubHeadException();
         }
 
-
         User user = userRepository.findById(user_id).orElseThrow(UserNotFoundException::new);
         Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
 
-        if(user.getUser_id().equals(getUser().getUser_id())){
+        if(user.getId().equals(getUser().getId())){
             throw new DontKickYourSelfException();
         }
 
-        Application application = applicationRepository.findByUserAndClub(user, club);
+        ClubMember application = applicationRepository.findByUserAndClub(user, club);
 
         if(application == null)
             throw new ApplicationNotFoundException();
