@@ -3,7 +3,7 @@ package com.semicolon.spring.service.feed;
 import com.semicolon.spring.dto.FeedDTO;
 import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.club.ClubRepository;
-import com.semicolon.spring.entity.club.application.ApplicationRepository;
+import com.semicolon.spring.entity.club.club_member.ClubMemberRepository;
 import com.semicolon.spring.entity.club.club_follow.ClubFollowRepository;
 import com.semicolon.spring.entity.club.club_head.ClubHead;
 import com.semicolon.spring.entity.club.club_head.ClubHeadRepository;
@@ -37,7 +37,7 @@ public class FeedServiceImpl implements FeedService{
     private final FeedRepository feedRepository;
     private final FeedMediumRepository feedMediumRepository;
     private final ClubRepository clubRepository;
-    private final ApplicationRepository applicationRepository;
+    private final ClubMemberRepository clubMemberRepository;
     private final FeedFlagRepository feedFlagRepository;
     private final ClubFollowRepository clubFollowRepository;
     private final ClubHeadRepository clubHeadRepository;
@@ -126,7 +126,7 @@ public class FeedServiceImpl implements FeedService{
         Feed feed = feedRepository.findById(feedId).orElseThrow(FeedNotFoundException::new);
         if(isFlag(user, feed)){
             feedFlagRepository.delete(feedFlagRepository.findByUserAndFeed(user, feed).orElseThrow(BadRequestException::new));
-            log.info("Remove Feed Flag user_id : " + user.getUser_id());
+            log.info("Remove Feed Flag user_id : " + user.getId());
             return new FeedDTO.messageResponse("Remove Feed Flag Success");
         }else{
             feedFlagRepository.save(
@@ -135,7 +135,7 @@ public class FeedServiceImpl implements FeedService{
                     .feed(feed)
                     .build()
             );
-            log.info("Add Feed Flag user_id : " + user.getUser_id());
+            log.info("Add Feed Flag user_id : " + user.getId());
             return new FeedDTO.messageResponse("Add Feed Flag Success");
         }
 
@@ -148,7 +148,7 @@ public class FeedServiceImpl implements FeedService{
                 .map(feed -> {
                     FeedDTO.getFeed getFeed = FeedDTO.getFeed.builder()
                             .feedId(feed.getId())
-                            .clubName(feed.getClub().getClub_name())
+                            .clubName(feed.getClub().getName())
                             .profileImage(feed.getClub().getProfile_image())
                             .content(feed.getContents())
                             .media(getMediaPath(feed.getMedia()))
@@ -208,7 +208,7 @@ public class FeedServiceImpl implements FeedService{
         for(Feed feed : feeds){
             FeedDTO.getFeed getFeed = FeedDTO.getFeed.builder()
                     .feedId(feed.getId())
-                    .clubName(feed.getClub().getClub_name())
+                    .clubName(feed.getClub().getName())
                     .profileImage(feed.getClub().getProfile_image())
                     .content(feed.getContents())
                     .media(getMediaPath(feed.getMedia()))
@@ -233,7 +233,7 @@ public class FeedServiceImpl implements FeedService{
         for(Feed feed : feeds){
             FeedDTO.getFeedClub getFeedClub = FeedDTO.getFeedClub.builder()
                     .feedId(feed.getId())
-                    .clubName(feed.getClub().getClub_name())
+                    .clubName(feed.getClub().getName())
                     .profileImage(feed.getClub().getProfile_image())
                     .content(feed.getContents())
                     .media(getMediaPath(feed.getMedia()))
@@ -281,7 +281,7 @@ public class FeedServiceImpl implements FeedService{
         if(club == null)
             throw new ClubNotFoundException();
         log.info("isNotClubMember user_name : " + user.getName());
-        return applicationRepository.findByUserAndClub(user, club) == null && !user.getHead().contains(club.getClubHead());
+        return clubMemberRepository.findByUserAndClub(user, club) == null && !user.getHead().contains(club.getClubHead());
     }
 
     private boolean isClubHead(int club_id){
