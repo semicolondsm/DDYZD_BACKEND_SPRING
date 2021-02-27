@@ -16,7 +16,7 @@ import javax.persistence.*;
 @Getter
 public class FeedFlag {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer flag_id;
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "feed_id")
