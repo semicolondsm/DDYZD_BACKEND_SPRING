@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 
 @Entity(name = "club_follow")
 @AllArgsConstructor
