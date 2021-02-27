@@ -1,16 +1,16 @@
 package com.semicolon.spring.entity.club;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.semicolon.spring.entity.club.application.Application;
+import com.semicolon.spring.entity.club.club_member.ClubMember;
 import com.semicolon.spring.entity.club.club_follow.ClubFollow;
 import com.semicolon.spring.entity.club.club_head.ClubHead;
 import com.semicolon.spring.entity.club.major.Major;
+import com.semicolon.spring.entity.club.room.Room;
 import com.semicolon.spring.entity.feed.Feed;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -25,10 +25,11 @@ import java.util.Set;
 public class Club {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer clubId;
 
     @Column(nullable = false, length = 45)
-    private String club_name;
+    private String name;
 
     @Column(nullable = false)
     private int total_budget;
@@ -65,11 +66,15 @@ public class Club {
 
     @OneToMany(mappedBy = "club", fetch = FetchType.EAGER)
     @JsonManagedReference
-    private Set<Application> applications = new HashSet<>();
+    private Set<ClubMember> clubMembers = new HashSet<>();
 
     @OneToMany(mappedBy = "club", fetch = FetchType.EAGER)
     @JsonManagedReference
     private Set<ClubFollow> follows = new HashSet<>();
+
+    @OneToMany(mappedBy = "club", fetch = FetchType.EAGER)
+    @JsonManagedReference
+    private Set<Room> rooms = new HashSet<>();
 
     public void setClose_at(Date close_at){
         this.close_at = close_at;
@@ -88,7 +93,7 @@ public class Club {
     }
 
     public void setClub_name(String name){
-        this.club_name = name;
+        this.name = name;
     }
 
     public void setStart_at(){
