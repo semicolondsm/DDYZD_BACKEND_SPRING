@@ -1,11 +1,11 @@
 package com.semicolon.spring.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.semicolon.spring.entity.club.application.Application;
+import com.semicolon.spring.entity.club.club_member.ClubMember;
 import com.semicolon.spring.entity.club.club_follow.ClubFollow;
 import com.semicolon.spring.entity.club.club_head.ClubHead;
+import com.semicolon.spring.entity.club.room.Room;
 import com.semicolon.spring.entity.feed.feed_flag.FeedFlag;
-import com.sun.istack.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,7 +23,7 @@ import java.util.Set;
 @Builder
 public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer user_id;
+    private Integer id;
 
     @Column(length = 15)
     private String name;
@@ -55,9 +55,14 @@ public class User {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     @JsonManagedReference
-    private Set<Application> applications = new HashSet<>();
+    private Set<ClubMember> clubMembers = new HashSet<>();
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
     @JsonManagedReference
     private Set<ClubFollow> follows = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @JsonManagedReference
+    private Set<Room> rooms = new HashSet<>();
+
 }
