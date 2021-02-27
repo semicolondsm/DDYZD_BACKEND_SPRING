@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Builder
 public class ClubMember {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer application_id;
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
@@ -28,6 +28,6 @@ public class ClubMember {
     private User user;
 
     public int getId(){
-        return this.application_id;
+        return this.id;
     }
 }
