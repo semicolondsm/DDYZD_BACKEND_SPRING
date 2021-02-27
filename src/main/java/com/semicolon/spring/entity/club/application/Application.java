@@ -9,15 +9,13 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity(name = "application")
+@Entity(name = "club_member")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class Application {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer application_id;
-
-    private boolean result;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
