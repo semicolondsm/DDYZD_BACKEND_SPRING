@@ -1,4 +1,4 @@
-package com.semicolon.spring.entity.club.application;
+package com.semicolon.spring.entity.club.club_member;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.semicolon.spring.entity.club.Club;
@@ -13,7 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Application {
+public class ClubMember {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer application_id;
 
@@ -26,10 +26,6 @@ public class Application {
     @JoinColumn(name = "user_id")
     @JsonBackReference
     private User user;
-
-    public boolean isPass(){
-        return this.result;
-    }
 
     public int getId(){
         return this.application_id;
