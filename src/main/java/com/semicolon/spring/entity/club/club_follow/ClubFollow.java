@@ -15,7 +15,7 @@ import javax.persistence.*;
 @Builder
 public class ClubFollow {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer follow_id;
+    private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "club_id")
