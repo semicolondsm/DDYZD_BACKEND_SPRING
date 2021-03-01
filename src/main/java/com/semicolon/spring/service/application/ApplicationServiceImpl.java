@@ -58,7 +58,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public HeadDTO.MessageResponse deportApplication(int club_id, int user_id) {
+    public HeadDTO.MessageResponse deportApplication(int club_id, int user_id) throws ExecutionException, InterruptedException {
         if(!isClubHead(club_id)){
             throw new NotClubHeadException();
         }
@@ -76,6 +76,15 @@ public class ApplicationServiceImpl implements ApplicationService {
             throw new ApplicationNotFoundException();
 
         clubMemberRepository.deleteByUserAndClub(user, club);
+
+        HeadDTO.FcmRequest request = HeadDTO.FcmRequest.builder()
+                .token(user.getDevice_token())
+                .title("대동여지도")
+                .message(user.getName() + "님이 " + application.getClub().getName() + "에서 추방당하셨습니다.")
+                .club(application.getClub().getClubId())
+                .build();
+
+        fcmService.send(request);
 
         return new HeadDTO.MessageResponse("Club Member Deport Success");
     }
@@ -101,6 +110,7 @@ public class ApplicationServiceImpl implements ApplicationService {
                     .token(user.getDevice_token())
                     .title("대동여지도")
                     .message(user.getName() + "님의 " + application.getClub().getName() + "동아리 신청이 취소되었습니다.")
+                    .club(application.getClub().getClubId())
                     .build();
             fcmService.send(request);
         }
