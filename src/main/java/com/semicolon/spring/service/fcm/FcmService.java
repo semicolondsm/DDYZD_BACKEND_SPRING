@@ -3,10 +3,7 @@ package com.semicolon.spring.service.fcm;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.Message;
-import com.google.firebase.messaging.WebpushConfig;
-import com.google.firebase.messaging.WebpushNotification;
+import com.google.firebase.messaging.*;
 import com.semicolon.spring.dto.HeadDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
@@ -39,14 +36,15 @@ public class FcmService {
     public void send(HeadDTO.FcmRequest request) throws ExecutionException, InterruptedException {
         Message message = Message.builder()
                 .setToken(request.getToken())
-                .setWebpushConfig(WebpushConfig.builder().putHeader("ttl", "300")
-                        .setNotification(new WebpushNotification(request.getTitle(),
-                                request.getMessage()))
+                .setNotification(Notification.builder() // setImage추가하기.
+                        .setTitle(request.getTitle())
+                        .setBody(request.getMessage())
                         .build()
-                ).build();
+                )
+                .build();
 
         String response = FirebaseMessaging.getInstance().sendAsync(message).get();
-        log.info("Sent Message");
+        log.info("Sent Message" + response);
     }
 
 }
