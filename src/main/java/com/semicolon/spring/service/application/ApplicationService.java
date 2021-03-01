@@ -7,5 +7,5 @@ import java.util.concurrent.ExecutionException;
 public interface ApplicationService {
     HeadDTO.MessageResponse cancelApplication(int club_id) throws ExecutionException, InterruptedException;
     HeadDTO.MessageResponse removeApplication(int club_id, int user_id) throws ExecutionException, InterruptedException;
-    HeadDTO.MessageResponse deportApplication(int club_id, int user_id);
+    HeadDTO.MessageResponse deportApplication(int club_id, int user_id) throws ExecutionException, InterruptedException;
 }
