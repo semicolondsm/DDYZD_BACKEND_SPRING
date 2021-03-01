@@ -22,6 +22,7 @@ public class HeadDTO {
         private String token;
         private String title;
         private String message;
+        private Integer club;
     }
 
 }
