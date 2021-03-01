@@ -100,7 +100,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             HeadDTO.FcmRequest request = HeadDTO.FcmRequest.builder()
                     .token(user.getDevice_token())
                     .title("대동여지도")
-                    .message(user.getName() + "님의 신청이 취소되었습니다.")
+                    .message(user.getName() + "님의 " + application.getClub().getName() + "동아리 신청이 취소되었습니다.")
                     .build();
             fcmService.send(request);
         }
