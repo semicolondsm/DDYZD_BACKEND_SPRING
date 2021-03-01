@@ -5,6 +5,7 @@ import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -12,6 +13,7 @@ import javax.persistence.*;
 @Entity(name = "club_member")
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 @Builder
 public class ClubMember {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +29,4 @@ public class ClubMember {
     @JsonBackReference
     private User user;
 
-    public int getId(){
-        return this.id;
-    }
 }
