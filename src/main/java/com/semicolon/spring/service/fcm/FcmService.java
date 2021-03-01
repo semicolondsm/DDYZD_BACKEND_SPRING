@@ -36,12 +36,20 @@ public class FcmService {
     public void send(HeadDTO.FcmRequest request) throws ExecutionException, InterruptedException {
         Message message = Message.builder()
                 .setToken(request.getToken())
+                .putData("club_id", request.getClub().toString())
                 .setNotification(Notification.builder() // setImage추가하기.
                         .setTitle(request.getTitle())
                         .setBody(request.getMessage())
                         .build()
                 )
+                .setApnsConfig(ApnsConfig.builder()
+                        .setAps(Aps.builder()
+                                .setSound("default")
+                                .build()
+                        ).build()
+                )
                 .build();
+
 
         String response = FirebaseMessaging.getInstance().sendAsync(message).get();
         log.info("Sent Message" + response);
