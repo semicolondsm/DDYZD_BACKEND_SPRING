@@ -20,7 +20,7 @@ import java.util.concurrent.ExecutionException;
 @Slf4j
 public class FcmService {
 
-    private static final String FIREBASE_CONFIG_PATH = "/root/ddyzd-firebase-adminsdk.json";
+    private static final String FIREBASE_CONFIG_PATH = "ddyzd-firebase-adminsdk.json";
 
     @PostConstruct
     public void initialize(){
