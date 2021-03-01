@@ -31,14 +31,4 @@ public class ApplicationController {
         return applicationService.deportApplication(club_id, user_id);
     }
 
-    @GetMapping("/test")
-    public void test() throws ExecutionException, InterruptedException {
-        fcmService.send(HeadDTO.FcmRequest.builder()
-                .token("c9gCLOJY1EATrHG1a_Gfux:APA91bFdHLmqwqfniOtctK6V4tEpaKkl2UkNTf-TM_FVgges6AYkSFXBiTviyoRY1UnNrpuRseJx2tfXmJl-MZW2HSHneujd8kFGsIji63ZcWJHefjX9JDtDsmjPNmmuFcRqchRNtmLx")
-                .title("semicolon;")
-                .message("테스트임니다 ㅎㅎ")
-                .build()
-        );
-    }
-
 }
