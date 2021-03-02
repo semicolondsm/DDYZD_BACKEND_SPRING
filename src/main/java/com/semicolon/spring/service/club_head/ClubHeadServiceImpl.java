@@ -1,8 +1,10 @@
 package com.semicolon.spring.service.club_head;
 
 import com.semicolon.spring.dto.ClubDTO;
+import com.semicolon.spring.dto.HeadDTO;
 import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.club.ClubRepository;
+import com.semicolon.spring.entity.club.club_follow.ClubFollow;
 import com.semicolon.spring.entity.club.club_head.ClubHead;
 import com.semicolon.spring.entity.club.club_head.ClubHeadRepository;
 import com.semicolon.spring.entity.club.major.Major;
@@ -14,6 +16,7 @@ import com.semicolon.spring.exception.ClubNotFoundException;
 import com.semicolon.spring.exception.FileSaveFailException;
 import com.semicolon.spring.exception.NotClubHeadException;
 import com.semicolon.spring.security.AuthenticationFacade;
+import com.semicolon.spring.service.fcm.FcmService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +29,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 @Service
 @RequiredArgsConstructor
@@ -35,13 +39,14 @@ public class ClubHeadServiceImpl implements ClubHeadService{
     private final ClubHeadRepository clubHeadRepository;
     private final MajorRepository majorRepository;
     private final UserRepository userRepository;
+    private final FcmService fcmService;
     private final AuthenticationFacade authenticationFacade;
 
     @Value("${file.club.path}")
     private String PATH;
 
     @Override
-    public ClubDTO.messageResponse recruitment(ClubDTO.recruitment request, int club_id) {
+    public ClubDTO.messageResponse recruitment(ClubDTO.recruitment request, int club_id) throws ExecutionException, InterruptedException {
         if(!isClubHead(club_id)){
             throw new NotClubHeadException();
         }
@@ -65,6 +70,21 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
         club.setClose_at(request.getCloseAt());
         clubRepository.save(club);
+
+        for(ClubFollow follow : club.getFollows()){
+            User follower = follow.getUser();
+
+            HeadDTO.FcmRequest fcmRequest = HeadDTO.FcmRequest.builder()
+                    .token(follower.getDevice_token())
+                    .title(club.getName())
+                    .message(follower.getName() + "님, 팔로우하신 " + club.getName() + "동아리의 모집이 시작되었습니다.")
+                    .club(club.getClubId())
+                    .build();
+
+            fcmService.send(fcmRequest);
+
+        }
+
         log.info("make recruitment club_id : " + club_id);
         return new ClubDTO.messageResponse("recruitment success");
     }
