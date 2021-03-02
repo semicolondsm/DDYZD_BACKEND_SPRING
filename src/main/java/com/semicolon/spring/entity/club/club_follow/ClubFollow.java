@@ -27,4 +27,9 @@ public class ClubFollow {
     @JoinColumn(name = "user_id")
     @JsonBackReference
     private User user;
+
+    public User getUser(){
+        return user;
+    }
+
 }
