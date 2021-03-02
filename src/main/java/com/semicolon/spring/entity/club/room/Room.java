@@ -27,8 +27,10 @@ public class Room {
     @JoinColumn(name = "club_id")
     private Club club;
 
+    @Column(columnDefinition = "TINYINT(1)")
     private boolean user_looked;
 
+    @Column(columnDefinition = "TINYINT(1)")
     private boolean club_looked;
 
     @Enumerated(EnumType.STRING)
