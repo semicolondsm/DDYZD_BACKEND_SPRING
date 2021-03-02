@@ -79,9 +79,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         HeadDTO.FcmRequest request = HeadDTO.FcmRequest.builder()
                 .token(user.getDevice_token())
-                .title("대동여지도")
-                .message(user.getName() + "님이 " + application.getClub().getName() + "에서 추방당하셨습니다.")
-                .club(application.getClub().getClubId())
+                .title(club.getName())
+                .message(user.getName() + "님이 " + club.getName() + "에서 추방당하셨습니다.")
+                .club(club.getClubId())
                 .build();
 
         fcmService.send(request);
@@ -108,9 +108,9 @@ public class ApplicationServiceImpl implements ApplicationService {
         if(user.getDevice_token()!=null){
             HeadDTO.FcmRequest request = HeadDTO.FcmRequest.builder()
                     .token(user.getDevice_token())
-                    .title("대동여지도")
-                    .message(user.getName() + "님의 " + application.getClub().getName() + "동아리 신청이 취소되었습니다.")
-                    .club(application.getClub().getClubId())
+                    .title(club.getName())
+                    .message(user.getName() + "님의 " + club.getName() + "동아리 신청이 취소되었습니다.")
+                    .club(club.getClubId())
                     .build();
             fcmService.send(request);
         }
