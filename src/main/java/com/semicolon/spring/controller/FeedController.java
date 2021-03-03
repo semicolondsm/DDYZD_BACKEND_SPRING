@@ -1,6 +1,7 @@
 package com.semicolon.spring.controller;
 
 import com.semicolon.spring.dto.FeedDTO;
+import com.semicolon.spring.exception.BadRequestException;
 import com.semicolon.spring.service.feed.FeedService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -26,11 +27,17 @@ public class FeedController {
 
     @GetMapping("/feed/list")
     public List<FeedDTO.getFeed> getFeedList(@RequestParam("page") int page){
+        if(page < 0){
+            throw new BadRequestException();
+        }
         return feedService.getFeedList(page);
     }
 
     @GetMapping("/feed/{club_id}/list")
     public List<FeedDTO.getFeedClub> getFeedClubList(@RequestParam("page") int page, @PathVariable("club_id") int club_id){
+        if(page < 0){
+            throw new BadRequestException();
+        }
         return feedService.getFeedClubList(page, club_id);
     }
 
