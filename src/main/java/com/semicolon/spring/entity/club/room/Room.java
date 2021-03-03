@@ -37,4 +37,8 @@ public class Room {
     @Column(columnDefinition = "varchar(2) default 'C'")
     private RoomStatus status;
 
+    public void setStatus(String value){
+        this.status = RoomStatus.valueOf(value);
+    }
+
 }
