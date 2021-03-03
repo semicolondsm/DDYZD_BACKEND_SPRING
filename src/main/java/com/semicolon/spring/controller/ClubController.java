@@ -47,4 +47,10 @@ public class ClubController {
     public ClubDTO.messageResponse description(@RequestBody ClubDTO.description request, @PathVariable("club_id") int club_id){
         return clubHeadService.clubDescription(request, club_id);
     }
+
+    @DeleteMapping("/club/{club_id}/recruitment")
+    public ClubDTO.messageResponse deleteRecruitment(@PathVariable("club_id") int club_id){
+        return clubHeadService.deleteRecruitment(club_id);
+    }
+
 }
