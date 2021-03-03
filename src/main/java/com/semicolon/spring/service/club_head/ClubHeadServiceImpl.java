@@ -238,6 +238,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
                             }
                         }
                     }
+                    club.setMajors();
 
                     return clubRepository.save(club);
                 }).orElseThrow(ClubNotFoundException::new);
