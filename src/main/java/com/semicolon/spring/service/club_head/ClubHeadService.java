@@ -13,4 +13,5 @@ public interface ClubHeadService {
     ClubDTO.messageResponse modifyClub(ClubDTO.modify request, int club_id);
     ClubDTO.messageResponse changeHead(ClubDTO.changeHead request, int club_id);
     ClubDTO.messageResponse clubDescription(ClubDTO.description request, int club_id);
+    ClubDTO.messageResponse deleteRecruitment(int club_id);
 }
