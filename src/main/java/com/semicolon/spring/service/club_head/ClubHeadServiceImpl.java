@@ -9,6 +9,8 @@ import com.semicolon.spring.entity.club.club_head.ClubHead;
 import com.semicolon.spring.entity.club.club_head.ClubHeadRepository;
 import com.semicolon.spring.entity.club.major.Major;
 import com.semicolon.spring.entity.club.major.MajorRepository;
+import com.semicolon.spring.entity.club.room.Room;
+import com.semicolon.spring.entity.club.room.RoomRepository;
 import com.semicolon.spring.entity.user.User;
 import com.semicolon.spring.entity.user.UserRepository;
 import com.semicolon.spring.exception.BadRecruitmentTimeException;
@@ -25,10 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 @Service
@@ -39,6 +38,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
     private final ClubHeadRepository clubHeadRepository;
     private final MajorRepository majorRepository;
     private final UserRepository userRepository;
+    private final RoomRepository roomRepository;
     private final FcmService fcmService;
     private final AuthenticationFacade authenticationFacade;
 
@@ -70,6 +70,12 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
         club.setClose_at(request.getCloseAt());
         clubRepository.save(club);
+
+        for(Room room : roomRepository.findByClub(club)){
+            room.setStatus("N");
+            
+            roomRepository.save(room);
+        }
 
         for(ClubFollow follow : club.getFollows()){
             User follower = follow.getUser();
