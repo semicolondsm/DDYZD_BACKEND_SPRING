@@ -11,6 +11,7 @@ import com.semicolon.spring.entity.club.major.Major;
 import com.semicolon.spring.entity.club.major.MajorRepository;
 import com.semicolon.spring.entity.club.room.Room;
 import com.semicolon.spring.entity.club.room.RoomRepository;
+import com.semicolon.spring.entity.club.room.RoomStatus;
 import com.semicolon.spring.entity.user.User;
 import com.semicolon.spring.entity.user.UserRepository;
 import com.semicolon.spring.exception.BadRecruitmentTimeException;
@@ -72,9 +73,10 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         clubRepository.save(club);
 
         for(Room room : roomRepository.findByClub(club)){
-            room.setStatus("N");
-            
-            roomRepository.save(room);
+            if(room.getStatus().equals(RoomStatus.C)){
+                room.setStatus("N");
+                roomRepository.save(room);
+            }
         }
 
         for(ClubFollow follow : club.getFollows()){
