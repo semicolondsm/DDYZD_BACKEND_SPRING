@@ -34,7 +34,7 @@ public class Room {
     private boolean club_looked;
 
     @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "varchar(2) default 'C'")
+    @Column(columnDefinition = "ENUM('C', 'A', 'R', 'S', 'N') default 'C'")
     private RoomStatus status;
 
     public void setStatus(String value){
