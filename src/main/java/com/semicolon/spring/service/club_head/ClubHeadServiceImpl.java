@@ -206,6 +206,45 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         return new ClubDTO.messageResponse("description write success");
     }
 
+    @Override
+    public ClubDTO.messageResponse deleteRecruitment(int club_id) {
+        if(!isClubHead(club_id))
+            throw new NotClubHeadException();
+        clubRepository.findById(club_id)
+                .map(club -> {
+                    majorRepository.deleteByClub(club);
+                    club.setStart_at(null);
+                    club.setClose_at(null);
+
+                    for(Room room : club.getRooms()){
+                        if(room.getStatus().equals(RoomStatus.N)){
+                            room.setStatus("C");
+                            roomRepository.save(room);
+                        }
+                    }
+
+                    for(ClubFollow user : club.getFollows()){
+                        if(user.getUser().getDevice_token() != null){
+                            HeadDTO.FcmRequest request = HeadDTO.FcmRequest.builder()
+                                    .title(club.getName())
+                                    .message(club.getName() + "의 모집공고가 취소되었습니다.")
+                                    .token(user.getUser().getDevice_token())
+                                    .club(club.getClubId())
+                                    .build();
+                            try {
+                                fcmService.send(request);
+                            } catch (ExecutionException | InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+
+                    return clubRepository.save(club);
+                }).orElseThrow(ClubNotFoundException::new);
+        log.info("delete recruitment club_id : " + club_id);
+        return new ClubDTO.messageResponse("delete recruitment success");
+    }
+
     private boolean isClubHead(int club_id){
         User user = authenticationFacade.getUser();
         Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
