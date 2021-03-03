@@ -100,6 +100,10 @@ public class Club {
         this.start_at = new Date();
     }
 
+    public void setStart_at(Date date){
+        this.start_at = date;
+    }
+
     public void setDescription(String description){
         this.description = description;
     }
