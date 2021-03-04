@@ -1,6 +1,7 @@
 package com.semicolon.spring.controller;
 
 import com.semicolon.spring.dto.ClubDTO;
+import com.semicolon.spring.service.club.ClubService;
 import com.semicolon.spring.service.club_head.ClubHeadService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,8 @@ import java.util.concurrent.ExecutionException;
 @RestController
 @RequiredArgsConstructor
 public class ClubController {
+
+    private final ClubService clubService;
     private final ClubHeadService clubHeadService;
 
     @PostMapping("/club/{club_id}/recruitment")
@@ -61,6 +64,11 @@ public class ClubController {
     @DeleteMapping("/club/{club_id}/hongbo")
     public ClubDTO.messageResponse deleteHongbo(@PathVariable("club_id") int club_id){
         return clubHeadService.deleteHongbo(club_id);
+    }
+
+    @GetMapping("/club/{club_id}/follow")
+    public ClubDTO.followers getFollowers(@PathVariable("club_id") int club_id){
+        return clubService.getFollowers(club_id);
     }
 
 }
