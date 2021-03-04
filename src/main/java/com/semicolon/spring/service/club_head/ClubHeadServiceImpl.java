@@ -254,6 +254,18 @@ public class ClubHeadServiceImpl implements ClubHeadService{
                 .map(Club::getHongbo_image).orElseThrow(ClubNotFoundException::new));
     }
 
+    @Override
+    public ClubDTO.messageResponse deleteHongbo(int club_id) {
+        if(!isClubHead(club_id))
+            throw new NotClubHeadException();
+        clubRepository.findById(club_id)
+                .map(club -> {
+                    club.setHongbo_image(null);
+                    return clubRepository.save(club);
+                });
+        return new ClubDTO.messageResponse("delete hongbo success");
+    }
+
     private boolean isClubHead(int club_id){
         User user = authenticationFacade.getUser();
         Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
