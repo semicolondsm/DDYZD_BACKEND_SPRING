@@ -158,6 +158,7 @@ public class FeedServiceImpl implements FeedService{
                     if(user!=null){
                         getFeed.setIsFlag(isFlag(user, feed));
                         getFeed.setIsFollow(clubFollowRepository.findByUserAndClub(user, feed.getClub()).isPresent());
+                        getFeed.setOwner(!isNotClubMember(feed.getClub().getClubId()));
                     }
                     log.info("getFeed feedId : " + feedId);
                     return getFeed;
