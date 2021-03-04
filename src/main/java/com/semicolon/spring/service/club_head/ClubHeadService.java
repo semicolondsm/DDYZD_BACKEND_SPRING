@@ -15,4 +15,5 @@ public interface ClubHeadService {
     ClubDTO.messageResponse clubDescription(ClubDTO.description request, int club_id);
     ClubDTO.messageResponse deleteRecruitment(int club_id);
     ClubDTO.hongbo getHongbo(int club_id);
+    ClubDTO.messageResponse deleteHongbo(int club_id);
 }
