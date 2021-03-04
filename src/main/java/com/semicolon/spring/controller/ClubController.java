@@ -58,4 +58,9 @@ public class ClubController {
         return clubHeadService.getHongbo(club_id);
     }
 
+    @DeleteMapping("/club/{club_id}/hongbo")
+    public ClubDTO.messageResponse deleteHongbo(@PathVariable("club_id") int club_id){
+        return clubHeadService.deleteHongbo(club_id);
+    }
+
 }
