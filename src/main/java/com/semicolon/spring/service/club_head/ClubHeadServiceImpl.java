@@ -14,10 +14,7 @@ import com.semicolon.spring.entity.club.room.RoomRepository;
 import com.semicolon.spring.entity.club.room.RoomStatus;
 import com.semicolon.spring.entity.user.User;
 import com.semicolon.spring.entity.user.UserRepository;
-import com.semicolon.spring.exception.BadRecruitmentTimeException;
-import com.semicolon.spring.exception.ClubNotFoundException;
-import com.semicolon.spring.exception.FileSaveFailException;
-import com.semicolon.spring.exception.NotClubHeadException;
+import com.semicolon.spring.exception.*;
 import com.semicolon.spring.security.AuthenticationFacade;
 import com.semicolon.spring.service.fcm.FcmService;
 import lombok.RequiredArgsConstructor;
@@ -54,6 +51,8 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         if(request.getCloseAt().before(new Date())){
             throw new BadRecruitmentTimeException();
         }
+        if(request.getMajor().isEmpty())
+            throw new BadRequestException();
         Club club = clubRepository.findByClubId(club_id);
         majorRepository.deleteByClub(club);
         club.setMajors();
