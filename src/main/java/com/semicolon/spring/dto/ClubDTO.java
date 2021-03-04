@@ -53,4 +53,11 @@ public class ClubDTO {
         private String hongbo;
     }
 
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class followers{
+        private int followers;
+    }
+
 }
