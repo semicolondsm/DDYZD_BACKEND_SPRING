@@ -246,6 +246,14 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         return new ClubDTO.messageResponse("delete recruitment success");
     }
 
+    @Override
+    public ClubDTO.hongbo getHongbo(int club_id) {
+        if(!isClubHead(club_id))
+            throw new NotClubHeadException();
+        return new ClubDTO.hongbo(clubRepository.findById(club_id)
+                .map(Club::getHongbo_image).orElseThrow(ClubNotFoundException::new));
+    }
+
     private boolean isClubHead(int club_id){
         User user = authenticationFacade.getUser();
         Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
