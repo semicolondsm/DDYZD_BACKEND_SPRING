@@ -53,4 +53,9 @@ public class ClubController {
         return clubHeadService.deleteRecruitment(club_id);
     }
 
+    @GetMapping("/club/{club_id}/hongbo")
+    public ClubDTO.hongbo getHongbo(@PathVariable("club_id") int club_id){
+        return clubHeadService.getHongbo(club_id);
+    }
+
 }
