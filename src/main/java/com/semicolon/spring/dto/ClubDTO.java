@@ -45,4 +45,12 @@ public class ClubDTO {
     public static class description{
         private String description;
     }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class hongbo{
+        private String hongbo;
+    }
+
 }
