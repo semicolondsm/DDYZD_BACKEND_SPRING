@@ -66,9 +66,14 @@ public class FeedController {
         return feedService.feedPin(feedId);
     }
 
-    @GetMapping("feed/flag")
+    @GetMapping("/feed/flag")
     public List<FeedDTO.getFeed> getFlagFeed(){
         return feedService.getFeedList();
+    }
+
+    @GetMapping("/feed/{feed_id}/user")
+    public List<FeedDTO.userResponse> getFlagUser(@PathVariable("feed_id") int feedId){
+        return feedService.getFeedUser(feedId);
     }
 
 }
