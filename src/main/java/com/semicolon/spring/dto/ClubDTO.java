@@ -66,11 +66,10 @@ public class ClubDTO {
     @Getter
     @Builder
     public static class club{
-        private int clubid;
-        private String clubname;
-        private List<String> clubtag;
-        private String clubimage;
-        private String clubdescription;
+        private int clubId;
+        private String clubName;
+        private String clubImage;
+        private String clubDescription;
     }
 
 
