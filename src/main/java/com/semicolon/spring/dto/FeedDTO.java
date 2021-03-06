@@ -95,4 +95,15 @@ public class FeedDTO {
     public static class messageResponse{
         private String msg;
     }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    @Builder
+    public static class userResponse{
+        private int userId;
+        private String userName;
+        private String imagePath;
+    }
+
 }
