@@ -32,4 +32,8 @@ public class ClubFollow {
         return user;
     }
 
+    public Club  getClub() {
+        return club;
+    }
+
 }
