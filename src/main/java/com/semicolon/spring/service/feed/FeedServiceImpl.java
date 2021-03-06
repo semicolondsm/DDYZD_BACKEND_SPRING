@@ -197,6 +197,30 @@ public class FeedServiceImpl implements FeedService{
         return new FeedDTO.messageResponse("feed pin change success");
     }
 
+    @Override
+    public List<FeedDTO.getFeed> getFeedList() {
+        User user = authenticationFacade.getUser();
+        List<FeedDTO.getFeed> feedList = new ArrayList<>();
+        for(FeedFlag flag : user.getFeedFlags()){
+            Feed feed = flag.getFeed();
+            feedList.add(FeedDTO.getFeed.builder()
+                    .feedId(feed.getId())
+                    .uploadAt(feed.getUploadAt())
+                    .media(getMediaPath(feed.getMedia()))
+                    .content(feed.getContents())
+                    .profileImage(feed.getClub().getProfile_image())
+                    .clubName(feed.getClub().getName())
+                    .flags(feedFlagRepository.countByFeed(feed))
+                    .isOwner(!isNotClubMember(feed.getClub().getClubId()))
+                    .isFlag(isFlag(user, feed))
+                    .isFollow(clubFollowRepository.findByUserAndClub(user, feed.getClub()).isPresent())
+                    .build()
+            );
+        }
+
+        return feedList;
+    }
+
     private boolean isFlag(User user, Feed feed){
         if(user!=null)
             return feedFlagRepository.findByUserAndFeed(user, feed).isPresent();
