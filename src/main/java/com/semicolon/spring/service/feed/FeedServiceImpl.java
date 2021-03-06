@@ -221,6 +221,24 @@ public class FeedServiceImpl implements FeedService{
         return feedList;
     }
 
+    @Override
+    public List<FeedDTO.userResponse> getFeedUser(int feedId) {
+        List<FeedDTO.userResponse> responses = new ArrayList<>();
+        feedRepository.findById(feedId)
+                .map(feed -> {
+                    for(FeedFlag flag : feed.getFeedFlags()){
+                        responses.add(FeedDTO.userResponse.builder()
+                                .userName(flag.getUser().getName())
+                                .imagePath(flag.getUser().getImage_path())
+                                .userId(flag.getUser().getId())
+                                .build()
+                        );
+                    }
+                    return responses;
+                }).orElseThrow(FeedNotFoundException::new);
+        return responses;
+    }
+
     private boolean isFlag(User user, Feed feed){
         if(user!=null)
             return feedFlagRepository.findByUserAndFeed(user, feed).isPresent();
