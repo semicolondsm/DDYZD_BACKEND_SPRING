@@ -2,6 +2,7 @@ package com.semicolon.spring.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -59,5 +60,18 @@ public class ClubDTO {
     public static class followers{
         private int followers;
     }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    @Builder
+    public static class club{
+        private int clubid;
+        private String clubname;
+        private List<String> clubtag;
+        private String clubimage;
+        private String clubdescription;
+    }
+
 
 }
