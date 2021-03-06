@@ -16,4 +16,5 @@ public interface FeedService {
     FeedDTO.messageResponse deleteFeed(int feedId);
     FeedDTO.messageResponse feedPin(int feedId);
     List<FeedDTO.getFeed> getFeedList();
+    List<FeedDTO.userResponse> getFeedUser(int feedId);
 }
