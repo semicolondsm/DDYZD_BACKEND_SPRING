@@ -34,6 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 .antMatchers(HttpMethod.GET,"/feed/{club_id}/list").permitAll()
                 .antMatchers(HttpMethod.GET, "/feed/{feed_id}").permitAll()
                 .antMatchers(HttpMethod.GET, "/club/{club_id}/follow").permitAll()
+                .antMatchers(HttpMethod.GET, "/feed/user").permitAll()
                 .anyRequest().authenticated()
                 .and().apply(new JwtConfigure(jwtTokenProvider));
         http.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
