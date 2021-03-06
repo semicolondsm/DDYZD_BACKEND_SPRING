@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @RestController
@@ -69,6 +70,11 @@ public class ClubController {
     @GetMapping("/club/{club_id}/follow")
     public ClubDTO.followers getFollowers(@PathVariable("club_id") int club_id){
         return clubService.getFollowers(club_id);
+    }
+
+    @GetMapping("/club/follow")
+    public List<ClubDTO.club> getClubs(){
+        return clubService.getClubs();
     }
 
 }
