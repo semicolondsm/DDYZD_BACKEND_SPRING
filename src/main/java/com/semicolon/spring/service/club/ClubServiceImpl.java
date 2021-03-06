@@ -40,10 +40,10 @@ public class ClubServiceImpl implements ClubService {
                     for(ClubFollow clubFollow : foundUser.getFollows()){
                         Club club = clubFollow.getClub();
                         clubList.add(ClubDTO.club.builder()
-                                .clubid(club.getClubId())
-                                .clubname(club.getName())
-                                .clubimage(club.getProfile_image())
-                                .clubdescription(club.getDescription())
+                                .clubId(club.getClubId())
+                                .clubName(club.getName())
+                                .clubImage(club.getProfile_image())
+                                .clubDescription(club.getDescription())
                                 .build()
                         );
                     }
