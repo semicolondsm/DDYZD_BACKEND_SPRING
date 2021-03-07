@@ -88,6 +88,12 @@ public class ClubHeadServiceImpl implements ClubHeadService{
                     .club(club.getClubId())
                     .build();
 
+            if(club.getName() == "MoDeep"){
+                fcmRequest.setMessage(follower.getName() + "님, 팔로우하신 " + club.getName() + "동아리의 모딥이 시작되었습니다.");
+            }else{
+                fcmRequest.setMessage(follower.getName() + "님, 팔로우하신 " + club.getName() + "동아리의 모집이 시작되었습니다.");
+            }
+
             fcmService.send(fcmRequest);
 
         }
