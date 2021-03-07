@@ -42,8 +42,8 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<ErrorResponse> handleBusinessException(FirebaseMessagingException e){
         log.warn("FirebaseMessagingException : " + e);
 
-        return new ResponseEntity<>(new ErrorResponse(400, e.getMessage()),
-                HttpStatus.valueOf(400));
+        return new ResponseEntity<>(new ErrorResponse(404, e.getMessage()),
+                HttpStatus.valueOf(404));
     }
 
 }
