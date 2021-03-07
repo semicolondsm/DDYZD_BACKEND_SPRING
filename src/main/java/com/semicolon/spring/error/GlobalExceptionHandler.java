@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     protected  ResponseEntity<ErrorResponse> handleServletException(Exception e){
-        log.warn("Exception : " + e.getStackTrace());
+        log.warn("Exception : " + e.getMessage());
         return new ResponseEntity<>(new ErrorResponse(ErrorCode.INVALID_TOKEN.getStatus(), ErrorCode.INVALID_TOKEN.getMessage()),
                 HttpStatus.valueOf(ErrorCode.INVALID_TOKEN.getStatus()));
     }
