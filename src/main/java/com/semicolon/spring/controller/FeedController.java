@@ -16,7 +16,7 @@ public class FeedController {
     private final FeedService feedService;
 
     @PostMapping("/feed/{feedId}/medium")
-    public FeedDTO.messageResponse fileUpload(@RequestParam("files")MultipartFile[] files, @PathVariable("feedId") int feedId){
+    public FeedDTO.messageResponse fileUpload(@RequestParam("files") List<MultipartFile> files, @PathVariable("feedId") int feedId){
         return feedService.fileUpload(files, feedId);
     }
 
