@@ -23,6 +23,10 @@ public class HeadDTO {
         private String title;
         private String message;
         private Integer club;
+
+        public void setMessage(String message){
+            this.message = message;
+        }
     }
 
 }
