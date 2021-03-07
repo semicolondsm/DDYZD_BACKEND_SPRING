@@ -10,6 +10,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.servlet.ServletException;
+
 @Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -31,10 +33,11 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    protected  ResponseEntity<ErrorResponse> handleServletException(InvalidTokenException e){
-        log.warn("InvalidTokenException : " + e);
+    protected  ResponseEntity<ErrorResponse> handleServletException(Exception e){
+        log.warn("Exception : " + e.getStackTrace());
         return new ResponseEntity<>(new ErrorResponse(ErrorCode.INVALID_TOKEN.getStatus(), ErrorCode.INVALID_TOKEN.getMessage()),
                 HttpStatus.valueOf(ErrorCode.INVALID_TOKEN.getStatus()));
     }
+
 
 }
