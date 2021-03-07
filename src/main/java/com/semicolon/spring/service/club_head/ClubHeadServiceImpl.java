@@ -94,8 +94,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
                 fcmRequest.setMessage(follower.getName() + "님, 팔로우하신 " + club.getName() + "동아리의 모집이 시작되었습니다.");
             }
 
-            if(club.getFollows().size() != 0)
-                fcmService.send(fcmRequest);
+            fcmService.send(fcmRequest);
 
         }
 
