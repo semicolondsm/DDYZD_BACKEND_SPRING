@@ -27,6 +27,7 @@ public class Feed {
 
     private String contents;
 
+    @Column(columnDefinition = "TINYINT(1)")
     private boolean pin;
 
     @OneToMany(mappedBy = "feed", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
