@@ -15,7 +15,7 @@ import java.util.List;
 @Repository
 public interface FeedRepository extends JpaRepository<Feed, Integer> {
 
-    Page<Feed> findAllByOrderByIdAsc(Pageable pageable);
+    Page<Feed> findAllByOrderByIdDesc(Pageable pageable);
 
     Page<Feed> findByClub(Club club, Pageable pageable);
     List<Feed> findByClubAndPinIsTrue(Club club);
