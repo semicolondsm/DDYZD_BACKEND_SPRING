@@ -236,11 +236,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
                                     .token(user.getUser().getDevice_token())
                                     .club(club.getClubId())
                                     .build();
-                            try {
-                                fcmService.send(request);
-                            } catch (ExecutionException | InterruptedException e) {
-                                e.printStackTrace();
-                            }
+                            fcmService.send(request);
                         }
                     }
                     club.setMajors();
