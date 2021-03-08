@@ -17,12 +17,14 @@ import com.semicolon.spring.entity.feed.feed_medium.FeedMediumRepository;
 import com.semicolon.spring.entity.user.User;
 import com.semicolon.spring.exception.*;
 import com.semicolon.spring.security.AuthenticationFacade;
+import com.semicolon.spring.security.jwt.auth.AuthDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -317,14 +319,8 @@ public class FeedServiceImpl implements FeedService{
     }
 
     private boolean isNotClubMember(int club_id){ // user가 속해있지 않은 club_id를 보내는 테스트 해야함.
-        User user = authenticationFacade.getUser();
-        Club club = clubRepository.findByClubId(club_id);
-        if(user == null)
-            throw new UserNotFoundException();
-        if(club == null)
-            throw new ClubNotFoundException();
-        log.info("isNotClubMember user_name : " + user.getName());
-        return clubMemberRepository.findByUserAndClub(user, club) == null && !user.getHead().contains(club.getClubHead());
+        Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
+        return clubMemberRepository.findByUserAndClub(authenticationFacade.getUser(), club).isPresent();
     }
 
     private boolean isClubHead(int club_id){
