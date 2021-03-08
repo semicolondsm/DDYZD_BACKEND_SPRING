@@ -254,10 +254,9 @@ public class FeedServiceImpl implements FeedService{
     }
 
     public List<FeedDTO.getFeed> feedToResponse(List<Feed> feeds, int page){ // 유저 정보가 있을 때 isFlag, isFollow
-        log.info("method" + String.valueOf(new Date()));
         List<FeedDTO.getFeed> response = new ArrayList<>();
         User user = authenticationFacade.getUser();
-        for(Feed feed : feeds){log.info(String.valueOf(new Date()));
+        for(Feed feed : feeds){
             FeedDTO.getFeed getFeed = FeedDTO.getFeed.builder()
                     .feedId(feed.getId())
                     .clubName(feed.getClub().getName())
@@ -276,7 +275,6 @@ public class FeedServiceImpl implements FeedService{
             response.add(getFeed);
         }
         log.info("get feedList page : " + page);
-        log.info(String.valueOf(new Date()));
         return response;
     }
 
@@ -317,7 +315,7 @@ public class FeedServiceImpl implements FeedService{
 
     public Page<Feed> getFeeds(int page){
         PageRequest pageRequest = PageRequest.of(page, 3);
-        Page<Feed> feeds = feedRepository.findAllByOrderByIdDesc(pageRequest);
+        Page<Feed> feeds = feedRepository.findAllByOrderByIdAsc(pageRequest);
         return feedRepository.findAll(pageRequest);
     }
 
