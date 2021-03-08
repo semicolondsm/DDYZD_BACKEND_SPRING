@@ -45,23 +45,23 @@ public class User {
 
     private String session_id;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonManagedReference
     private Set<ClubHead> head = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonManagedReference
     private Set<FeedFlag> feedFlags = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonManagedReference
     private Set<ClubMember> clubMembers = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonManagedReference
     private Set<ClubFollow> follows = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonManagedReference
     private Set<Room> rooms = new HashSet<>();
 
