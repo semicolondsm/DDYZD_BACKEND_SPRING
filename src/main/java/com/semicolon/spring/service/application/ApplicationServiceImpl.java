@@ -70,10 +70,7 @@ public class ApplicationServiceImpl implements ApplicationService {
             throw new DontKickYourSelfException();
         }
 
-        ClubMember application = clubMemberRepository.findByUserAndClub(user, club);
-
-        if(application == null)
-            throw new ApplicationNotFoundException();
+        ClubMember clubMember = clubMemberRepository.findByUserAndClub(user, club).orElseThrow(NotClubMemberException::new);
 
         clubMemberRepository.deleteByUserAndClub(user, club);
 
