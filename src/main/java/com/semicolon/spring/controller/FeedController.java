@@ -31,7 +31,6 @@ public class FeedController {
 
     @GetMapping("/feed/list")
     public List<FeedDTO.getFeed> getFeedList(@RequestParam("page") int page){
-        log.info(String.valueOf(new Date()));
         if(page < 0){
             throw new BadRequestException();
         }
