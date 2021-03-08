@@ -248,6 +248,7 @@ public class FeedServiceImpl implements FeedService{
     }
 
     public List<FeedDTO.getFeed> feedToResponse(List<Feed> feeds, int page){ // 유저 정보가 있을 때 isFlag, isFollow
+        log.info("method" + String.valueOf(new Date()));
         List<FeedDTO.getFeed> response = new ArrayList<>();
         User user = authenticationFacade.getUser();
         for(Feed feed : feeds){
