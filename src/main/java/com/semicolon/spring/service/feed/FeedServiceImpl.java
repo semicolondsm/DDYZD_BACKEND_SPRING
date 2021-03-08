@@ -314,8 +314,8 @@ public class FeedServiceImpl implements FeedService{
     }
 
     public Page<Feed> getFeeds(int page){
-        PageRequest pageRequest = PageRequest.of(page, 3);
-        Page<Feed> feeds = feedRepository.findAllByOrderByIdDesc(pageRequest);
+        PageRequest pageRequest = PageRequest.of(page, 3, Sort.by("uploadAt").descending());
+        Page<Feed> feeds = feedRepository.findAll(pageRequest);
         return feedRepository.findAll(pageRequest);
     }
 
