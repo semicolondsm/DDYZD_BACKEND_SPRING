@@ -3,15 +3,19 @@ package com.semicolon.spring.controller;
 import com.semicolon.spring.dto.FeedDTO;
 import com.semicolon.spring.exception.BadRequestException;
 import com.semicolon.spring.service.feed.FeedService;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class FeedController {
     private final FeedService feedService;
 
@@ -27,6 +31,7 @@ public class FeedController {
 
     @GetMapping("/feed/list")
     public List<FeedDTO.getFeed> getFeedList(@RequestParam("page") int page){
+        log.info(String.valueOf(new Date()));
         if(page < 0){
             throw new BadRequestException();
         }

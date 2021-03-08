@@ -269,6 +269,7 @@ public class FeedServiceImpl implements FeedService{
             response.add(getFeed);
         }
         log.info("get feedList page : " + page);
+        log.info(String.valueOf(new Date()));
         return response;
     }
 
