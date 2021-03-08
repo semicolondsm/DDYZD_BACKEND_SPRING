@@ -25,6 +25,7 @@ public class Feed {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(columnDefinition = "VARCHAR(4001)")
     private String contents;
 
     @Column(columnDefinition = "TINYINT(1)")
