@@ -251,7 +251,7 @@ public class FeedServiceImpl implements FeedService{
         log.info("method" + String.valueOf(new Date()));
         List<FeedDTO.getFeed> response = new ArrayList<>();
         User user = authenticationFacade.getUser();
-        for(Feed feed : feeds){
+        for(Feed feed : feeds){log.info("get feedList page : " + page);
             FeedDTO.getFeed getFeed = FeedDTO.getFeed.builder()
                     .feedId(feed.getId())
                     .clubName(feed.getClub().getName())
