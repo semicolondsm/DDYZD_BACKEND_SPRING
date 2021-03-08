@@ -6,11 +6,12 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 
 @Repository
 public interface ClubMemberRepository extends CrudRepository<ClubMember, Integer> {
-    ClubMember findByUserAndClub(User user, Club club);
+    Optional<ClubMember> findByUserAndClub(User user, Club club);
     @Transactional
     void deleteByUserAndClub(User user, Club club);
 }
