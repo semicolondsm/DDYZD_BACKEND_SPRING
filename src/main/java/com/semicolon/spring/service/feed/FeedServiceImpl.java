@@ -320,6 +320,7 @@ public class FeedServiceImpl implements FeedService{
 
     private boolean isNotClubMember(int club_id){ // user가 속해있지 않은 club_id를 보내는 테스트 해야함.
         Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
+        log.info("isNotClubMember user_name : " + authenticationFacade.getUser().getName());
         return clubMemberRepository.findByUserAndClub(authenticationFacade.getUser(), club).isPresent();
     }
 
