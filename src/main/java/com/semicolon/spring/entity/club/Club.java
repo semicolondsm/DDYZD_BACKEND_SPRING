@@ -52,7 +52,7 @@ public class Club {
 
     private String description;
 
-    @OneToMany(mappedBy = "club", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "club", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<Feed> feeds = new HashSet<>();
 
@@ -60,19 +60,19 @@ public class Club {
     @JsonManagedReference
     private ClubHead clubHead;
 
-    @OneToMany(mappedBy = "club", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "club", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<Major> majors = new HashSet<>();
 
-    @OneToMany(mappedBy = "club", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "club", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<ClubMember> clubMembers = new HashSet<>();
 
-    @OneToMany(mappedBy = "club", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "club", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<ClubFollow> follows = new HashSet<>();
 
-    @OneToMany(mappedBy = "club", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "club", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<Room> rooms = new HashSet<>();
 
