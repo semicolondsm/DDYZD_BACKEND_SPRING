@@ -30,6 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.*;
 
 @Service
@@ -124,22 +125,27 @@ public class FeedServiceImpl implements FeedService{
 
     @Override
     public FeedDTO.messageResponse feedFlag(int feedId) {
-        User user = authenticationFacade.getUser();
-        Feed feed = feedRepository.findById(feedId).orElseThrow(FeedNotFoundException::new);
-        if(isFlag(user, feed)){
-            feedFlagRepository.delete(feedFlagRepository.findByUserAndFeed(user, feed).orElseThrow(BadRequestException::new));
-            log.info("Remove Feed Flag user_id : " + user.getId());
-            return new FeedDTO.messageResponse("Remove Feed Flag Success");
-        }else{
-            feedFlagRepository.save(
-                    FeedFlag.builder()
-                    .user(user)
-                    .feed(feed)
-                    .build()
-            );
-            log.info("Add Feed Flag user_id : " + user.getId());
-            return new FeedDTO.messageResponse("Add Feed Flag Success");
+        try{
+            User user = authenticationFacade.getUser();
+            Feed feed = feedRepository.findById(feedId).orElseThrow(FeedNotFoundException::new);
+            if(isFlag(user, feed)){
+                feedFlagRepository.delete(feedFlagRepository.findByUserAndFeed(user, feed).orElseThrow(BadRequestException::new));
+                log.info("Remove Feed Flag user_id : " + user.getId());
+                return new FeedDTO.messageResponse("Remove Feed Flag Success");
+            }else{
+                feedFlagRepository.save(
+                        FeedFlag.builder()
+                                .user(user)
+                                .feed(feed)
+                                .build()
+                );
+                log.info("Add Feed Flag user_id : " + user.getId());
+                return new FeedDTO.messageResponse("Add Feed Flag Success");
+            }
+        }catch (Exception e){
+            throw new BadRequestException();
         }
+
 
     }
 
