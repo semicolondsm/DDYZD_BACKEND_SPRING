@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity(name = "feed_flag")
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"feed_id", "user_id"}))
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
