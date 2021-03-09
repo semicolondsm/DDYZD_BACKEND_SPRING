@@ -41,17 +41,15 @@ public class ClubHeadServiceImpl implements ClubHeadService{
     private final FcmService fcmService;
     private final AuthenticationFacade authenticationFacade;
 
-    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
     @Value("${file.club.path}")
     private String PATH;
 
     @Override
-    public ClubDTO.messageResponse recruitment(ClubDTO.recruitment request, int club_id) throws ExecutionException, InterruptedException {
+    public ClubDTO.messageResponse recruitment(ClubDTO.recruitment request, int club_id) {
         if(!isClubHead(club_id)){
             throw new NotClubHeadException();
         }
-        if(!sdf.format(request.getCloseAt()).equals(sdf.format(new Date())) && request.getCloseAt().before(new Date())){
+        if(request.getCloseAt().before(new Date())){
             throw new BadRecruitmentTimeException();
         }
         if(request.getMajor().isEmpty())
