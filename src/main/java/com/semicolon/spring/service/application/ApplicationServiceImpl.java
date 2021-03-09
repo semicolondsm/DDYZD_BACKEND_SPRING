@@ -92,15 +92,29 @@ public class ApplicationServiceImpl implements ApplicationService {
         if(application == null)
             throw new ApplicationNotFoundException();
 
-        roomRepository.save(Room.builder()
-                .club(application.getClub())
-                .club_looked(application.isClub_looked())
-                .user_looked(application.isUser_looked())
-                .status(RoomStatus.C)
-                .user(application.getUser())
-                .id(application.getId())
-                .build()
-        );
+        if(club.getStart_at() != null){
+            roomRepository.save(Room.builder()
+                    .club(application.getClub())
+                    .club_looked(application.isClub_looked())
+                    .user_looked(application.isUser_looked())
+                    .status(RoomStatus.N)
+                    .user(application.getUser())
+                    .id(application.getId())
+                    .build()
+            );
+        }else {
+            roomRepository.save(Room.builder()
+                    .club(application.getClub())
+                    .club_looked(application.isClub_looked())
+                    .user_looked(application.isUser_looked())
+                    .status(RoomStatus.C)
+                    .user(application.getUser())
+                    .id(application.getId())
+                    .build()
+            );
+        }
+
+
 
         if(user.getDevice_token()!=null){
             HeadDTO.FcmRequest request = HeadDTO.FcmRequest.builder()
