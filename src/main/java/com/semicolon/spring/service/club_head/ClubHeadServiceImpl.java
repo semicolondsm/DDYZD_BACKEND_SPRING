@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
 
@@ -40,6 +41,8 @@ public class ClubHeadServiceImpl implements ClubHeadService{
     private final FcmService fcmService;
     private final AuthenticationFacade authenticationFacade;
 
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
     @Value("${file.club.path}")
     private String PATH;
 
@@ -48,7 +51,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         if(!isClubHead(club_id)){
             throw new NotClubHeadException();
         }
-        if(!request.getCloseAt().after(new Date())){
+        if(!sdf.format(request.getCloseAt()).equals(sdf.format(new Date())) && request.getCloseAt().before(new Date())){
             throw new BadRecruitmentTimeException();
         }
         if(request.getMajor().isEmpty())
