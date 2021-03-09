@@ -11,6 +11,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
 @Entity(name = "club_follow")
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"club_id", "user_id"}))
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
