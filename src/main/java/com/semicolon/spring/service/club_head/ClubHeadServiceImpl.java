@@ -48,7 +48,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         if(!isClubHead(club_id)){
             throw new NotClubHeadException();
         }
-        if(request.getCloseAt().before(new Date())){
+        if(!request.getCloseAt().after(new Date())){
             throw new BadRecruitmentTimeException();
         }
         if(request.getMajor().isEmpty())
