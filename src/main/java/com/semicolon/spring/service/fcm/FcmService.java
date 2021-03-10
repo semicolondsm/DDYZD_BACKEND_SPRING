@@ -36,25 +36,28 @@ public class FcmService {
 
     public void send(HeadDTO.FcmRequest request) {
         try{
-            Message message = Message.builder()
-                    .setToken(request.getToken())
-                    .putData("club_id", request.getClub().toString())
-                    .setNotification(Notification.builder() // setImage추가하기.
-                            .setTitle(request.getTitle())
-                            .setBody(request.getMessage())
-                            .build()
-                    )
-                    .setApnsConfig(ApnsConfig.builder()
-                            .setAps(Aps.builder()
-                                    .setSound("default")
-                                    .build()
-                            ).build()
-                    )
-                    .build();
+            if(request.getToken()!=null){
+                Message message = Message.builder()
+                        .setToken(request.getToken())
+                        .putData("club_id", request.getClub().toString())
+                        .setNotification(Notification.builder() // setImage추가하기.
+                                .setTitle(request.getTitle())
+                                .setBody(request.getMessage())
+                                .build()
+                        )
+                        .setApnsConfig(ApnsConfig.builder()
+                                .setAps(Aps.builder()
+                                        .setSound("default")
+                                        .build()
+                                ).build()
+                        )
+                        .build();
 
 
-            String response = FirebaseMessaging.getInstance().sendAsync(message).get();
-            log.info("Sent Message" + response);
+                String response = FirebaseMessaging.getInstance().sendAsync(message).get();
+                log.info("Sent Message" + response);
+            }
+            
         }catch (Exception e){
             log.error(e.getMessage());
             throw new NotFoundException();
