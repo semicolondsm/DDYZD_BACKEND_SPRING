@@ -56,6 +56,7 @@ public class FcmService {
             String response = FirebaseMessaging.getInstance().sendAsync(message).get();
             log.info("Sent Message" + response);
         }catch (Exception e){
+            log.error(e.getMessage());
             throw new NotFoundException();
         }
 
