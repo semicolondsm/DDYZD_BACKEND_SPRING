@@ -59,7 +59,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UnexpectedTypeException.class)
     protected ResponseEntity<ErrorResponse> handleMethodArgumentNotValid(UnexpectedTypeException e) {
         String message = e.getMessage();
-        return new ResponseEntity<>(new ErrorResponse(400, message.split("interpolatedMessage='")[1].split("'")[0]),
+        return new ResponseEntity<>(new ErrorResponse(400, message),
                 HttpStatus.valueOf(400));
     }
 
