@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity(name = "room")
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"club_id", "user_id"}))
@@ -37,6 +38,8 @@ public class Room {
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "ENUM('C', 'A', 'R', 'S', 'N') default 'C'")
     private RoomStatus status;
+
+    private Date last_date;
 
     public void setStatus(String value){
         this.status = RoomStatus.valueOf(value);
