@@ -93,7 +93,7 @@ public class FeedServiceImpl implements FeedService{
                 feedRepository.save(
                     Feed.builder()
                         .contents(request.getContent())
-                        .club(clubRepository.findByClubId(club_id))
+                        .club(clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new))
                         .build()
                 ).getId());
     }
