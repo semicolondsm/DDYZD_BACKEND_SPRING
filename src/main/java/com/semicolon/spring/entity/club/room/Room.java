@@ -11,6 +11,7 @@ import org.hibernate.annotations.ColumnDefault;
 import javax.persistence.*;
 
 @Entity(name = "room")
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"club_id", "user_id"}))
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
