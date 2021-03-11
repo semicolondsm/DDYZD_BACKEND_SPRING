@@ -22,7 +22,7 @@ public class ClubDTO {
         @NonNull
         private List<String> major;
         @JsonFormat(timezone = "Asia/Seoul")
-        @NotEmpty
+        @NonNull
         private Date closeAt;
     }
 
