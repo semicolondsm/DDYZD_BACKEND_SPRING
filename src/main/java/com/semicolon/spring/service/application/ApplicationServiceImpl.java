@@ -3,7 +3,6 @@ package com.semicolon.spring.service.application;
 import com.semicolon.spring.dto.HeadDTO;
 import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.club.ClubRepository;
-import com.semicolon.spring.entity.club.club_member.ClubMember;
 import com.semicolon.spring.entity.club.club_member.ClubMemberRepository;
 import com.semicolon.spring.entity.club.club_head.ClubHead;
 import com.semicolon.spring.entity.club.club_head.ClubHeadRepository;
@@ -34,7 +33,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 
     @Override
-    public HeadDTO.MessageResponse cancelApplication(int club_id) throws ExecutionException, InterruptedException {
+    public HeadDTO.MessageResponse cancelApplication(int club_id) {
         User user = getUser();
         Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
 
@@ -44,8 +43,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public HeadDTO.MessageResponse removeApplication(int club_id, int user_id) throws ExecutionException, InterruptedException {
-        if(!isClubHead(club_id)){
+    public HeadDTO.MessageResponse removeApplication(int club_id, int user_id) {
+        if(isNotClubHead(club_id)){
             throw new NotClubHeadException();
         }
 
@@ -58,8 +57,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public HeadDTO.MessageResponse deportApplication(int club_id, int user_id) throws ExecutionException, InterruptedException {
-        if(!isClubHead(club_id)){
+    public HeadDTO.MessageResponse deportApplication(int club_id, int user_id) {
+        if(isNotClubHead(club_id)){
             throw new NotClubHeadException();
         }
 
@@ -86,7 +85,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         return new HeadDTO.MessageResponse("Club Member Deport Success");
     }
 
-    private void deleteApplication(User user, Club club) throws ExecutionException, InterruptedException {
+    private void deleteApplication(User user, Club club) {
         Room application = roomRepository.findByUserAndClub(user, club);
 
         if(application == null)
@@ -132,13 +131,13 @@ public class ApplicationServiceImpl implements ApplicationService {
         return authenticationFacade.getUser();
     }
 
-    private boolean isClubHead(int club_id){
+    private boolean isNotClubHead(int club_id){
         User user = authenticationFacade.getUser();
         Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
         ClubHead clubHead = clubHeadRepository.findByClubAndUser(club, user);
         if(clubHead == null)
             throw new NotClubHeadException();
-        else return true;
+        else return false;
     }
 
 }
