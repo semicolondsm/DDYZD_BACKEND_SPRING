@@ -51,6 +51,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
     protected ResponseEntity<ErrorResponse> handleMethodArgumentNotValid(ConstraintViolationException e) {
+        log.warn("MethodArgumentNotValid : " + e);
         String message = e.getMessage();
         return new ResponseEntity<>(new ErrorResponse(400, message.split("interpolatedMessage='")[1].split("'")[0]),
                 HttpStatus.valueOf(400));
@@ -58,6 +59,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UnexpectedTypeException.class)
     protected ResponseEntity<ErrorResponse> handleMethodArgumentNotValid(UnexpectedTypeException e) {
+        log.warn("MethodArgumentNotValid : " + e);
         String message = e.getMessage();
         return new ResponseEntity<>(new ErrorResponse(400, message),
                 HttpStatus.valueOf(400));
@@ -65,6 +67,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NullPointerException.class)
     protected ResponseEntity<ErrorResponse> handleMethodArgumentNotValid(NullPointerException e) {
+        log.warn("MethodArgumentNotValid : " + e);
         String message = e.getMessage();
         return new ResponseEntity<>(new ErrorResponse(400, message),
                 HttpStatus.valueOf(400));
