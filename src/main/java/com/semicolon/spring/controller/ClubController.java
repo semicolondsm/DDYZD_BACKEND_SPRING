@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -18,7 +19,7 @@ public class ClubController {
     private final ClubHeadService clubHeadService;
 
     @PostMapping("/club/{club_id}/recruitment")
-    public ClubDTO.messageResponse recruitment(@RequestBody ClubDTO.recruitment request, @PathVariable("club_id") int club_id) throws ExecutionException, InterruptedException {
+    public ClubDTO.messageResponse recruitment(@RequestBody @Valid ClubDTO.recruitment request, @PathVariable("club_id") int club_id) throws ExecutionException, InterruptedException {
         return clubHeadService.recruitment(request, club_id);
     }
 
