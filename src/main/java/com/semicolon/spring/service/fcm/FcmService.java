@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.util.concurrent.ExecutionException;
 
 @Service
 @Slf4j
@@ -57,7 +56,7 @@ public class FcmService {
                 String response = FirebaseMessaging.getInstance().sendAsync(message).get();
                 log.info("Sent Message" + response);
             }
-            
+
         }catch (Exception e){
             log.error(e.getMessage());
             throw new NotFoundException();
