@@ -11,6 +11,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.validation.ConstraintViolationException;
+
 @Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -44,6 +46,13 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(new ErrorResponse(404, e.getMessage()),
                 HttpStatus.valueOf(404));
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    protected ResponseEntity<ErrorResponse> handleMethodArgumentNotValid(ConstraintViolationException e) {
+        String message = e.getMessage();
+        return new ResponseEntity<>(new ErrorResponse(400, message.split("interpolatedMessage='")[1].split("'")[0]),
+                HttpStatus.valueOf(400));
     }
 
 }
