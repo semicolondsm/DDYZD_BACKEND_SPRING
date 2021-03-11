@@ -25,9 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 
 @Service
 @RequiredArgsConstructor
@@ -46,7 +44,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
     @Override
     public ClubDTO.messageResponse recruitment(ClubDTO.recruitment request, int club_id) {
-        if(!isClubHead(club_id)){
+        if(isClubHead(club_id)){
             throw new NotClubHeadException();
         }
         if(request.getCloseAt().before(new Date())){
@@ -105,7 +103,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
     @Override
     public ClubDTO.messageResponse clubProfile(MultipartFile file, int club_id) {
-        if(!isClubHead(club_id))
+        if(isClubHead(club_id))
             throw new NotClubHeadException();
         try{
             Random random = new Random(System.currentTimeMillis());
@@ -127,7 +125,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
     @Override
     public ClubDTO.messageResponse clubHongbo(MultipartFile file, int club_id) {
-        if(!isClubHead(club_id))
+        if(isClubHead(club_id))
             throw new NotClubHeadException();
         try{
             Random random = new Random(System.currentTimeMillis());
@@ -149,7 +147,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
     @Override
     public ClubDTO.messageResponse clubBanner(MultipartFile file, int club_id) {
-        if(!isClubHead(club_id))
+        if(isClubHead(club_id))
             throw new NotClubHeadException();
         try{
             Random random = new Random(System.currentTimeMillis());
@@ -171,7 +169,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
     @Override
     public ClubDTO.messageResponse modifyClub(ClubDTO.modify request, int club_id) {
-        if(!isClubHead(club_id))
+        if(isClubHead(club_id))
             throw new NotClubHeadException();
         clubRepository.findById(club_id)
                 .map(club -> {
@@ -185,7 +183,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
     @Override
     public ClubDTO.messageResponse changeHead(ClubDTO.changeHead request, int club_id) {
-        if(!isClubHead(club_id))
+        if(isClubHead(club_id))
             throw new NotClubHeadException();
         clubRepository.findById(club_id)
                 .map(club -> {
@@ -200,7 +198,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
     @Override
     public ClubDTO.messageResponse clubDescription(ClubDTO.description request, int club_id) {
-        if(!isClubHead(club_id))
+        if(isClubHead(club_id))
             throw new NotClubHeadException();
         clubRepository.findById(club_id)
                 .map(club -> {
@@ -214,7 +212,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
     @Override
     public ClubDTO.messageResponse deleteRecruitment(int club_id) {
-        if(!isClubHead(club_id))
+        if(isClubHead(club_id))
             throw new NotClubHeadException();
         clubRepository.findById(club_id)
                 .map(club -> {
@@ -250,7 +248,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
     @Override
     public ClubDTO.hongbo getHongbo(int club_id) {
-        if(!isClubHead(club_id))
+        if(isClubHead(club_id))
             throw new NotClubHeadException();
         return new ClubDTO.hongbo(clubRepository.findById(club_id)
                 .map(Club::getHongbo_image).orElseThrow(ClubNotFoundException::new));
@@ -258,7 +256,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
     @Override
     public ClubDTO.messageResponse deleteHongbo(int club_id) {
-        if(!isClubHead(club_id))
+        if(isClubHead(club_id))
             throw new NotClubHeadException();
         clubRepository.findById(club_id)
                 .map(club -> {
@@ -274,6 +272,6 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         ClubHead clubHead = clubHeadRepository.findByClubAndUser(club, user);
         if(clubHead == null)
             throw new NotClubHeadException();
-        else return true;
+        else return false;
     }
 }
