@@ -54,7 +54,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         }
         if(request.getMajor().isEmpty())
             throw new BadRequestException();
-        Club club = clubRepository.findByClubId(club_id);
+        Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
         majorRepository.deleteByClub(club);
         club.setMajors();
         Set<String> majorList = new HashSet<>(request.getMajor());
