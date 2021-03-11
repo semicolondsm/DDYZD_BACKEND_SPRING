@@ -63,4 +63,11 @@ public class GlobalExceptionHandler {
                 HttpStatus.valueOf(400));
     }
 
+    @ExceptionHandler(NullPointerException.class)
+    protected ResponseEntity<ErrorResponse> handleMethodArgumentNotValid(NullPointerException e) {
+        String message = e.getMessage();
+        return new ResponseEntity<>(new ErrorResponse(400, message),
+                HttpStatus.valueOf(400));
+    }
+
 }
