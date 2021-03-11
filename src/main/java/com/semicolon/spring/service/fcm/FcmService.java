@@ -22,7 +22,7 @@ public class FcmService {
     @PostConstruct
     public void initialize(){
         try{
-            FirebaseOptions options = new FirebaseOptions.Builder()
+            FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(new ClassPathResource(FIREBASE_CONFIG_PATH).getInputStream())).build();
             if(FirebaseApp.getApps().isEmpty()){
                 FirebaseApp.initializeApp(options);
