@@ -33,7 +33,7 @@ public class Feed {
 
     @OneToMany(mappedBy = "feed", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JsonManagedReference
-    private Set<FeedMedium> media = new HashSet<>();
+    private final Set<FeedMedium> media = new HashSet<>();
 
     @CreationTimestamp
     private Date uploadAt;
@@ -46,7 +46,7 @@ public class Feed {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "feed", cascade = CascadeType.REMOVE)
     @JsonManagedReference
-    private Set<FeedFlag> feedFlags = new HashSet<>();
+    private final Set<FeedFlag> feedFlags = new HashSet<>();
 
     public void modify(String contents){
         this.contents = contents;

@@ -54,7 +54,7 @@ public class Club {
 
     @OneToMany(mappedBy = "club", fetch = FetchType.LAZY)
     @JsonManagedReference
-    private Set<Feed> feeds = new HashSet<>();
+    private final Set<Feed> feeds = new HashSet<>();
 
     @OneToOne(mappedBy = "club", cascade = CascadeType.REMOVE)
     @JsonManagedReference
@@ -62,19 +62,19 @@ public class Club {
 
     @OneToMany(mappedBy = "club", fetch = FetchType.LAZY)
     @JsonManagedReference
-    private Set<Major> majors = new HashSet<>();
+    private final Set<Major> majors = new HashSet<>();
 
     @OneToMany(mappedBy = "club", fetch = FetchType.LAZY)
     @JsonManagedReference
-    private Set<ClubMember> clubMembers = new HashSet<>();
+    private final Set<ClubMember> clubMembers = new HashSet<>();
 
     @OneToMany(mappedBy = "club", fetch = FetchType.LAZY)
     @JsonManagedReference
-    private Set<ClubFollow> follows = new HashSet<>();
+    private final Set<ClubFollow> follows = new HashSet<>();
 
     @OneToMany(mappedBy = "club", fetch = FetchType.LAZY)
     @JsonManagedReference
-    private Set<Room> rooms = new HashSet<>();
+    private final Set<Room> rooms = new HashSet<>();
 
     public void setClose_at(Date close_at){
         this.close_at = close_at;
