@@ -45,6 +45,8 @@ public class User {
 
     private String session_id;
 
+    private String private_room;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonManagedReference
     private Set<ClubHead> head = new HashSet<>();
