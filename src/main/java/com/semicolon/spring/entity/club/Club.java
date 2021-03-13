@@ -52,32 +52,26 @@ public class Club {
 
     private String description;
 
-    @Builder.Default
     @OneToMany(mappedBy = "club", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<Feed> feeds = new HashSet<>();
 
-    @Builder.Default
     @OneToOne(mappedBy = "club", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private ClubHead clubHead;
 
-    @Builder.Default
     @OneToMany(mappedBy = "club", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<Major> majors = new HashSet<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "club", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<ClubMember> clubMembers = new HashSet<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "club", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<ClubFollow> follows = new HashSet<>();
 
-    @Builder.Default
     @OneToMany(mappedBy = "club", fetch = FetchType.LAZY)
     @JsonManagedReference
     private Set<Room> rooms = new HashSet<>();
