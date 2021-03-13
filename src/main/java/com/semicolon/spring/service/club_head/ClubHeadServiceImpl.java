@@ -7,6 +7,7 @@ import com.semicolon.spring.entity.club.ClubRepository;
 import com.semicolon.spring.entity.club.club_follow.ClubFollow;
 import com.semicolon.spring.entity.club.club_head.ClubHead;
 import com.semicolon.spring.entity.club.club_head.ClubHeadRepository;
+import com.semicolon.spring.entity.club.club_member.ClubMemberRepository;
 import com.semicolon.spring.entity.club.major.Major;
 import com.semicolon.spring.entity.club.major.MajorRepository;
 import com.semicolon.spring.entity.club.room.Room;
@@ -32,6 +33,7 @@ import java.util.*;
 @Slf4j
 public class ClubHeadServiceImpl implements ClubHeadService{
     private final ClubRepository clubRepository;
+    private final ClubMemberRepository clubMemberRepository;
     private final ClubHeadRepository clubHeadRepository;
     private final MajorRepository majorRepository;
     private final UserRepository userRepository;
@@ -71,7 +73,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         clubRepository.save(club);
 
         for(Room room : roomRepository.findByClub(club)){
-            if(room.getStatus().equals(RoomStatus.C)){
+            if(clubMemberRepository.findByUserAndClub(room.getUser(), club).isEmpty() && room.getStatus().equals(RoomStatus.C)){
                 room.setStatus("N");
                 roomRepository.save(room);
             }
