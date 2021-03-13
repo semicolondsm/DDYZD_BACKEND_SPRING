@@ -45,7 +45,9 @@ public class User {
 
     private String session_id;
 
-    private String private_room;
+    private String mobile_session_id;
+
+    private String desktop_session_id;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonManagedReference
