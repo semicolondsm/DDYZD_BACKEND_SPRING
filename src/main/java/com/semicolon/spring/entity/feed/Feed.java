@@ -31,6 +31,7 @@ public class Feed {
     @Column(columnDefinition = "TINYINT(1)")
     private boolean pin;
 
+    @Builder.Default
     @OneToMany(mappedBy = "feed", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private Set<FeedMedium> media = new HashSet<>();
@@ -43,7 +44,7 @@ public class Feed {
     @JsonBackReference
     private Club club;
 
-
+    @Builder.Default
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "feed", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private Set<FeedFlag> feedFlags = new HashSet<>();

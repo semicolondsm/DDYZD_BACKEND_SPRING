@@ -49,22 +49,27 @@ public class User {
 
     private String desktop_session_id;
 
+    @Builder.Default
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonManagedReference
     private Set<ClubHead> head = new HashSet<>();
 
+    @Builder.Default
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonManagedReference
     private Set<FeedFlag> feedFlags = new HashSet<>();
 
+    @Builder.Default
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonManagedReference
     private Set<ClubMember> clubMembers = new HashSet<>();
 
+    @Builder.Default
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonManagedReference
     private Set<ClubFollow> follows = new HashSet<>();
 
+    @Builder.Default
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonManagedReference
     private Set<Room> rooms = new HashSet<>();
