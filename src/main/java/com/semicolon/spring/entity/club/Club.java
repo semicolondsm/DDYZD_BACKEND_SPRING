@@ -62,7 +62,7 @@ public class Club {
 
     @OneToMany(mappedBy = "club", fetch = FetchType.LAZY)
     @JsonManagedReference
-    private final Set<Major> majors = new HashSet<>();
+    private Set<Major> majors = new HashSet<>();
 
     @OneToMany(mappedBy = "club", fetch = FetchType.LAZY)
     @JsonManagedReference
