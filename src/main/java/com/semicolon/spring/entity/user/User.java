@@ -51,22 +51,22 @@ public class User {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonManagedReference
-    private Set<ClubHead> head = new HashSet<>();
+    private final Set<ClubHead> head = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonManagedReference
-    private Set<FeedFlag> feedFlags = new HashSet<>();
+    private final Set<FeedFlag> feedFlags = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonManagedReference
-    private Set<ClubMember> clubMembers = new HashSet<>();
+    private final Set<ClubMember> clubMembers = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonManagedReference
-    private Set<ClubFollow> follows = new HashSet<>();
+    private final Set<ClubFollow> follows = new HashSet<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonManagedReference
-    private Set<Room> rooms = new HashSet<>();
+    private final Set<Room> rooms = new HashSet<>();
 
 }
