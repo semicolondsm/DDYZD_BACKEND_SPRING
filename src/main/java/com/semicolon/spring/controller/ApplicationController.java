@@ -10,7 +10,7 @@ import java.util.concurrent.ExecutionException;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/application")
-public class ApplicationController { 
+public class ApplicationController {
 
     private final ApplicationService applicationService;
 
