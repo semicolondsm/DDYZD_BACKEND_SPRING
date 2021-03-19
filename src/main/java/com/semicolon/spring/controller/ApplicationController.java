@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutionException;
 @RequiredArgsConstructor
 @RequestMapping("/application")
 public class ApplicationController {
-
+a
     private final ApplicationService applicationService;
 
     @DeleteMapping("/cancel")
