@@ -71,20 +71,19 @@ public class FcmService {
 
     }
 
-    @Scheduled(cron = "0 43 8 * * *", zone = "Asia/Seoul")
+    @Scheduled(cron = "0 45 8 * * *", zone = "Asia/Seoul")
     public void sendSelfDiagnosis(){
-//        for(User user : userRepository.findAll()){
-//            if(user.getDevice_token() != null){
-//                this.send(HeadDTO.FcmRequest.builder()
-//                        .title(user.getName() + "님 자가진단 해주세요.")
-//                        .club(19)
-//                        .token(user.getDevice_token())
-//                        .message("자가진단 실시해주세요.")
-//                        .build()
-//                );
-//            }
-//        }
-        log.info(String.valueOf(new Date()));
+        for(User user : userRepository.findAll()){
+            if(user.getDevice_token() != null){
+                this.send(HeadDTO.FcmRequest.builder()
+                        .title(user.getName() + "님 자가진단 해주세요.")
+                        .club(19)
+                        .token(user.getDevice_token())
+                        .message("자가진단 실시해주세요.")
+                        .build()
+                );
+            }
+        }
     }
 
 }
