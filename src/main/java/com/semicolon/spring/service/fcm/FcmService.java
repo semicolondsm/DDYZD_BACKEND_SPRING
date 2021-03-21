@@ -71,7 +71,7 @@ public class FcmService {
 
     }
 
-    @Scheduled(cron = "0 0, 20 8 * * *", zone = "Asia/Seoul")
+    @Scheduled(cron = "0 20 8 * * *", zone = "Asia/Seoul")
     public void sendSelfDiagnosis(){
         for(User user : userRepository.findAll()){
             if(user.getDevice_token() != null){
