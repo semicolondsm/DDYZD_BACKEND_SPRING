@@ -66,20 +66,20 @@ public class FcmService {
 
         }catch (Exception e){
             log.error(e.getMessage());
-            throw new NotFoundException();
+            //throw new NotFoundException();
         }
 
     }
 
-    @Scheduled(cron = "0 45 8 * * *", zone = "Asia/Seoul")
+    @Scheduled(cron = "0 48 8 * * *", zone = "Asia/Seoul")
     public void sendSelfDiagnosis(){
         for(User user : userRepository.findAll()){
             if(user.getDevice_token() != null){
                 this.send(HeadDTO.FcmRequest.builder()
-                        .title(user.getName() + "님 자가진단 해주세요.")
+                        .title(user.getName() + "님 자가진단 해주세요!")
                         .club(19)
                         .token(user.getDevice_token())
-                        .message("자가진단 실시해주세요.")
+                        .message("자가진단 실시해주세요!")
                         .build()
                 );
             }
