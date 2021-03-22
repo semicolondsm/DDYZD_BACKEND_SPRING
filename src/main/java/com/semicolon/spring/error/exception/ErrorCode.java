@@ -31,8 +31,8 @@ public enum ErrorCode {
     //Club
     BAD_RECRUITMENT_TIME(400, "Bad Recruitment Time."),
     APPLICATION_NOT_FOUND(400, "Application Not Found"),
-    ALREADY_PASSED_USER(400, "Already Passed User"),
     DONT_KICK_YOUR_SELF(403, "1393"),
+    ALREADY_CLUB_MEMBER(400, "Already Club Member"),
 
     //Erp
     BAD_SUPPLY_LINK(400, "Bad Supply Link");
