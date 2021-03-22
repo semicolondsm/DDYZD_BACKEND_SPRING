@@ -80,8 +80,13 @@ public class ClubController {
     }
 
     @DeleteMapping("/deport")
-    public HeadDTO.MessageResponse deportApplication(@RequestParam("clubid") int club_id, @RequestParam("userid") int user_id) throws ExecutionException, InterruptedException {
+    public ClubDTO.messageResponse deportApplication(@RequestParam("clubid") int club_id, @RequestParam("userid") int user_id){
         return clubHeadService.deportMember(club_id, user_id);
+    }
+
+    @PostMapping("/insert")
+    public ClubDTO.messageResponse insertMember(@RequestParam("clubid") int club_id, @RequestParam("userid") int user_id) {
+        return clubHeadService.insertMember(club_id, user_id);
     }
 
 }
