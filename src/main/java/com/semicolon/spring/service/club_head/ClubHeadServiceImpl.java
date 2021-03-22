@@ -268,6 +268,39 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         return new ClubDTO.messageResponse("delete hongbo success");
     }
 
+    @Override
+    public HeadDTO.MessageResponse deportMember(int club_id, int user_id) {
+        if(!isClubHead(club_id)){
+            throw new NotClubHeadException();
+        }
+
+        User user = userRepository.findById(user_id).orElseThrow(UserNotFoundException::new);
+        Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
+
+        if(user.getId().equals(getUser().getId())){
+            throw new DontKickYourSelfException();
+        }
+
+        clubMemberRepository.findByUserAndClub(user, club).orElseThrow(NotClubMemberException::new);
+
+        clubMemberRepository.deleteByUserAndClub(user, club);
+
+        HeadDTO.FcmRequest request = HeadDTO.FcmRequest.builder()
+                .token(user.getDevice_token())
+                .title(club.getName())
+                .message(user.getName() + "님이 " + club.getName() + "에서 추방당하셨습니다.")
+                .club(club.getClubId())
+                .build();
+
+        fcmService.send(request);
+
+        return new HeadDTO.MessageResponse("Club Member Deport Success");
+    }
+
+    private User getUser(){
+        return authenticationFacade.getUser();
+    }
+
     private boolean isClubHead(int club_id){
         User user = authenticationFacade.getUser();
         Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
