@@ -24,9 +24,6 @@ public class ApplicationController {
         return applicationService.removeApplication(club_id, user_id);
     }
 
-    @DeleteMapping("/deport")
-    public HeadDTO.MessageResponse deportApplication(@RequestParam("clubid") int club_id, @RequestParam("userid") int user_id) throws ExecutionException, InterruptedException {
-        return applicationService.deportApplication(club_id, user_id);
-    }
+
 
 }
