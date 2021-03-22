@@ -1,6 +1,7 @@
 package com.semicolon.spring.service.club_head;
 
 import com.semicolon.spring.dto.ClubDTO;
+import com.semicolon.spring.dto.HeadDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.concurrent.ExecutionException;
@@ -16,4 +17,5 @@ public interface ClubHeadService {
     ClubDTO.messageResponse deleteRecruitment(int club_id);
     ClubDTO.hongbo getHongbo(int club_id);
     ClubDTO.messageResponse deleteHongbo(int club_id);
+    HeadDTO.MessageResponse deportMember(int club_id, int user_id);
 }
