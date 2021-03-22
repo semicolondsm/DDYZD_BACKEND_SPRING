@@ -19,6 +19,7 @@ public class FeedDTO {
     public static class getFeed{
         private int feedId;
         private String clubName;
+        private int clubId;
         private String profileImage;
         private boolean isFollow;
         @JsonFormat(timezone = "Asia/Seoul")
