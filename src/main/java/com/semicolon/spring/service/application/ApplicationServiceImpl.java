@@ -56,35 +56,6 @@ public class ApplicationServiceImpl implements ApplicationService {
         return new HeadDTO.MessageResponse("Application Remove Success");
     }
 
-    @Override
-    public HeadDTO.MessageResponse deportApplication(int club_id, int user_id) {
-        if(isNotClubHead(club_id)){
-            throw new NotClubHeadException();
-        }
-
-        User user = userRepository.findById(user_id).orElseThrow(UserNotFoundException::new);
-        Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
-
-        if(user.getId().equals(getUser().getId())){
-            throw new DontKickYourSelfException();
-        }
-
-        clubMemberRepository.findByUserAndClub(user, club).orElseThrow(NotClubMemberException::new);
-
-        clubMemberRepository.deleteByUserAndClub(user, club);
-
-        HeadDTO.FcmRequest request = HeadDTO.FcmRequest.builder()
-                .token(user.getDevice_token())
-                .title(club.getName())
-                .message(user.getName() + "님이 " + club.getName() + "에서 추방당하셨습니다.")
-                .club(club.getClubId())
-                .build();
-
-        fcmService.send(request);
-
-        return new HeadDTO.MessageResponse("Club Member Deport Success");
-    }
-
     private void deleteApplication(User user, Club club) {
         Room application = roomRepository.findByUserAndClub(user, club);
 
