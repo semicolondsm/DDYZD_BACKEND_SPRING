@@ -12,69 +12,69 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-@RestController
+@RestController("/club")
 @RequiredArgsConstructor
 public class ClubController {
 
     private final ClubService clubService;
     private final ClubHeadService clubHeadService;
 
-    @PostMapping("/club/{club_id}/recruitment")
+    @PostMapping("/{club_id}/recruitment")
     public ClubDTO.messageResponse recruitment(@RequestBody @Valid ClubDTO.recruitment request, @PathVariable("club_id") int club_id) throws ExecutionException, InterruptedException {
         return clubHeadService.recruitment(request, club_id);
     }
 
-    @PostMapping("/club/{club_id}/profile")
+    @PostMapping("/{club_id}/profile")
     public ClubDTO.messageResponse profile(@RequestParam("file") MultipartFile file, @PathVariable("club_id") int club_id){
         return clubHeadService.clubProfile(file, club_id);
     }
 
-    @PostMapping("/club/{club_id}/hongbo")
+    @PostMapping("/{club_id}/hongbo")
     public ClubDTO.messageResponse hongbo(@RequestParam("file") MultipartFile file, @PathVariable("club_id") int club_id){
         return clubHeadService.clubHongbo(file, club_id);
     }
 
-    @PostMapping("/club/{club_id}/banner")
+    @PostMapping("/{club_id}/banner")
     public ClubDTO.messageResponse banner(@RequestParam("file") MultipartFile file, @PathVariable("club_id") int club_id){
         return clubHeadService.clubBanner(file, club_id);
     }
 
-    @PutMapping("/club/{club_id}")
+    @PutMapping("/{club_id}")
     public ClubDTO.messageResponse modify(@RequestBody ClubDTO.modify request, @PathVariable("club_id") int club_id){
         return clubHeadService.modifyClub(request, club_id);
     }
 
-    @PutMapping("/club/{club_id}/head")
+    @PutMapping("/{club_id}/head")
     public ClubDTO.messageResponse changeHead(@RequestBody ClubDTO.changeHead request, @PathVariable("club_id") int club_id){
         return clubHeadService.changeHead(request, club_id);
     }
 
-    @PostMapping("/club/{club_id}/description")
+    @PostMapping("/{club_id}/description")
     public ClubDTO.messageResponse description(@RequestBody ClubDTO.description request, @PathVariable("club_id") int club_id){
         return clubHeadService.clubDescription(request, club_id);
     }
 
-    @DeleteMapping("/club/{club_id}/recruitment")
+    @DeleteMapping("/{club_id}/recruitment")
     public ClubDTO.messageResponse deleteRecruitment(@PathVariable("club_id") int club_id){
         return clubHeadService.deleteRecruitment(club_id);
     }
 
-    @GetMapping("/club/{club_id}/hongbo")
+    @GetMapping("/{club_id}/hongbo")
     public ClubDTO.hongbo getHongbo(@PathVariable("club_id") int club_id){
         return clubHeadService.getHongbo(club_id);
     }
 
-    @DeleteMapping("/club/{club_id}/hongbo")
+    @DeleteMapping("/{club_id}/hongbo")
     public ClubDTO.messageResponse deleteHongbo(@PathVariable("club_id") int club_id){
         return clubHeadService.deleteHongbo(club_id);
     }
 
-    @GetMapping("/club/{club_id}/follow")
+    @GetMapping("/{club_id}/follow")
     public ClubDTO.followers getFollowers(@PathVariable("club_id") int club_id){
         return clubService.getFollowers(club_id);
     }
 
-    @GetMapping("/club/follow")
+    @GetMapping("/follow")
     public List<ClubDTO.club> getClubs(){
         return clubService.getClubs();
     }
