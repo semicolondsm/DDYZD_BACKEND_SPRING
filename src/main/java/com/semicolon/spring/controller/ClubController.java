@@ -1,6 +1,7 @@
 package com.semicolon.spring.controller;
 
 import com.semicolon.spring.dto.ClubDTO;
+import com.semicolon.spring.dto.HeadDTO;
 import com.semicolon.spring.service.club.ClubService;
 import com.semicolon.spring.service.club_head.ClubHeadService;
 import lombok.RequiredArgsConstructor;
@@ -76,6 +77,11 @@ public class ClubController {
     @GetMapping("/club/follow")
     public List<ClubDTO.club> getClubs(){
         return clubService.getClubs();
+    }
+
+    @DeleteMapping("/deport")
+    public HeadDTO.MessageResponse deportApplication(@RequestParam("clubid") int club_id, @RequestParam("userid") int user_id) throws ExecutionException, InterruptedException {
+        return clubHeadService.deportMember(club_id, user_id);
     }
 
 }
