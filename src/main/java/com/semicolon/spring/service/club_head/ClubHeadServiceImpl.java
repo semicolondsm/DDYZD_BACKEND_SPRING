@@ -271,7 +271,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
     @Override
     public ClubDTO.messageResponse deportMember(int club_id, int user_id) {
-        if(!isClubHead(club_id)){
+        if(isClubHead(club_id)){
             throw new NotClubHeadException();
         }
 
@@ -300,7 +300,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
     @Override
     public ClubDTO.messageResponse insertMember(int club_id, int user_id) {
-        if(!isClubHead(club_id)){
+        if(isClubHead(club_id)){
             throw new NotClubHeadException();
         }
 
