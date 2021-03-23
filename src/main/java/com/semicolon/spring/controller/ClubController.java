@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @RestController
-@RequestMapping("/club")
 @RequiredArgsConstructor
 public class ClubController {
 
@@ -85,7 +84,7 @@ public class ClubController {
         return clubHeadService.deportMember(club_id, user_id);
     }
 
-    @PostMapping("/insert")
+    @PostMapping("/club/insert")
     public ClubDTO.messageResponse insertMember(@RequestParam("clubid") int club_id, @RequestParam("userid") int user_id) {
         return clubHeadService.insertMember(club_id, user_id);
     }
