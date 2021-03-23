@@ -12,7 +12,8 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-@RestController("/club")
+@RestController
+@RequestMapping("/club")
 @RequiredArgsConstructor
 public class ClubController {
 
