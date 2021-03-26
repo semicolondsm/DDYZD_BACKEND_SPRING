@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity(name = "major")
+@Builder
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Builder
+@Entity(name = "major")
 public class Major {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

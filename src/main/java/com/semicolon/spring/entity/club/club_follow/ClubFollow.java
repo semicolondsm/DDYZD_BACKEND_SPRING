@@ -10,11 +10,12 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
-@Entity(name = "club_follow")
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"club_id", "user_id"}))
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"club_id", "user_id"}))
+@Entity(name = "club_follow")
 public class ClubFollow {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

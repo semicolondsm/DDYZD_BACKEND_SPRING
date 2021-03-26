@@ -10,11 +10,13 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity(name = "club_head")
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
+
+
 @Builder
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity(name = "club_head")
 public class ClubHead {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

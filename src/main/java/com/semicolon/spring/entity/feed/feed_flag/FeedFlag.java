@@ -9,12 +9,13 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity(name = "feed_flag")
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"feed_id", "user_id"}))
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Builder
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"feed_id", "user_id"}))
+@Entity(name = "feed_flag")
 public class FeedFlag {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

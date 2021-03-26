@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity(name = "feed_medium")
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
 @Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity(name = "feed_medium")
 public class FeedMedium {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

@@ -11,12 +11,12 @@ import org.hibernate.annotations.ColumnDefault;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity(name = "room")
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"club_id", "user_id"}))
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
 @Builder
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"club_id", "user_id"}))
+@Entity(name = "room")
 public class Room {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

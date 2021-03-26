@@ -17,11 +17,11 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity(name = "club")
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
 @Builder
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity(name = "club")
 public class Club {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

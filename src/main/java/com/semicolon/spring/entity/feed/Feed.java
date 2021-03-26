@@ -16,11 +16,11 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity(name = "feed")
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
 @Builder
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity(name = "feed")
 public class Feed {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
