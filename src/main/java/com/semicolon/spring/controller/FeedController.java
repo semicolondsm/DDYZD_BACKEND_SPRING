@@ -6,6 +6,7 @@ import com.semicolon.spring.service.feed.FeedService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,11 +21,13 @@ public class FeedController {
     private final FeedService feedService;
 
     @PostMapping("/feed/{feedId}/medium")
+    @ResponseStatus(HttpStatus.CREATED)
     public FeedDTO.messageResponse fileUpload(@RequestParam("files") List<MultipartFile> files, @PathVariable("feedId") int feedId){
         return feedService.fileUpload(files, feedId);
     }
 
     @PostMapping("/feed/{club_id}")
+    @ResponseStatus(HttpStatus.CREATED)
     public FeedDTO.writeFeedResponse feedUpload(@RequestBody FeedDTO.feed request, @PathVariable("club_id") int club_id){
         return feedService.writeFeed(request, club_id);
     }
