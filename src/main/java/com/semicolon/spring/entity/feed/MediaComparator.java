@@ -10,12 +10,6 @@ public class MediaComparator implements Comparator {
         int medium1 = ((FeedMedium)o1).getId();
         int medium2 = ((FeedMedium)o2).getId();
 
-        if(medium1 > medium2){
-            return 1;
-        }else if(medium1 < medium2){
-            return -1;
-        }else{
-            return 0;
-        }
+        return Integer.compare(medium1, medium2);
     }
 }
