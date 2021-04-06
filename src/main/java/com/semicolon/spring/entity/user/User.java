@@ -43,8 +43,6 @@ public class User {
 
     private String bio;
 
-    private String session_id;
-
     private String mobile_session_id;
 
     private String desktop_session_id;
