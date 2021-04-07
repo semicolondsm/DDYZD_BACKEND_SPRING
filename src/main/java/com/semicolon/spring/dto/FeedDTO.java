@@ -16,7 +16,7 @@ public class FeedDTO {
     @NoArgsConstructor
     @Getter
     @Builder
-    public static class getFeed{
+    public static class GetFeed {
         private int feedId;
         private String clubName;
         private int clubId;
@@ -48,7 +48,7 @@ public class FeedDTO {
     @NoArgsConstructor
     @Getter
     @Builder
-    public static class getFeedClub{
+    public static class GetFeedClub {
         private int feedId;
         private String clubName;
         private String profileImage;
@@ -78,14 +78,14 @@ public class FeedDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class feed{
+    public static class Feed {
         private String content;
     }
 
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class writeFeedResponse{
+    public static class WriteFeedResponse {
         private String msg;
         private int feedId;
     }
@@ -93,7 +93,7 @@ public class FeedDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class messageResponse{
+    public static class MessageResponse {
         private String msg;
     }
 
@@ -101,7 +101,7 @@ public class FeedDTO {
     @NoArgsConstructor
     @Getter
     @Builder
-    public static class userResponse{
+    public static class UserResponse {
         private int userId;
         private String userName;
         private String imagePath;
