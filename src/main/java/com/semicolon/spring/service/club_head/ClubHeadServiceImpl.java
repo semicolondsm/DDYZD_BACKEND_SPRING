@@ -313,7 +313,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
 
         if(clubMemberRepository.findByUserAndClub(user, club).isPresent()){
-            throw new AlreadyClubMember();
+            throw new AlreadyClubMemberException();
         }
 
         clubMemberRepository.save(ClubMember.builder()
@@ -335,9 +335,17 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
         ClubHead clubHead = clubHeadRepository.findByClubAndUser(club, user);
         ClubManager clubManager = clubManagerRepository.findByClubAndUser(club, user);
-        System.out.println(clubManager.getUser().getName());
         if(clubHead == null)
             throw new NotClubHeadException();
+        else return false;
+    }
+
+    private boolean isClubManager(int club_id){
+        User user = authenticationFacade.getUser();
+        Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
+        ClubManager clubManager = clubManagerRepository.findByClubAndUser(club, user);
+        if(clubManager == null)
+            throw new NotClubManagerException();
         else return false;
     }
 }
