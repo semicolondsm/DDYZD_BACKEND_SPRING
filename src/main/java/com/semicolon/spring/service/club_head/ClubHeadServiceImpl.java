@@ -6,11 +6,10 @@ import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.club.ClubRepository;
 import com.semicolon.spring.entity.club.club_head.ClubHead;
 import com.semicolon.spring.entity.club.club_head.ClubHeadRepository;
+import com.semicolon.spring.entity.club.club_manager.ClubManager;
 import com.semicolon.spring.entity.club.club_manager.ClubManagerRepository;
 import com.semicolon.spring.entity.club.club_member.ClubMember;
 import com.semicolon.spring.entity.club.club_member.ClubMemberRepository;
-import com.semicolon.spring.entity.club.major.MajorRepository;
-import com.semicolon.spring.entity.club.room.RoomRepository;
 import com.semicolon.spring.entity.user.User;
 import com.semicolon.spring.entity.user.UserRepository;
 import com.semicolon.spring.exception.*;
@@ -27,6 +26,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
     private final ClubRepository clubRepository;
     private final ClubMemberRepository clubMemberRepository;
     private final ClubHeadRepository clubHeadRepository;
+    private final ClubManagerRepository clubManagerRepository;
 
     private final UserRepository userRepository;
 
@@ -69,6 +69,50 @@ public class ClubHeadServiceImpl implements ClubHeadService{
                 });
         log.info("change Head club_id : " + club_id);
         return new ClubDTO.messageResponse("club head change success");
+    }
+
+    @Override
+    public ClubDTO.messageResponse insertManager(int club_id, int user_id) {
+        if(isNotClubHead(club_id)){
+            throw new NotClubHeadException();
+        }
+
+        User user = userRepository.findById(user_id).orElseThrow(UserNotFoundException::new);
+        Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
+
+        if(clubManagerRepository.findByClubAndUser(club, user).isPresent()){
+            throw new AlreadyClubManagerException();
+        }
+
+        clubManagerRepository.save(
+                ClubManager.builder()
+                .club(club)
+                .user(user)
+                .build()
+        );
+
+        return new ClubDTO.messageResponse("Insert Club Manager Success");
+
+    }
+
+    @Override
+    public ClubDTO.messageResponse deportManager(int club_id, int user_id) {
+        if(isNotClubHead(club_id)){
+            throw new NotClubHeadException();
+        }
+
+        User user = userRepository.findById(user_id).orElseThrow(UserNotFoundException::new);
+        Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
+
+        if(user.getId().equals(getUser().getId())){
+            throw new DontKickYourSelfException();
+        }
+
+        clubManagerRepository.findByClubAndUser(club, user).orElseThrow(NotClubManagerException::new);
+
+        clubManagerRepository.deleteByClubAndUser(club, user);
+
+        return new ClubDTO.messageResponse("Club Manager Deport Success");
     }
 
     @Override
