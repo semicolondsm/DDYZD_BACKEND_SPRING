@@ -46,7 +46,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
     private String PATH;
 
     @Override
-    public ClubDTO.messageResponse recruitment(ClubDTO.recruitment request, int club_id) {
+    public ClubDTO.MessageResponse recruitment(ClubDTO.Recruitment request, int club_id) {
         if(isNotClubManager(club_id)){
             throw new NotClubHeadException();
         }
@@ -101,11 +101,11 @@ public class ClubManagerServiceImpl implements ClubManagerService {
         }
 
         log.info("make recruitment club_id : " + club_id);
-        return new ClubDTO.messageResponse("recruitment success");
+        return new ClubDTO.MessageResponse("recruitment success");
     }
 
     @Override
-    public ClubDTO.messageResponse clubProfile(MultipartFile file, int club_id) {
+    public ClubDTO.MessageResponse clubProfile(MultipartFile file, int club_id) {
         if(isNotClubManager(club_id))
             throw new NotClubHeadException();
         try{
@@ -119,7 +119,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
                         return club;
                     });
             log.info("change club Profile club_id : " + club_id);
-            return new ClubDTO.messageResponse("club profile write success");
+            return new ClubDTO.MessageResponse("club profile write success");
         }catch (IOException e){
             e.printStackTrace();
             throw new FileSaveFailException();
@@ -127,7 +127,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
     }
 
     @Override
-    public ClubDTO.messageResponse clubHongbo(MultipartFile file, int club_id) {
+    public ClubDTO.MessageResponse clubHongbo(MultipartFile file, int club_id) {
         if(isNotClubManager(club_id))
             throw new NotClubHeadException();
         try{
@@ -141,7 +141,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
                         return club;
                     });
             log.info("change club Hongbo club_id : " + club_id);
-            return new ClubDTO.messageResponse("club hongbo write success");
+            return new ClubDTO.MessageResponse("club hongbo write success");
         }catch (IOException e){
             e.printStackTrace();
             throw new FileSaveFailException();
@@ -149,7 +149,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
     }
 
     @Override
-    public ClubDTO.messageResponse clubBanner(MultipartFile file, int club_id) {
+    public ClubDTO.MessageResponse clubBanner(MultipartFile file, int club_id) {
         if(isNotClubManager(club_id))
             throw new NotClubHeadException();
         try{
@@ -163,7 +163,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
                         return club;
                     });
             log.info("change club Banner club_id : " + club_id);
-            return new ClubDTO.messageResponse("club banner write success");
+            return new ClubDTO.MessageResponse("club banner write success");
         }catch (IOException e){
             e.printStackTrace();
             throw new FileSaveFailException();
@@ -171,7 +171,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
     }
 
     @Override
-    public ClubDTO.messageResponse modifyClub(ClubDTO.modify request, int club_id) {
+    public ClubDTO.MessageResponse modifyClub(ClubDTO.Modify request, int club_id) {
         if(isNotClubManager(club_id))
             throw new NotClubHeadException();
         clubRepository.findById(club_id)
@@ -181,13 +181,13 @@ public class ClubManagerServiceImpl implements ClubManagerService {
                     return club;
                 });
         log.info("change club name club_id : " + club_id);
-        return new ClubDTO.messageResponse("club modify success");
+        return new ClubDTO.MessageResponse("club modify success");
     }
 
 
 
     @Override
-    public ClubDTO.messageResponse clubDescription(ClubDTO.description request, int club_id) {
+    public ClubDTO.MessageResponse clubDescription(ClubDTO.Description request, int club_id) {
         if(isNotClubManager(club_id))
             throw new NotClubHeadException();
         clubRepository.findById(club_id)
@@ -197,11 +197,11 @@ public class ClubManagerServiceImpl implements ClubManagerService {
                     return club;
                 });
         log.info("change club description club_id : " + club_id);
-        return new ClubDTO.messageResponse("description write success");
+        return new ClubDTO.MessageResponse("description write success");
     }
 
     @Override
-    public ClubDTO.messageResponse deleteRecruitment(int club_id) {
+    public ClubDTO.MessageResponse deleteRecruitment(int club_id) {
         if(isNotClubManager(club_id))
             throw new NotClubHeadException();
         clubRepository.findById(club_id)
@@ -233,19 +233,19 @@ public class ClubManagerServiceImpl implements ClubManagerService {
                     return clubRepository.save(club);
                 }).orElseThrow(ClubNotFoundException::new);
         log.info("delete recruitment club_id : " + club_id);
-        return new ClubDTO.messageResponse("delete recruitment success");
+        return new ClubDTO.MessageResponse("delete recruitment success");
     }
 
     @Override
-    public ClubDTO.hongbo getHongbo(int club_id) {
+    public ClubDTO.Hongbo getHongbo(int club_id) {
         if(isNotClubManager(club_id))
             throw new NotClubHeadException();
-        return new ClubDTO.hongbo(clubRepository.findById(club_id)
+        return new ClubDTO.Hongbo(clubRepository.findById(club_id)
                 .map(Club::getHongbo_image).orElseThrow(ClubNotFoundException::new));
     }
 
     @Override
-    public ClubDTO.messageResponse deleteHongbo(int club_id) {
+    public ClubDTO.MessageResponse deleteHongbo(int club_id) {
         if(isNotClubManager(club_id))
             throw new NotClubHeadException();
         clubRepository.findById(club_id)
@@ -253,7 +253,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
                     club.setHongbo_image(null);
                     return clubRepository.save(club);
                 });
-        return new ClubDTO.messageResponse("delete hongbo success");
+        return new ClubDTO.MessageResponse("delete hongbo success");
     }
 
     private boolean isNotClubManager(int club_id){
