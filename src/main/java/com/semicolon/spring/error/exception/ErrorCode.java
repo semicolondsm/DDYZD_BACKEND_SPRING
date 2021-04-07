@@ -17,10 +17,7 @@ public enum ErrorCode {
     //Auth
     INVALID_TOKEN(401, "Invalid Token."),
 
-    //Main
-    CLUB_NOT_FOUND(404, "Club Not Found."),
-    NOT_CLUB_MEMBER(403, "Not Club Member."),
-    NOT_CLUB_HEAD(403, "Not Club Head."),
+    //Feed
     FEED_NOT_FOUND(404, "Feed Not Found."),
 
     //File
@@ -33,6 +30,10 @@ public enum ErrorCode {
     APPLICATION_NOT_FOUND(400, "Application Not Found"),
     DONT_KICK_YOUR_SELF(403, "1393"),
     ALREADY_CLUB_MEMBER(400, "Already Club Member"),
+    CLUB_NOT_FOUND(404, "Club Not Found."),
+    NOT_CLUB_MEMBER(403, "Not Club Member."),
+    NOT_CLUB_HEAD(403, "Not Club Head."),
+    NOT_CLUB_MANAGER(403, "Not Club Manager."),
 
     //Erp
     BAD_SUPPLY_LINK(400, "Bad Supply Link");
