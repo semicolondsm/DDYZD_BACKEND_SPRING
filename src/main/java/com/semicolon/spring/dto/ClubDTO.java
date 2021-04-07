@@ -11,14 +11,14 @@ public class ClubDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class messageResponse{
+    public static class MessageResponse {
         private String msg;
     }
 
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class recruitment{
+    public static class Recruitment {
         @NonNull
         private List<String> major;
         @JsonFormat(timezone = "Asia/Seoul")
@@ -29,35 +29,35 @@ public class ClubDTO {
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class modify{
+    public static class Modify {
         private String clubName;
     }
 
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class changeHead{
+    public static class ChangeHead {
         private String userGcn;
     }
 
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class description{
+    public static class Description {
         private String description;
     }
 
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class hongbo{
+    public static class Hongbo {
         private String hongbo;
     }
 
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
-    public static class followers{
+    public static class Followers {
         private int followers;
     }
 
@@ -65,7 +65,7 @@ public class ClubDTO {
     @NoArgsConstructor
     @Getter
     @Builder
-    public static class club{
+    public static class Club {
         private int clubId;
         private String clubName;
         private String clubImage;
