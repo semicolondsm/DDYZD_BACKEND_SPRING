@@ -34,7 +34,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
     private final AuthenticationFacade authenticationFacade;
 
     @Override
-    public ClubDTO.messageResponse insertMember(int club_id, int user_id) {
+    public ClubDTO.MessageResponse insertMember(int club_id, int user_id) {
         if(isNotClubHead(club_id)){
             throw new NotClubHeadException();
         }
@@ -52,12 +52,12 @@ public class ClubHeadServiceImpl implements ClubHeadService{
                 .build()
         );
 
-        return new ClubDTO.messageResponse("Insert Club Member Success");
+        return new ClubDTO.MessageResponse("Insert Club Member Success");
 
     }
 
     @Override
-    public ClubDTO.messageResponse changeHead(ClubDTO.changeHead request, int club_id) {
+    public ClubDTO.MessageResponse changeHead(ClubDTO.ChangeHead request, int club_id) {
         if(isNotClubHead(club_id))
             throw new NotClubHeadException();
         clubRepository.findById(club_id)
@@ -68,11 +68,11 @@ public class ClubHeadServiceImpl implements ClubHeadService{
                     return club;
                 });
         log.info("change Head club_id : " + club_id);
-        return new ClubDTO.messageResponse("club head change success");
+        return new ClubDTO.MessageResponse("club head change success");
     }
 
     @Override
-    public ClubDTO.messageResponse insertManager(int club_id, int user_id) {
+    public ClubDTO.MessageResponse insertManager(int club_id, int user_id) {
         if(isNotClubHead(club_id)){
             throw new NotClubHeadException();
         }
@@ -91,12 +91,12 @@ public class ClubHeadServiceImpl implements ClubHeadService{
                 .build()
         );
 
-        return new ClubDTO.messageResponse("Insert Club Manager Success");
+        return new ClubDTO.MessageResponse("Insert Club Manager Success");
 
     }
 
     @Override
-    public ClubDTO.messageResponse deportManager(int club_id, int user_id) {
+    public ClubDTO.MessageResponse deportManager(int club_id, int user_id) {
         if(isNotClubHead(club_id)){
             throw new NotClubHeadException();
         }
@@ -112,11 +112,11 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
         clubManagerRepository.deleteByClubAndUser(club, user);
 
-        return new ClubDTO.messageResponse("Club Manager Deport Success");
+        return new ClubDTO.MessageResponse("Club Manager Deport Success");
     }
 
     @Override
-    public ClubDTO.messageResponse deportMember(int club_id, int user_id) {
+    public ClubDTO.MessageResponse deportMember(int club_id, int user_id) {
         if(isNotClubHead(club_id)){
             throw new NotClubHeadException();
         }
@@ -141,7 +141,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
         fcmService.send(request);
 
-        return new ClubDTO.messageResponse("Club Member Deport Success");
+        return new ClubDTO.MessageResponse("Club Member Deport Success");
     }
 
     private User getUser(){
