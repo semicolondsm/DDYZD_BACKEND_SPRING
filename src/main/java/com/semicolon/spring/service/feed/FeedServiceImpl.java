@@ -336,9 +336,7 @@ public class FeedServiceImpl implements FeedService{
     private boolean isClubHead(int club_id){
         User user = authenticationFacade.getUser();
         Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
-        ClubHead clubHead = clubHeadRepository.findByClubAndUser(club, user);
-        if(clubHead == null)
-            throw new NotClubHeadException();
-        else return true;
+        clubHeadRepository.findByClubAndUser(club, user).orElseThrow(NotClubHeadException::new);
+        return false;
     }
 }
