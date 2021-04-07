@@ -11,7 +11,6 @@ public interface ClubManagerService {
     ClubDTO.messageResponse clubHongbo(MultipartFile file, int club_id);
     ClubDTO.messageResponse clubBanner(MultipartFile file, int club_id);
     ClubDTO.messageResponse modifyClub(ClubDTO.modify request, int club_id);
-
     ClubDTO.messageResponse clubDescription(ClubDTO.description request, int club_id);
     ClubDTO.messageResponse deleteRecruitment(int club_id);
     ClubDTO.hongbo getHongbo(int club_id);
