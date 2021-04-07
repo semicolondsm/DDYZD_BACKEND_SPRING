@@ -7,7 +7,6 @@ import com.semicolon.spring.entity.club.ClubRepository;
 import com.semicolon.spring.entity.club.club_follow.ClubFollow;
 import com.semicolon.spring.entity.club.club_head.ClubHead;
 import com.semicolon.spring.entity.club.club_head.ClubHeadRepository;
-import com.semicolon.spring.entity.club.club_manager.ClubManager;
 import com.semicolon.spring.entity.club.club_manager.ClubManagerRepository;
 import com.semicolon.spring.entity.club.club_member.ClubMember;
 import com.semicolon.spring.entity.club.club_member.ClubMemberRepository;
@@ -52,7 +51,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
     @Override
     public ClubDTO.messageResponse recruitment(ClubDTO.recruitment request, int club_id) {
-        if(isClubHead(club_id)){
+        if(isNotClubHead(club_id)){
             throw new NotClubHeadException();
         }
         if(request.getCloseAt().before(new Date())){
@@ -111,7 +110,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
     @Override
     public ClubDTO.messageResponse clubProfile(MultipartFile file, int club_id) {
-        if(isClubHead(club_id))
+        if(isNotClubHead(club_id))
             throw new NotClubHeadException();
         try{
             Random random = new Random(System.currentTimeMillis());
@@ -133,7 +132,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
     @Override
     public ClubDTO.messageResponse clubHongbo(MultipartFile file, int club_id) {
-        if(isClubHead(club_id))
+        if(isNotClubHead(club_id))
             throw new NotClubHeadException();
         try{
             Random random = new Random(System.currentTimeMillis());
@@ -155,7 +154,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
     @Override
     public ClubDTO.messageResponse clubBanner(MultipartFile file, int club_id) {
-        if(isClubHead(club_id))
+        if(isNotClubHead(club_id))
             throw new NotClubHeadException();
         try{
             Random random = new Random(System.currentTimeMillis());
@@ -177,7 +176,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
     @Override
     public ClubDTO.messageResponse modifyClub(ClubDTO.modify request, int club_id) {
-        if(isClubHead(club_id))
+        if(isNotClubHead(club_id))
             throw new NotClubHeadException();
         clubRepository.findById(club_id)
                 .map(club -> {
@@ -191,7 +190,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
     @Override
     public ClubDTO.messageResponse changeHead(ClubDTO.changeHead request, int club_id) {
-        if(isClubHead(club_id))
+        if(isNotClubHead(club_id))
             throw new NotClubHeadException();
         clubRepository.findById(club_id)
                 .map(club -> {
@@ -206,7 +205,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
     @Override
     public ClubDTO.messageResponse clubDescription(ClubDTO.description request, int club_id) {
-        if(isClubHead(club_id))
+        if(isNotClubHead(club_id))
             throw new NotClubHeadException();
         clubRepository.findById(club_id)
                 .map(club -> {
@@ -220,7 +219,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
     @Override
     public ClubDTO.messageResponse deleteRecruitment(int club_id) {
-        if(isClubHead(club_id))
+        if(isNotClubHead(club_id))
             throw new NotClubHeadException();
         clubRepository.findById(club_id)
                 .map(club -> {
@@ -256,7 +255,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
     @Override
     public ClubDTO.hongbo getHongbo(int club_id) {
-        if(isClubHead(club_id))
+        if(isNotClubHead(club_id))
             throw new NotClubHeadException();
         return new ClubDTO.hongbo(clubRepository.findById(club_id)
                 .map(Club::getHongbo_image).orElseThrow(ClubNotFoundException::new));
@@ -264,7 +263,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
     @Override
     public ClubDTO.messageResponse deleteHongbo(int club_id) {
-        if(isClubHead(club_id))
+        if(isNotClubHead(club_id))
             throw new NotClubHeadException();
         clubRepository.findById(club_id)
                 .map(club -> {
@@ -276,7 +275,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
     @Override
     public ClubDTO.messageResponse deportMember(int club_id, int user_id) {
-        if(isClubHead(club_id)){
+        if(isNotClubHead(club_id)){
             throw new NotClubHeadException();
         }
 
@@ -305,7 +304,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
     @Override
     public ClubDTO.messageResponse insertMember(int club_id, int user_id) {
-        if(isClubHead(club_id)){
+        if(isNotClubHead(club_id)){
             throw new NotClubHeadException();
         }
 
@@ -330,14 +329,14 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         return authenticationFacade.getUser();
     }
 
-    private boolean isClubHead(int club_id){
+    private boolean isNotClubHead(int club_id){
         User user = authenticationFacade.getUser();
         Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
         clubHeadRepository.findByClubAndUser(club, user).orElseThrow(NotClubHeadException::new);
         return false;
     }
 
-    private boolean isClubManager(int club_id){
+    private boolean isNotClubManager(int club_id){
         User user = authenticationFacade.getUser();
         Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
         clubManagerRepository.findByClubAndUser(club, user).orElseThrow(NotClubManagerException::new);
