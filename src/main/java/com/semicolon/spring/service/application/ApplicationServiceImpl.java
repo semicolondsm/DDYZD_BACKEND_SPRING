@@ -1,10 +1,8 @@
 package com.semicolon.spring.service.application;
 
-import com.semicolon.spring.dto.HeadDTO;
+import com.semicolon.spring.dto.HeadDTO.*;
 import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.club.ClubRepository;
-import com.semicolon.spring.entity.club.club_member.ClubMemberRepository;
-import com.semicolon.spring.entity.club.club_head.ClubHead;
 import com.semicolon.spring.entity.club.club_head.ClubHeadRepository;
 import com.semicolon.spring.entity.club.room.Room;
 import com.semicolon.spring.entity.club.room.RoomRepository;
@@ -17,15 +15,12 @@ import com.semicolon.spring.service.fcm.FcmService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.concurrent.ExecutionException;
-
 @Service
 @RequiredArgsConstructor
 public class ApplicationServiceImpl implements ApplicationService {
 
     private final AuthenticationFacade authenticationFacade;
     private final FcmService fcmService;
-    private final ClubMemberRepository clubMemberRepository;
     private final ClubRepository clubRepository;
     private final ClubHeadRepository clubHeadRepository;
     private final UserRepository userRepository;
@@ -33,17 +28,17 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 
     @Override
-    public HeadDTO.MessageResponse cancelApplication(int club_id) {
+    public MessageResponse cancelApplication(int club_id) {
         User user = getUser();
         Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
 
         deleteApplication(user, club);
 
-        return new HeadDTO.MessageResponse("Application Cancel Success");
+        return new MessageResponse("Application Cancel Success");
     }
 
     @Override
-    public HeadDTO.MessageResponse removeApplication(int club_id, int user_id) {
+    public MessageResponse removeApplication(int club_id, int user_id) {
         if(isNotClubHead(club_id)){
             throw new NotClubHeadException();
         }
@@ -53,7 +48,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
         deleteApplication(user, club);
 
-        return new HeadDTO.MessageResponse("Application Remove Success");
+        return new MessageResponse("Application Remove Success");
     }
 
     private void deleteApplication(User user, Club club) {
@@ -87,7 +82,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 
         if(user.getDevice_token()!=null){
-            HeadDTO.FcmRequest request = HeadDTO.FcmRequest.builder()
+            FcmRequest request = FcmRequest.builder()
                     .token(user.getDevice_token())
                     .title(club.getName())
                     .message(user.getName() + "님의 " + club.getName() + "동아리 신청이 취소되었습니다.")
