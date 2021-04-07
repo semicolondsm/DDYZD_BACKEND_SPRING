@@ -5,7 +5,6 @@ import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.club.ClubRepository;
 import com.semicolon.spring.entity.club.club_member.ClubMemberRepository;
 import com.semicolon.spring.entity.club.club_follow.ClubFollowRepository;
-import com.semicolon.spring.entity.club.club_head.ClubHead;
 import com.semicolon.spring.entity.club.club_head.ClubHeadRepository;
 import com.semicolon.spring.entity.feed.Feed;
 import com.semicolon.spring.entity.feed.FeedRepository;
@@ -17,20 +16,17 @@ import com.semicolon.spring.entity.feed.feed_medium.FeedMediumRepository;
 import com.semicolon.spring.entity.user.User;
 import com.semicolon.spring.exception.*;
 import com.semicolon.spring.security.AuthenticationFacade;
-import com.semicolon.spring.security.jwt.auth.AuthDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.*;
 
 @Service
@@ -188,7 +184,7 @@ public class FeedServiceImpl implements FeedService{
     public FeedDTO.messageResponse feedPin(int feedId) {
         Feed feed = feedRepository.findById(feedId).orElseThrow(FeedNotFoundException::new);
 
-        if(!isClubHead(feed.getClub().getClubId())){
+        if(!isNotClubHead(feed.getClub().getClubId())){
             throw new NotClubHeadException();
         }
         if(!feed.isPin()&&feedRepository.findByClubAndPinIsTrue(feed.getClub()).size()>=1){
@@ -317,7 +313,6 @@ public class FeedServiceImpl implements FeedService{
 
     public Page<Feed> getFeeds(int page){
         PageRequest pageRequest = PageRequest.of(page, 3, Sort.by("uploadAt").descending());
-        Page<Feed> feeds = feedRepository.findAll(pageRequest);
         return feedRepository.findAll(pageRequest);
     }
 
@@ -333,7 +328,7 @@ public class FeedServiceImpl implements FeedService{
         return !clubMemberRepository.findByUserAndClub(authenticationFacade.getUser(), club).isPresent();
     }
 
-    private boolean isClubHead(int club_id){
+    private boolean isNotClubHead(int club_id){
         User user = authenticationFacade.getUser();
         Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
         clubHeadRepository.findByClubAndUser(club, user).orElseThrow(NotClubHeadException::new);
