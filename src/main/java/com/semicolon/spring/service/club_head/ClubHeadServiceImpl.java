@@ -7,6 +7,8 @@ import com.semicolon.spring.entity.club.ClubRepository;
 import com.semicolon.spring.entity.club.club_follow.ClubFollow;
 import com.semicolon.spring.entity.club.club_head.ClubHead;
 import com.semicolon.spring.entity.club.club_head.ClubHeadRepository;
+import com.semicolon.spring.entity.club.club_manager.ClubManager;
+import com.semicolon.spring.entity.club.club_manager.ClubManagerRepository;
 import com.semicolon.spring.entity.club.club_member.ClubMember;
 import com.semicolon.spring.entity.club.club_member.ClubMemberRepository;
 import com.semicolon.spring.entity.club.major.Major;
@@ -36,9 +38,12 @@ public class ClubHeadServiceImpl implements ClubHeadService{
     private final ClubRepository clubRepository;
     private final ClubMemberRepository clubMemberRepository;
     private final ClubHeadRepository clubHeadRepository;
+    private final ClubManagerRepository clubManagerRepository;
+
     private final MajorRepository majorRepository;
     private final UserRepository userRepository;
     private final RoomRepository roomRepository;
+
     private final FcmService fcmService;
     private final AuthenticationFacade authenticationFacade;
 
@@ -329,6 +334,8 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         User user = authenticationFacade.getUser();
         Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
         ClubHead clubHead = clubHeadRepository.findByClubAndUser(club, user);
+        ClubManager clubManager = clubManagerRepository.findByClubAndUser(club, user);
+        System.out.println(clubManager.getUser().getName());
         if(clubHead == null)
             throw new NotClubHeadException();
         else return false;
