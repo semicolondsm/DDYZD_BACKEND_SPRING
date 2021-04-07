@@ -6,15 +6,15 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface FeedService {
-    FeedDTO.messageResponse fileUpload(List<MultipartFile> files, int feedId);
-    FeedDTO.writeFeedResponse writeFeed(FeedDTO.feed request, int club_id);
-    List<FeedDTO.getFeed> getFeedList(int page);
-    List<FeedDTO.getFeedClub> getFeedClubList(int page, int club_id);
-    FeedDTO.messageResponse feedModify(FeedDTO.feed request, int feedId);
-    FeedDTO.messageResponse feedFlag(int feedId);
-    FeedDTO.getFeed getFeed(int feedId);
-    FeedDTO.messageResponse deleteFeed(int feedId);
-    FeedDTO.messageResponse feedPin(int feedId);
-    List<FeedDTO.getFeed> getFeedList();
-    List<FeedDTO.userResponse> getFeedUser(int feedId);
+    FeedDTO.MessageResponse fileUpload(List<MultipartFile> files, int feedId);
+    FeedDTO.WriteFeedResponse writeFeed(FeedDTO.Feed request, int club_id);
+    List<FeedDTO.GetFeed> getFeedList(int page);
+    List<FeedDTO.GetFeedClub> getFeedClubList(int page, int club_id);
+    FeedDTO.MessageResponse feedModify(FeedDTO.Feed request, int feedId);
+    FeedDTO.MessageResponse feedFlag(int feedId);
+    FeedDTO.GetFeed getFeed(int feedId);
+    FeedDTO.MessageResponse deleteFeed(int feedId);
+    FeedDTO.MessageResponse feedPin(int feedId);
+    List<FeedDTO.GetFeed> getFeedList();
+    List<FeedDTO.UserResponse> getFeedUser(int feedId);
 }
