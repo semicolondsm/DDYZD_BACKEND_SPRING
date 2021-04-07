@@ -333,18 +333,14 @@ public class ClubHeadServiceImpl implements ClubHeadService{
     private boolean isClubHead(int club_id){
         User user = authenticationFacade.getUser();
         Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
-        ClubHead clubHead = clubHeadRepository.findByClubAndUser(club, user);
-        if(clubHead == null)
-            throw new NotClubHeadException();
-        else return false;
+        clubHeadRepository.findByClubAndUser(club, user).orElseThrow(NotClubHeadException::new);
+        return false;
     }
 
     private boolean isClubManager(int club_id){
         User user = authenticationFacade.getUser();
         Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
-        ClubManager clubManager = clubManagerRepository.findByClubAndUser(club, user);
-        if(clubManager == null)
-            throw new NotClubManagerException();
-        else return false;
+        clubManagerRepository.findByClubAndUser(club, user).orElseThrow(NotClubManagerException::new);
+        return false;
     }
 }
