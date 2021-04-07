@@ -334,7 +334,6 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         User user = authenticationFacade.getUser();
         Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
         ClubHead clubHead = clubHeadRepository.findByClubAndUser(club, user);
-        ClubManager clubManager = clubManagerRepository.findByClubAndUser(club, user);
         if(clubHead == null)
             throw new NotClubHeadException();
         else return false;
