@@ -4,6 +4,8 @@ import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.user.User;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.Optional;
+
 public interface ClubManagerRepository extends CrudRepository<ClubManager, Integer> {
-    ClubManager findByClubAndUser(Club club, User user);
+    Optional<ClubManager> findByClubAndUser(Club club, User user);
 }
