@@ -9,20 +9,20 @@ import java.util.List;
 
 public class ErpDTO {
 
-    @AllArgsConstructor
-    @NoArgsConstructor
     @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Url{
         private String url;
     }
 
-    @AllArgsConstructor
-    @NoArgsConstructor
     @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Supply{
         private String name;
         private List<String> options;
-        private List<String> image_url;
+        private List<String> imageUrl;
     }
 
 }
