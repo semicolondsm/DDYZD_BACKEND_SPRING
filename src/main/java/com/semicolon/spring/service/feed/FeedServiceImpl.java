@@ -149,23 +149,8 @@ public class FeedServiceImpl implements FeedService{
         User user = authenticationFacade.getUser();
         return feedRepository.findById(feedId)
                 .map(feed -> {
-                    GetFeed getFeed = GetFeed.builder()
-                            .feedId(feed.getId())
-                            .clubName(feed.getClub().getName())
-                            .clubId(feed.getClub().getClubId())
-                            .profileImage(feed.getClub().getProfile_image())
-                            .content(feed.getContents())
-                            .media(getMediaPath(feed.getMedia()))
-                            .uploadAt(feed.getUploadAt())
-                            .flags(feedFlagRepository.countByFeed(feed))
-                            .build();
-                    if(user!=null){
-                        getFeed.setIsFlag(isFlag(user, feed));
-                        getFeed.setIsFollow(clubFollowRepository.findByUserAndClub(user, feed.getClub()).isPresent());
-                        getFeed.setOwner(!isNotClubMember(feed.getClub().getClubId()));
-                    }
                     log.info("getFeed feedId : " + feedId);
-                    return getFeed;
+                    return getFeed(feed, user);
                 }).orElseThrow(FeedNotFoundException::new);
     }
 
@@ -253,23 +238,7 @@ public class FeedServiceImpl implements FeedService{
         List<GetFeed> response = new ArrayList<>();
         User user = authenticationFacade.getUser();
         for(com.semicolon.spring.entity.feed.Feed feed : feeds){
-            GetFeed getFeed = GetFeed.builder()
-                    .feedId(feed.getId())
-                    .clubName(feed.getClub().getName())
-                    .clubId(feed.getClub().getClubId())
-                    .profileImage(feed.getClub().getProfile_image())
-                    .content(feed.getContents())
-                    .media(getMediaPath(feed.getMedia()))
-                    .uploadAt(feed.getUploadAt())
-                    .flags(feedFlagRepository.countByFeed(feed))
-                    .build();
-
-            if(user!=null){
-                getFeed.setIsFlag(isFlag(user, feed));
-                getFeed.setIsFollow(clubFollowRepository.findByUserAndClub(user, feed.getClub()).isPresent());
-                getFeed.setOwner(!isNotClubMember(feed.getClub().getClubId()));
-            }
-            response.add(getFeed);
+            response.add(getFeed(feed, user));
         }
         log.info("get feedList page : " + page);
         return response;
@@ -333,4 +302,24 @@ public class FeedServiceImpl implements FeedService{
         clubHeadRepository.findByClubAndUser(club, user).orElseThrow(NotClubHeadException::new);
         return false;
     }
+
+    private GetFeed getFeed(com.semicolon.spring.entity.feed.Feed feed, User user){
+        GetFeed getFeed = GetFeed.builder()
+                .feedId(feed.getId())
+                .clubName(feed.getClub().getName())
+                .clubId(feed.getClub().getClubId())
+                .profileImage(feed.getClub().getProfile_image())
+                .content(feed.getContents())
+                .media(getMediaPath(feed.getMedia()))
+                .uploadAt(feed.getUploadAt())
+                .flags(feedFlagRepository.countByFeed(feed))
+                .build();
+        if(user!=null){
+            getFeed.setIsFlag(isFlag(user, feed));
+            getFeed.setIsFollow(clubFollowRepository.findByUserAndClub(user, feed.getClub()).isPresent());
+            getFeed.setOwner(!isNotClubMember(feed.getClub().getClubId()));
+        }
+        return getFeed;
+    }
+
 }
