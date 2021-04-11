@@ -19,7 +19,7 @@ public class FeedMedium {
     private Integer id;
 
     @Column(nullable = false)
-    private String medium_path;
+    private String mediumPath;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "feed_id")
