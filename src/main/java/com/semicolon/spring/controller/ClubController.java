@@ -15,8 +15,8 @@ public class ClubController {
     private final ClubService clubService;
 
     @GetMapping("/{club_id}/follow")
-    public Followers getFollowers(@PathVariable("club_id") int club_id){
-        return clubService.getFollowers(club_id);
+    public Followers getFollowers(@PathVariable("club_id") int clubId){
+        return clubService.getFollowers(clubId);
     }
 
     @GetMapping("/follow")
