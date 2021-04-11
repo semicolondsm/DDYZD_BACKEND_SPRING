@@ -33,7 +33,6 @@ import java.util.*;
 public class ClubManagerServiceImpl implements ClubManagerService {
     private final ClubRepository clubRepository;
     private final ClubMemberRepository clubMemberRepository;
-    private final ClubHeadRepository clubHeadRepository;
     private final ClubManagerRepository clubManagerRepository;
 
     private final MajorRepository majorRepository;
