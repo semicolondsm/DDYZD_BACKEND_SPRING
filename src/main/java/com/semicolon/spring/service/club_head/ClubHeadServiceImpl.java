@@ -121,7 +121,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         clubMemberRepository.deleteByUserAndClub(user, club);
 
         HeadDTO.FcmRequest request = HeadDTO.FcmRequest.builder()
-                .token(user.getDevice_token())
+                .token(user.getDeviceToken())
                 .title(club.getName())
                 .message(user.getName() + "님이 " + club.getName() + "에서 추방당하셨습니다.")
                 .club(club.getClubId())
