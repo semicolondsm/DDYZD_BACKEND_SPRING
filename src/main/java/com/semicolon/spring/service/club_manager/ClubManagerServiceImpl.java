@@ -83,7 +83,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
             User follower = follow.getUser();
 
             HeadDTO.FcmRequest fcmRequest = HeadDTO.FcmRequest.builder()
-                    .token(follower.getDevice_token())
+                    .token(follower.getDeviceToken())
                     .title(club.getName())
                     .message(follower.getName() + "님, 팔로우하신 " + club.getName() + "동아리의 모집이 시작되었습니다.")
                     .club(club.getClubId())
@@ -217,11 +217,11 @@ public class ClubManagerServiceImpl implements ClubManagerService {
                     }
 
                     for(ClubFollow user : club.getFollows()){
-                        if(user.getUser().getDevice_token() != null){
+                        if(user.getUser().getDeviceToken() != null){
                             HeadDTO.FcmRequest request = HeadDTO.FcmRequest.builder()
                                     .title(club.getName())
                                     .message(club.getName() + "의 모집공고가 취소되었습니다.")
-                                    .token(user.getUser().getDevice_token())
+                                    .token(user.getUser().getDeviceToken())
                                     .club(club.getClubId())
                                     .build();
                             fcmService.send(request);
