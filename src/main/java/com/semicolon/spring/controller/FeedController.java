@@ -57,13 +57,13 @@ public class FeedController {
     }
 
     @GetMapping("/feed/{feed_id}")
-    public GetFeed getFeed(@PathVariable("feed_id") int feed_id){
-        return feedService.getFeed(feed_id);
+    public GetFeed getFeed(@PathVariable("feed_id") int feedId){
+        return feedService.getFeed(feedId);
     }
 
     @DeleteMapping("/feed/{feed_id}")
-    public MessageResponse deleteFeed(@PathVariable("feed_id") int feed_id){
-        return feedService.deleteFeed(feed_id);
+    public MessageResponse deleteFeed(@PathVariable("feed_id") int feedId){
+        return feedService.deleteFeed(feedId);
     }
 
     @PutMapping("/feed/{feed_id}/pin")
