@@ -12,10 +12,10 @@ import java.util.List;
 
 public class FeedDTO {
 
-    @AllArgsConstructor
-    @NoArgsConstructor
     @Getter
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class GetFeed {
         private int feedId;
         private String clubName;
@@ -44,10 +44,10 @@ public class FeedDTO {
 
     }
 
-    @AllArgsConstructor
-    @NoArgsConstructor
     @Getter
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class GetFeedClub {
         private int feedId;
         private String clubName;
@@ -75,32 +75,32 @@ public class FeedDTO {
         }
     }
 
-    @AllArgsConstructor
-    @NoArgsConstructor
     @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Feed {
         private String content;
     }
 
-    @AllArgsConstructor
-    @NoArgsConstructor
     @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class WriteFeedResponse {
         private String msg;
         private int feedId;
     }
 
-    @AllArgsConstructor
-    @NoArgsConstructor
     @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class MessageResponse {
         private String msg;
     }
 
-    @AllArgsConstructor
-    @NoArgsConstructor
     @Getter
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class UserResponse {
         private int userId;
         private String userName;
