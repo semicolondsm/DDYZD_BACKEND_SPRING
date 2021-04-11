@@ -13,28 +13,28 @@ public class ClubHeadController {
     private final ClubHeadService clubHeadService;
 
     @PutMapping("/{club_id}/head")
-    public MessageResponse changeHead(@RequestBody ChangeHead request, @PathVariable("club_id") int club_id){
-        return clubHeadService.changeHead(request, club_id);
+    public MessageResponse changeHead(@RequestBody ChangeHead request, @PathVariable("club_id") int clubId){
+        return clubHeadService.changeHead(request, clubId);
     }
 
     @DeleteMapping("/deport")
-    public MessageResponse deportMember(@RequestParam("clubid") int club_id, @RequestParam("userid") int user_id){
-        return clubHeadService.deportMember(club_id, user_id);
+    public MessageResponse deportMember(@RequestParam("clubid") int clubId, @RequestParam("userid") int userId){
+        return clubHeadService.deportMember(clubId, userId);
     }
 
     @PostMapping("/insert")
-    public MessageResponse insertMember(@RequestParam("clubid") int club_id, @RequestParam("userid") int user_id) {
-        return clubHeadService.insertMember(club_id, user_id);
+    public MessageResponse insertMember(@RequestParam("clubid") int clubId, @RequestParam("userid") int userId) {
+        return clubHeadService.insertMember(clubId, userId);
     }
 
     @PostMapping("/insert/manager")
-    public MessageResponse insertManager(@RequestParam("clubid") int club_id, @RequestParam("userid") int user_id){
-        return clubHeadService.insertManager(club_id, user_id);
+    public MessageResponse insertManager(@RequestParam("clubid") int clubId, @RequestParam("userid") int userId){
+        return clubHeadService.insertManager(clubId, userId);
     }
 
     @DeleteMapping("/deport/manager")
-    public MessageResponse deportManager(@RequestParam("clubid") int club_id, @RequestParam("userid") int user_id){
-        return clubHeadService.deportManager(club_id, user_id);
+    public MessageResponse deportManager(@RequestParam("clubid") int clubId, @RequestParam("userid") int userId){
+        return clubHeadService.deportManager(clubId, userId);
     }
 
 }
