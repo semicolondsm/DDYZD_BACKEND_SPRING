@@ -30,10 +30,14 @@ public class Room {
     private Club club;
 
     @Column(columnDefinition = "TINYINT(1)")
-    private boolean user_looked;
+    private boolean userLooked;
 
     @Column(columnDefinition = "TINYINT(1)")
-    private boolean club_looked;
+    private boolean clubLooked;
+
+    private int uOffset;
+
+    private int cOffset;
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "ENUM('C', 'A', 'R', 'S', 'N') default 'C'")
