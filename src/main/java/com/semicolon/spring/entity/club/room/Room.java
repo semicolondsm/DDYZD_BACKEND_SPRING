@@ -35,8 +35,10 @@ public class Room {
     @Column(columnDefinition = "TINYINT(1)")
     private boolean clubLooked;
 
+    @Column(columnDefinition = "INT default 0")
     private int uOffset;
 
+    @Column(columnDefinition = "INT default 0")
     private int cOffset;
 
     @Enumerated(EnumType.STRING)
