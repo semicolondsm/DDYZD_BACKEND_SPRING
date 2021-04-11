@@ -80,15 +80,15 @@ public class FeedServiceImpl implements FeedService{
     }
 
     @Override
-    public WriteFeedResponse writeFeed(Feed request, int club_id) {
-        if(isNotClubMember(club_id))
+    public WriteFeedResponse writeFeed(Feed request, int clubId) {
+        if(isNotClubMember(clubId))
             throw new NotClubMemberException();
-        log.info("writeFeed club_id : " + club_id);
+        log.info("writeFeed club_id : " + clubId);
         return new WriteFeedResponse("feed writing success",
                 feedRepository.save(
                     com.semicolon.spring.entity.feed.Feed.builder()
                         .contents(request.getContent())
-                        .club(clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new))
+                        .club(clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new))
                         .build()
                 ).getId());
     }
@@ -99,8 +99,8 @@ public class FeedServiceImpl implements FeedService{
     }
 
     @Override
-    public List<GetFeedClub> getFeedClubList(int page, int club_id) {
-        return feedClubToResponse(getFeedClub(page, club_id).getContent(), page);
+    public List<GetFeedClub> getFeedClubList(int page, int clubId) {
+        return feedClubToResponse(getFeedClub(page, clubId).getContent(), page);
     }
 
     @Override
@@ -315,21 +315,21 @@ public class FeedServiceImpl implements FeedService{
         return feedRepository.findAll(pageRequest);
     }
 
-    public Page<com.semicolon.spring.entity.feed.Feed> getFeedClub(int page, int club_id){
-        Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
+    public Page<com.semicolon.spring.entity.feed.Feed> getFeedClub(int page, int clubId){
+        Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
         PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("pin").descending().and(Sort.by("uploadAt").descending()));
         return feedRepository.findByClub(club, pageRequest);
     }
 
-    private boolean isNotClubMember(int club_id){ // user가 속해있지 않은 club_id를 보내는 테스트 해야함.
-        Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
+    private boolean isNotClubMember(int clubId){ // user가 속해있지 않은 club_id를 보내는 테스트 해야함.
+        Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
         //log.info("isNotClubMember user_name : " + authenticationFacade.getUser().getName());
         return !clubMemberRepository.findByUserAndClub(authenticationFacade.getUser(), club).isPresent();
     }
 
-    private boolean isNotClubHead(int club_id){
+    private boolean isNotClubHead(int clubId){
         User user = authenticationFacade.getUser();
-        Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
+        Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
         clubHeadRepository.findByClubAndUser(club, user).orElseThrow(NotClubHeadException::new);
         return false;
     }
