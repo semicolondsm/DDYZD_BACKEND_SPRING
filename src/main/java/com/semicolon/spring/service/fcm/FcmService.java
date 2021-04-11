@@ -7,16 +7,13 @@ import com.google.firebase.messaging.*;
 import com.semicolon.spring.dto.HeadDTO;
 import com.semicolon.spring.entity.user.User;
 import com.semicolon.spring.entity.user.UserRepository;
-import com.semicolon.spring.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.util.Date;
 
 @Service
 @Slf4j
