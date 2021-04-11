@@ -24,8 +24,8 @@ public class ClubServiceImpl implements ClubService {
 
 
     @Override
-    public Followers getFollowers(int club_id) {
-        return new Followers(clubRepository.findById(club_id)
+    public Followers getFollowers(int clubId) {
+        return new Followers(clubRepository.findById(clubId)
                 .map(club -> club.getFollows().size())
                 .orElseThrow(ClubNotFoundException::new));
     }
