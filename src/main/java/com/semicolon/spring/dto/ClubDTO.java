@@ -1,6 +1,8 @@
 package com.semicolon.spring.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.semicolon.spring.entity.club.Club;
+import com.semicolon.spring.entity.user.User;
 import lombok.*;
 
 import javax.validation.constraints.NotEmpty;
@@ -70,6 +72,14 @@ public class ClubDTO {
         private String clubName;
         private String clubImage;
         private String clubDescription;
+    }
+
+    @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Information {
+        private User user;
+        private com.semicolon.spring.entity.club.Club club;
     }
 
 
