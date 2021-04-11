@@ -218,7 +218,7 @@ public class FeedServiceImpl implements FeedService{
                     for(FeedFlag flag : feed.getFeedFlags()){
                         responses.add(UserResponse.builder()
                                 .userName(flag.getUser().getName())
-                                .imagePath(flag.getUser().getImage_path())
+                                .imagePath(flag.getUser().getImagePath())
                                 .userId(flag.getUser().getId())
                                 .build()
                         );
@@ -274,7 +274,7 @@ public class FeedServiceImpl implements FeedService{
         List<String> response = new ArrayList<>();
         Collections.sort(list, new MediaComparator());
         for(FeedMedium feedMedium : list){
-            response.add(feedMedium.getMedium_path());
+            response.add(feedMedium.getMediumPath());
         }
         return response;
     }
