@@ -15,13 +15,13 @@ public class ApplicationController {
     private final ApplicationService applicationService;
 
     @DeleteMapping("/cancel")
-    public MessageResponse cancelApplication(@RequestParam("clubid") int club_id) throws ExecutionException, InterruptedException {
-        return applicationService.cancelApplication(club_id);
+    public MessageResponse cancelApplication(@RequestParam("clubid") int clubId) throws ExecutionException, InterruptedException {
+        return applicationService.cancelApplication(clubId);
     }
 
     @DeleteMapping("/remove")
-    public MessageResponse removeApplication(@RequestParam("clubid") int club_id, @RequestParam("userid") int user_id) throws ExecutionException, InterruptedException {
-        return applicationService.removeApplication(club_id, user_id);
+    public MessageResponse removeApplication(@RequestParam("clubid") int clubId, @RequestParam("userid") int userId) throws ExecutionException, InterruptedException {
+        return applicationService.removeApplication(clubId, userId);
     }
 
 
