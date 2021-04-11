@@ -14,7 +14,7 @@ public class ErpController {
     private final ErpService erpService;
 
     @GetMapping("/club/{club_id}/supply")
-    public Supply supply(@PathVariable("club_id") int club_id, @RequestBody Url url) throws IOException {
+    public Supply supply(@PathVariable("club_id") int clubId, @RequestBody Url url) throws IOException {
         return erpService.supply(url);
     }
 
