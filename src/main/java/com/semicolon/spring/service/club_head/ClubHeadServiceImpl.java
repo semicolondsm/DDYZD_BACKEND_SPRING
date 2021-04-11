@@ -34,13 +34,13 @@ public class ClubHeadServiceImpl implements ClubHeadService{
     private final AuthenticationFacade authenticationFacade;
 
     @Override
-    public ClubDTO.MessageResponse insertMember(int club_id, int user_id) {
-        if(isNotClubHead(club_id)){
+    public ClubDTO.MessageResponse insertMember(int clubId, int userId) {
+        if(isNotClubHead(clubId)){
             throw new NotClubHeadException();
         }
 
-        User user = userRepository.findById(user_id).orElseThrow(UserNotFoundException::new);
-        Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
 
         if(clubMemberRepository.findByUserAndClub(user, club).isPresent()){
             throw new AlreadyClubMemberException();
@@ -57,28 +57,28 @@ public class ClubHeadServiceImpl implements ClubHeadService{
     }
 
     @Override
-    public ClubDTO.MessageResponse changeHead(ClubDTO.ChangeHead request, int club_id) {
-        if(isNotClubHead(club_id))
+    public ClubDTO.MessageResponse changeHead(ClubDTO.ChangeHead request, int clubId) {
+        if(isNotClubHead(clubId))
             throw new NotClubHeadException();
-        clubRepository.findById(club_id)
+        clubRepository.findById(clubId)
                 .map(club -> {
                     ClubHead clubHead = club.getClubHead();
                     clubHead.setUser(userRepository.findByGcn(request.getUserGcn()));
                     clubHeadRepository.save(clubHead);
                     return club;
                 });
-        log.info("change Head club_id : " + club_id);
+        log.info("change Head club_id : " + clubId);
         return new ClubDTO.MessageResponse("club head change success");
     }
 
     @Override
-    public ClubDTO.MessageResponse insertManager(int club_id, int user_id) {
-        if(isNotClubHead(club_id)){
+    public ClubDTO.MessageResponse insertManager(int clubId, int userId) {
+        if(isNotClubHead(clubId)){
             throw new NotClubHeadException();
         }
 
-        User user = userRepository.findById(user_id).orElseThrow(UserNotFoundException::new);
-        Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
 
         if(clubManagerRepository.findByClubAndUser(club, user).isPresent()){
             throw new AlreadyClubManagerException();
@@ -96,13 +96,13 @@ public class ClubHeadServiceImpl implements ClubHeadService{
     }
 
     @Override
-    public ClubDTO.MessageResponse deportManager(int club_id, int user_id) {
-        if(isNotClubHead(club_id)){
+    public ClubDTO.MessageResponse deportManager(int clubId, int userId) {
+        if(isNotClubHead(clubId)){
             throw new NotClubHeadException();
         }
 
-        User user = userRepository.findById(user_id).orElseThrow(UserNotFoundException::new);
-        Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
 
         if(user.getId().equals(getUser().getId())){
             throw new DontKickYourSelfException();
@@ -116,13 +116,13 @@ public class ClubHeadServiceImpl implements ClubHeadService{
     }
 
     @Override
-    public ClubDTO.MessageResponse deportMember(int club_id, int user_id) {
-        if(isNotClubHead(club_id)){
+    public ClubDTO.MessageResponse deportMember(int clubId, int userId) {
+        if(isNotClubHead(clubId)){
             throw new NotClubHeadException();
         }
 
-        User user = userRepository.findById(user_id).orElseThrow(UserNotFoundException::new);
-        Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
 
         if(user.getId().equals(getUser().getId())){
             throw new DontKickYourSelfException();
@@ -148,9 +148,9 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         return authenticationFacade.getUser();
     }
 
-    private boolean isNotClubHead(int club_id){
+    private boolean isNotClubHead(int clubId){
         User user = authenticationFacade.getUser();
-        Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
+        Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
         clubHeadRepository.findByClubAndUser(club, user).orElseThrow(NotClubHeadException::new);
         return false;
     }
