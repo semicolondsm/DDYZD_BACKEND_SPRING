@@ -18,48 +18,48 @@ public class ClubManagerController {
     private final ClubManagerService clubHeadService;
 
     @PostMapping("/{club_id}/recruitment")
-    public MessageResponse recruitment(@RequestBody @Valid ClubDTO.Recruitment request, @PathVariable("club_id") int club_id) throws ExecutionException, InterruptedException {
-        return clubHeadService.recruitment(request, club_id);
+    public MessageResponse recruitment(@RequestBody @Valid ClubDTO.Recruitment request, @PathVariable("club_id") int clubId) throws ExecutionException, InterruptedException {
+        return clubHeadService.recruitment(request, clubId);
     }
 
     @PostMapping("/{club_id}/profile")
-    public MessageResponse profile(@RequestParam("file") MultipartFile file, @PathVariable("club_id") int club_id){
-        return clubHeadService.clubProfile(file, club_id);
+    public MessageResponse profile(@RequestParam("file") MultipartFile file, @PathVariable("club_id") int clubId){
+        return clubHeadService.clubProfile(file, clubId);
     }
 
     @PostMapping("/{club_id}/hongbo")
-    public MessageResponse hongbo(@RequestParam("file") MultipartFile file, @PathVariable("club_id") int club_id){
-        return clubHeadService.clubHongbo(file, club_id);
+    public MessageResponse hongbo(@RequestParam("file") MultipartFile file, @PathVariable("club_id") int clubId){
+        return clubHeadService.clubHongbo(file, clubId);
     }
 
     @PostMapping("/{club_id}/banner")
-    public MessageResponse banner(@RequestParam("file") MultipartFile file, @PathVariable("club_id") int club_id){
-        return clubHeadService.clubBanner(file, club_id);
+    public MessageResponse banner(@RequestParam("file") MultipartFile file, @PathVariable("club_id") int clubId){
+        return clubHeadService.clubBanner(file, clubId);
     }
 
     @PutMapping("/{club_id}")
-    public MessageResponse modify(@RequestBody Modify request, @PathVariable("club_id") int club_id){
-        return clubHeadService.modifyClub(request, club_id);
+    public MessageResponse modify(@RequestBody Modify request, @PathVariable("club_id") int clubId){
+        return clubHeadService.modifyClub(request, clubId);
     }
 
     @PostMapping("/{club_id}/description")
-    public MessageResponse description(@RequestBody Description request, @PathVariable("club_id") int club_id){
-        return clubHeadService.clubDescription(request, club_id);
+    public MessageResponse description(@RequestBody Description request, @PathVariable("club_id") int clubId){
+        return clubHeadService.clubDescription(request, clubId);
     }
 
     @DeleteMapping("/{club_id}/recruitment")
-    public MessageResponse deleteRecruitment(@PathVariable("club_id") int club_id){
-        return clubHeadService.deleteRecruitment(club_id);
+    public MessageResponse deleteRecruitment(@PathVariable("club_id") int clubId){
+        return clubHeadService.deleteRecruitment(clubId);
     }
 
     @GetMapping("/{club_id}/hongbo")
-    public Hongbo getHongbo(@PathVariable("club_id") int club_id){
-        return clubHeadService.getHongbo(club_id);
+    public Hongbo getHongbo(@PathVariable("club_id") int clubId){
+        return clubHeadService.getHongbo(clubId);
     }
 
     @DeleteMapping("/{club_id}/hongbo")
-    public MessageResponse deleteHongbo(@PathVariable("club_id") int club_id){
-        return clubHeadService.deleteHongbo(club_id);
+    public MessageResponse deleteHongbo(@PathVariable("club_id") int clubId){
+        return clubHeadService.deleteHongbo(clubId);
     }
 
 
