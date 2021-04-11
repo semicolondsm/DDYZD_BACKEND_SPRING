@@ -46,8 +46,8 @@ public class ClubManagerServiceImpl implements ClubManagerService {
     private String PATH;
 
     @Override
-    public ClubDTO.MessageResponse recruitment(ClubDTO.Recruitment request, int club_id) {
-        if(isNotClubManager(club_id)){
+    public ClubDTO.MessageResponse recruitment(ClubDTO.Recruitment request, int clubId) {
+        if(isNotClubManager(clubId)){
             throw new NotClubHeadException();
         }
         if(request.getCloseAt().before(new Date())){
@@ -55,7 +55,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
         }
         if(request.getMajor().isEmpty())
             throw new BadRequestException();
-        Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
+        Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
         majorRepository.deleteByClub(club);
         club.setMajors();
         Set<String> majorList = new HashSet<>(request.getMajor());
@@ -100,25 +100,25 @@ public class ClubManagerServiceImpl implements ClubManagerService {
 
         }
 
-        log.info("make recruitment club_id : " + club_id);
+        log.info("make recruitment club_id : " + clubId);
         return new ClubDTO.MessageResponse("recruitment success");
     }
 
     @Override
-    public ClubDTO.MessageResponse clubProfile(MultipartFile file, int club_id) {
-        if(isNotClubManager(club_id))
+    public ClubDTO.MessageResponse clubProfile(MultipartFile file, int clubId) {
+        if(isNotClubManager(clubId))
             throw new NotClubHeadException();
         try{
             Random random = new Random(System.currentTimeMillis());
             String fileString = random.nextInt() + file.getOriginalFilename();
             file.transferTo(new File(PATH+ fileString));
-            clubRepository.findById(club_id)
+            clubRepository.findById(clubId)
                     .map(club-> {
                         club.setProfile_image("club/" + fileString);
                         clubRepository.save(club);
                         return club;
                     });
-            log.info("change club Profile club_id : " + club_id);
+            log.info("change club Profile club_id : " + clubId);
             return new ClubDTO.MessageResponse("club profile write success");
         }catch (IOException e){
             e.printStackTrace();
@@ -127,20 +127,20 @@ public class ClubManagerServiceImpl implements ClubManagerService {
     }
 
     @Override
-    public ClubDTO.MessageResponse clubHongbo(MultipartFile file, int club_id) {
-        if(isNotClubManager(club_id))
+    public ClubDTO.MessageResponse clubHongbo(MultipartFile file, int clubId) {
+        if(isNotClubManager(clubId))
             throw new NotClubHeadException();
         try{
             Random random = new Random(System.currentTimeMillis());
             String fileString = random.nextInt() + file.getOriginalFilename();
             file.transferTo(new File(PATH+ fileString));
-            clubRepository.findById(club_id)
+            clubRepository.findById(clubId)
                     .map(club -> {
                         club.setHongbo_image("club/" + fileString);
                         clubRepository.save(club);
                         return club;
                     });
-            log.info("change club Hongbo club_id : " + club_id);
+            log.info("change club Hongbo club_id : " + clubId);
             return new ClubDTO.MessageResponse("club hongbo write success");
         }catch (IOException e){
             e.printStackTrace();
@@ -149,20 +149,20 @@ public class ClubManagerServiceImpl implements ClubManagerService {
     }
 
     @Override
-    public ClubDTO.MessageResponse clubBanner(MultipartFile file, int club_id) {
-        if(isNotClubManager(club_id))
+    public ClubDTO.MessageResponse clubBanner(MultipartFile file, int clubId) {
+        if(isNotClubManager(clubId))
             throw new NotClubHeadException();
         try{
             Random random = new Random(System.currentTimeMillis());
             String fileString = random.nextInt() + file.getOriginalFilename();
             file.transferTo(new File(PATH+ fileString));
-            clubRepository.findById(club_id)
+            clubRepository.findById(clubId)
                     .map(club -> {
                         club.setBanner_image("club/" + fileString);
                         clubRepository.save(club);
                         return club;
                     });
-            log.info("change club Banner club_id : " + club_id);
+            log.info("change club Banner club_id : " + clubId);
             return new ClubDTO.MessageResponse("club banner write success");
         }catch (IOException e){
             e.printStackTrace();
@@ -171,40 +171,40 @@ public class ClubManagerServiceImpl implements ClubManagerService {
     }
 
     @Override
-    public ClubDTO.MessageResponse modifyClub(ClubDTO.Modify request, int club_id) {
-        if(isNotClubManager(club_id))
+    public ClubDTO.MessageResponse modifyClub(ClubDTO.Modify request, int clubId) {
+        if(isNotClubManager(clubId))
             throw new NotClubHeadException();
-        clubRepository.findById(club_id)
+        clubRepository.findById(clubId)
                 .map(club -> {
                     club.setClub_name(request.getClubName());
                     clubRepository.save(club);
                     return club;
                 });
-        log.info("change club name club_id : " + club_id);
+        log.info("change club name club_id : " + clubId);
         return new ClubDTO.MessageResponse("club modify success");
     }
 
 
 
     @Override
-    public ClubDTO.MessageResponse clubDescription(ClubDTO.Description request, int club_id) {
-        if(isNotClubManager(club_id))
+    public ClubDTO.MessageResponse clubDescription(ClubDTO.Description request, int clubId) {
+        if(isNotClubManager(clubId))
             throw new NotClubHeadException();
-        clubRepository.findById(club_id)
+        clubRepository.findById(clubId)
                 .map(club -> {
                     club.setDescription(request.getDescription());
                     clubRepository.save(club);
                     return club;
                 });
-        log.info("change club description club_id : " + club_id);
+        log.info("change club description club_id : " + clubId);
         return new ClubDTO.MessageResponse("description write success");
     }
 
     @Override
-    public ClubDTO.MessageResponse deleteRecruitment(int club_id) {
-        if(isNotClubManager(club_id))
+    public ClubDTO.MessageResponse deleteRecruitment(int clubId) {
+        if(isNotClubManager(clubId))
             throw new NotClubHeadException();
-        clubRepository.findById(club_id)
+        clubRepository.findById(clubId)
                 .map(club -> {
                     majorRepository.deleteByClub(club);
                     club.setStart_at(null);
@@ -232,23 +232,23 @@ public class ClubManagerServiceImpl implements ClubManagerService {
 
                     return clubRepository.save(club);
                 }).orElseThrow(ClubNotFoundException::new);
-        log.info("delete recruitment club_id : " + club_id);
+        log.info("delete recruitment club_id : " + clubId);
         return new ClubDTO.MessageResponse("delete recruitment success");
     }
 
     @Override
-    public ClubDTO.Hongbo getHongbo(int club_id) {
-        if(isNotClubManager(club_id))
+    public ClubDTO.Hongbo getHongbo(int clubId) {
+        if(isNotClubManager(clubId))
             throw new NotClubHeadException();
-        return new ClubDTO.Hongbo(clubRepository.findById(club_id)
+        return new ClubDTO.Hongbo(clubRepository.findById(clubId)
                 .map(Club::getHongbo_image).orElseThrow(ClubNotFoundException::new));
     }
 
     @Override
-    public ClubDTO.MessageResponse deleteHongbo(int club_id) {
-        if(isNotClubManager(club_id))
+    public ClubDTO.MessageResponse deleteHongbo(int clubId) {
+        if(isNotClubManager(clubId))
             throw new NotClubHeadException();
-        clubRepository.findById(club_id)
+        clubRepository.findById(clubId)
                 .map(club -> {
                     club.setHongbo_image(null);
                     return clubRepository.save(club);
@@ -256,9 +256,9 @@ public class ClubManagerServiceImpl implements ClubManagerService {
         return new ClubDTO.MessageResponse("delete hongbo success");
     }
 
-    private boolean isNotClubManager(int club_id){
+    private boolean isNotClubManager(int clubId){
         User user = authenticationFacade.getUser();
-        Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
+        Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
         clubManagerRepository.findByClubAndUser(club, user).orElseThrow(NotClubManagerException::new);
         return false;
     }
