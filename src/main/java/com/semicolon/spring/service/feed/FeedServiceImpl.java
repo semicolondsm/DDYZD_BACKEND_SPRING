@@ -66,7 +66,7 @@ public class FeedServiceImpl implements FeedService{
                 feedRepository.findById(feedId)
                         .map(feed-> feedMediumRepository.save(FeedMedium.builder()
                                 .feed(feed)
-                                .medium_path("feed/" + fileString)
+                                .mediumPath("feed/" + fileString)
                                 .build())
                         );
                 log.info("file_name : " + fileString + ", feed_id : " + feedId);
