@@ -28,9 +28,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 
     @Override
-    public MessageResponse cancelApplication(int club_id) {
+    public MessageResponse cancelApplication(int clubId) {
         User user = getUser();
-        Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
+        Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
 
         deleteApplication(user, club);
 
@@ -38,13 +38,13 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public MessageResponse removeApplication(int club_id, int user_id) {
-        if(isNotClubHead(club_id)){
+    public MessageResponse removeApplication(int clubId, int userId) {
+        if(isNotClubHead(clubId)){
             throw new NotClubHeadException();
         }
 
-        User user = userRepository.findById(user_id).orElseThrow(UserNotFoundException::new);
-        Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
 
         deleteApplication(user, club);
 
@@ -97,9 +97,9 @@ public class ApplicationServiceImpl implements ApplicationService {
         return authenticationFacade.getUser();
     }
 
-    private boolean isNotClubHead(int club_id){
+    private boolean isNotClubHead(int clubId){
         User user = authenticationFacade.getUser();
-        Club club = clubRepository.findById(club_id).orElseThrow(ClubNotFoundException::new);
+        Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
         clubHeadRepository.findByClubAndUser(club, user).orElseThrow(NotClubHeadException::new);
         return false;
     }
