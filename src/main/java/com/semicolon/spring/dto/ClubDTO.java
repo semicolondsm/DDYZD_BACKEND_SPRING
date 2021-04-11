@@ -8,16 +8,16 @@ import java.util.Date;
 import java.util.List;
 
 public class ClubDTO {
-    @AllArgsConstructor
-    @NoArgsConstructor
     @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class MessageResponse {
         private String msg;
     }
 
-    @AllArgsConstructor
-    @NoArgsConstructor
     @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Recruitment {
         @NonNull
         private List<String> major;
@@ -26,45 +26,45 @@ public class ClubDTO {
         private Date closeAt;
     }
 
-    @AllArgsConstructor
-    @NoArgsConstructor
     @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Modify {
         private String clubName;
     }
 
-    @AllArgsConstructor
-    @NoArgsConstructor
     @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class ChangeHead {
         private String userGcn;
     }
 
-    @AllArgsConstructor
-    @NoArgsConstructor
     @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Description {
         private String description;
     }
 
-    @AllArgsConstructor
-    @NoArgsConstructor
     @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Hongbo {
         private String hongbo;
     }
 
-    @AllArgsConstructor
-    @NoArgsConstructor
     @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Followers {
         private int followers;
     }
 
-    @AllArgsConstructor
-    @NoArgsConstructor
     @Getter
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Club {
         private int clubId;
         private String clubName;
