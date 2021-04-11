@@ -60,8 +60,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         if(club.getStart_at() != null){
             roomRepository.save(Room.builder()
                     .club(application.getClub())
-                    .club_looked(application.isClub_looked())
-                    .user_looked(application.isUser_looked())
+                    .clubLooked(application.isClubLooked())
+                    .userLooked(application.isUserLooked())
                     .status(RoomStatus.N)
                     .user(application.getUser())
                     .id(application.getId())
@@ -70,8 +70,8 @@ public class ApplicationServiceImpl implements ApplicationService {
         }else {
             roomRepository.save(Room.builder()
                     .club(application.getClub())
-                    .club_looked(application.isClub_looked())
-                    .user_looked(application.isUser_looked())
+                    .clubLooked(application.isClubLooked())
+                    .userLooked(application.isUserLooked())
                     .status(RoomStatus.C)
                     .user(application.getUser())
                     .id(application.getId())
@@ -81,9 +81,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 
 
-        if(user.getDevice_token()!=null){
+        if(user.getDeviceToken()!=null){
             FcmRequest request = FcmRequest.builder()
-                    .token(user.getDevice_token())
+                    .token(user.getDeviceToken())
                     .title(club.getName())
                     .message(user.getName() + "님의 " + club.getName() + "동아리 신청이 취소되었습니다.")
                     .club(club.getClubId())
