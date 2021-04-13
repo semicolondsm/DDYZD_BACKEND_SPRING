@@ -20,12 +20,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -108,7 +106,7 @@ public class FeedControllerTest {
     @Order(1)
     public void uploadFeed() throws Exception {
 
-        FeedDTO.feed request = new FeedDTO.feed("test");
+        FeedDTO.Feed request = new FeedDTO.Feed("test");
 
         mvc.perform(post("/feed/1")
                 .header("Authorization", "Bearer " + accessToken)
@@ -137,7 +135,7 @@ public class FeedControllerTest {
     @Order(4)
     public void feedModify() throws Exception {
 
-        FeedDTO.feed request = new FeedDTO.feed("modify");
+        FeedDTO.Feed request = new FeedDTO.Feed("modify");
 
         mvc.perform(put("/feed/1")
                 .header("Authorization", "Bearer " + accessToken)
