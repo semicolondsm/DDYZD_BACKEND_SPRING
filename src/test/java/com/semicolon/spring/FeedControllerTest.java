@@ -4,10 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.semicolon.spring.dto.FeedDTO;
 import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.club.ClubRepository;
-import com.semicolon.spring.entity.club.application.Application;
-import com.semicolon.spring.entity.club.application.ApplicationRepository;
 import com.semicolon.spring.entity.club.club_head.ClubHead;
 import com.semicolon.spring.entity.club.club_head.ClubHeadRepository;
+import com.semicolon.spring.entity.club.club_member.ClubMember;
+import com.semicolon.spring.entity.club.club_member.ClubMemberRepository;
 import com.semicolon.spring.entity.feed.FeedRepository;
 import com.semicolon.spring.entity.user.User;
 import com.semicolon.spring.entity.user.UserRepository;
@@ -41,10 +41,10 @@ public class FeedControllerTest {
     private ClubHeadRepository clubHeadRepository;
 
     @Autowired
-    private ApplicationRepository applicationRepository;
+    private FeedRepository feedRepository;
 
     @Autowired
-    private FeedRepository feedRepository;
+    private ClubMemberRepository clubMemberRepository;
 
     @Autowired
     private WebApplicationContext context;
@@ -57,22 +57,29 @@ public class FeedControllerTest {
 
     String accessToken;
 
+    Club club;
+
+    User user;
+
     @BeforeEach
     public void setup(){
         //mvc = webAppContextSetup(context).build();
 
-        accessToken = jwtTokenProvider.generateAccessToken(1);
-
-        User user = userRepository.save(
+        user = userRepository.save(
                 User.builder()
+                .id(1)
+                .imagePath("test")
                 .name("세미콜론")
                 .gcn("0000")
                 .build()
         );
 
-        Club club = clubRepository.save(
+        accessToken = jwtTokenProvider.generateAccessToken(1);
+
+        club = clubRepository.save(
                 Club.builder()
-                .club_name("SEMICOLON;")
+                .clubId(1)
+                .name("SEMICOLON;")
                 .total_budget(0)
                 .current_budget(0)
                 .banner_image("a")
@@ -81,9 +88,10 @@ public class FeedControllerTest {
                 .build()
         );
 
-        applicationRepository.save(
-                Application.builder()
-                .result(true)
+        System.out.println(club.getClubId());
+
+        clubMemberRepository.save(
+                ClubMember.builder()
                 .user(user)
                 .club(club)
                 .build()
@@ -100,6 +108,9 @@ public class FeedControllerTest {
 
     @AfterEach
     public void deleteAll(){
+        userRepository.deleteAll();
+        clubRepository.deleteAll();
+        clubHeadRepository.deleteAll();
     }
 
     @Test
@@ -108,11 +119,11 @@ public class FeedControllerTest {
 
         FeedDTO.Feed request = new FeedDTO.Feed("test");
 
-        mvc.perform(post("/feed/1")
+        mvc.perform(post("/feed/" + club.getClubId())
                 .header("Authorization", "Bearer " + accessToken)
                 .content(new ObjectMapper().writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
 
     @Test
@@ -126,7 +137,7 @@ public class FeedControllerTest {
     @Test
     @Order(3)
     public void getClubFeedList() throws Exception {
-        mvc.perform(get("/feed/1/list")
+        mvc.perform(get("/feed/" + club.getClubId() + "/list")
                 .param("page", String.valueOf(0)))
                 .andExpect(status().isOk());
     }
