@@ -25,7 +25,7 @@ import org.springframework.web.context.WebApplicationContext;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+@SpringBootTest(properties = {"spring.config.location=classpath:application-test.properties"})
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -57,38 +57,32 @@ public class FeedControllerTest {
 
     String accessToken;
 
-    Club club;
-
-    User user;
-
     @BeforeEach
     public void setup(){
         //mvc = webAppContextSetup(context).build();
 
-        user = userRepository.save(
+        User user = userRepository.save(
                 User.builder()
                 .id(1)
                 .imagePath("test")
-                .name("세미콜론")
-                .gcn("0000")
+                .name("이서준")
+                .gcn("2114")
                 .build()
         );
 
         accessToken = jwtTokenProvider.generateAccessToken(1);
 
-        club = clubRepository.save(
+        Club club = clubRepository.save(
                 Club.builder()
                 .clubId(1)
                 .name("SEMICOLON;")
                 .total_budget(0)
                 .current_budget(0)
-                .banner_image("a")
-                .profile_image("a")
-                .hongbo_image("a")
+                .banner_image("test")
+                .profile_image("test")
+                .hongbo_image("test")
                 .build()
         );
-
-        System.out.println(club.getClubId());
 
         clubMemberRepository.save(
                 ClubMember.builder()
@@ -108,9 +102,11 @@ public class FeedControllerTest {
 
     @AfterEach
     public void deleteAll(){
-        userRepository.deleteAll();
-        clubRepository.deleteAll();
+        feedRepository.deleteAll();
         clubHeadRepository.deleteAll();
+        clubMemberRepository.deleteAll();
+        clubRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test
@@ -119,7 +115,7 @@ public class FeedControllerTest {
 
         FeedDTO.Feed request = new FeedDTO.Feed("test");
 
-        mvc.perform(post("/feed/" + club.getClubId())
+        mvc.perform(post("/feed/1")
                 .header("Authorization", "Bearer " + accessToken)
                 .content(new ObjectMapper().writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
@@ -137,7 +133,7 @@ public class FeedControllerTest {
     @Test
     @Order(3)
     public void getClubFeedList() throws Exception {
-        mvc.perform(get("/feed/" + club.getClubId() + "/list")
+        mvc.perform(get("/feed/1/list")
                 .param("page", String.valueOf(0)))
                 .andExpect(status().isOk());
     }
