@@ -99,7 +99,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
 
         }
 
-        log.info("make recruitment club_id : " + clubId);
+
         return new ClubDTO.MessageResponse("recruitment success");
     }
 
@@ -117,7 +117,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
                         clubRepository.save(club);
                         return club;
                     });
-            log.info("change club Profile club_id : " + clubId);
+
             return new ClubDTO.MessageResponse("club profile write success");
         }catch (IOException e){
             e.printStackTrace();
@@ -139,7 +139,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
                         clubRepository.save(club);
                         return club;
                     });
-            log.info("change club Hongbo club_id : " + clubId);
+
             return new ClubDTO.MessageResponse("club hongbo write success");
         }catch (IOException e){
             e.printStackTrace();
@@ -161,7 +161,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
                         clubRepository.save(club);
                         return club;
                     });
-            log.info("change club Banner club_id : " + clubId);
+
             return new ClubDTO.MessageResponse("club banner write success");
         }catch (IOException e){
             e.printStackTrace();
@@ -179,7 +179,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
                     clubRepository.save(club);
                     return club;
                 });
-        log.info("change club name club_id : " + clubId);
+
         return new ClubDTO.MessageResponse("club modify success");
     }
 
@@ -195,7 +195,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
                     clubRepository.save(club);
                     return club;
                 });
-        log.info("change club description club_id : " + clubId);
+
         return new ClubDTO.MessageResponse("description write success");
     }
 
@@ -231,7 +231,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
 
                     return clubRepository.save(club);
                 }).orElseThrow(ClubNotFoundException::new);
-        log.info("delete recruitment club_id : " + clubId);
+
         return new ClubDTO.MessageResponse("delete recruitment success");
     }
 
