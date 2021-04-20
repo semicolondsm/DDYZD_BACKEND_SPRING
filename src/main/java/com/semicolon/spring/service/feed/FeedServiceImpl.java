@@ -69,9 +69,9 @@ public class FeedServiceImpl implements FeedService{
                                 .mediumPath("feed/" + fileString)
                                 .build())
                         );
-                log.info("file_name : " + fileString + ", feed_id : " + feedId);
+
             }
-            log.info("fileUpload feed_id : " + feedId);
+
             return new MessageResponse("File upload success.");
         }catch (IOException e){
             e.printStackTrace();
@@ -83,7 +83,7 @@ public class FeedServiceImpl implements FeedService{
     public WriteFeedResponse writeFeed(Feed request, int clubId) {
         if(isNotClubMember(clubId))
             throw new NotClubMemberException();
-        log.info("writeFeed club_id : " + clubId);
+
         return new WriteFeedResponse("feed writing success",
                 feedRepository.save(
                     com.semicolon.spring.entity.feed.Feed.builder()
@@ -114,7 +114,7 @@ public class FeedServiceImpl implements FeedService{
                     feedRepository.save(feed);
                     return feed;
                 }).orElseThrow(FeedNotFoundException::new);
-        log.info("feedModify feed_id : " + feedId);
+
         return new MessageResponse("feed writing success");
     }
 
@@ -125,7 +125,7 @@ public class FeedServiceImpl implements FeedService{
             com.semicolon.spring.entity.feed.Feed feed = feedRepository.findById(feedId).orElseThrow(FeedNotFoundException::new);
             if(isFlag(user, feed)){
                 feedFlagRepository.delete(feedFlagRepository.findByUserAndFeed(user, feed).orElseThrow(BadRequestException::new));
-                log.info("Remove Feed Flag user_id : " + user.getId());
+
                 return new MessageResponse("Remove Feed Flag Success");
             }else{
                 feedFlagRepository.save(
@@ -134,7 +134,7 @@ public class FeedServiceImpl implements FeedService{
                                 .feed(feed)
                                 .build()
                 );
-                log.info("Add Feed Flag user_id : " + user.getId());
+
                 return new MessageResponse("Add Feed Flag Success");
             }
         }catch (Exception e){
@@ -149,7 +149,7 @@ public class FeedServiceImpl implements FeedService{
         User user = authenticationFacade.getUser();
         return feedRepository.findById(feedId)
                 .map(feed -> {
-                    log.info("getFeed feedId : " + feedId);
+
                     return getFeed(feed, user);
                 }).orElseThrow(FeedNotFoundException::new);
     }
@@ -160,7 +160,7 @@ public class FeedServiceImpl implements FeedService{
         if(isNotClubMember(feed.getClub().getClubId()))
             throw new NotClubMemberException();
         feedRepository.delete(feed);
-        log.info("deleteFeed feedId : " + feedId);
+
         return new MessageResponse("Feed delete success.");
     }
 
@@ -181,7 +181,7 @@ public class FeedServiceImpl implements FeedService{
 
         feed.changePin();
         feedRepository.save(feed);
-        log.info("feed pin change success feedId : " + feedId);
+
 
         return new MessageResponse("feed pin change success");
     }
@@ -240,7 +240,7 @@ public class FeedServiceImpl implements FeedService{
         for(com.semicolon.spring.entity.feed.Feed feed : feeds){
             response.add(getFeed(feed, user));
         }
-        log.info("get feedList page : " + page);
+
         return response;
     }
 
@@ -265,7 +265,7 @@ public class FeedServiceImpl implements FeedService{
             }
             response.add(getFeedClub);
         }
-        log.info("get feedClubList page : " + page);
+
         return response;
     }
 
@@ -292,7 +292,7 @@ public class FeedServiceImpl implements FeedService{
 
     private boolean isNotClubMember(int clubId){ // user가 속해있지 않은 club_id를 보내는 테스트 해야함.
         Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
-        //log.info("isNotClubMember user_name : " + authenticationFacade.getUser().getName());
+
         return clubMemberRepository.findByUserAndClub(authenticationFacade.getUser(), club).isEmpty();
     }
 
