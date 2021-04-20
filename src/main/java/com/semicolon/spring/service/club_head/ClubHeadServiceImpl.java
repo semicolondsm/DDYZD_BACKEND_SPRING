@@ -67,7 +67,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
                     clubHeadRepository.save(clubHead);
                     return club;
                 });
-        log.info("change Head club_id : " + clubId);
+
         return new ClubDTO.MessageResponse("club head change success");
     }
 
