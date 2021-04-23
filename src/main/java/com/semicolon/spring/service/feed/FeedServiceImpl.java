@@ -1,5 +1,6 @@
 package com.semicolon.spring.service.feed;
 
+import com.semicolon.spring.dto.FeedDTO;
 import com.semicolon.spring.dto.FeedDTO.*;
 import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.club.ClubRepository;
@@ -286,7 +287,7 @@ public class FeedServiceImpl implements FeedService{
 
     public Page<com.semicolon.spring.entity.feed.Feed> getFeedClub(int page, int clubId){
         Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
-        PageRequest pageRequest = PageRequest.of(page, 10, Sort.by("pin").descending().and(Sort.by("uploadAt").descending()));
+        PageRequest pageRequest = PageRequest.of(page, 3, Sort.by("pin").descending().and(Sort.by("uploadAt").descending()));
         return feedRepository.findByClub(club, pageRequest);
     }
 
