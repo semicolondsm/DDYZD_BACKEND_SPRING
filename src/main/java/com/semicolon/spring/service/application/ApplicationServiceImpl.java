@@ -57,7 +57,7 @@ public class ApplicationServiceImpl implements ApplicationService {
         if(application == null)
             throw new ApplicationNotFoundException();
 
-        if(club.getStart_at() != null){
+        if(club.getStartAt() != null){
             roomRepository.save(Room.builder()
                     .club(application.getClub())
                     .clubLooked(application.isClubLooked())
