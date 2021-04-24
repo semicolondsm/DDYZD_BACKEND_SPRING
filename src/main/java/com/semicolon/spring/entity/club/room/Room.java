@@ -45,7 +45,7 @@ public class Room {
     @Column(columnDefinition = "ENUM('C', 'A', 'R', 'S', 'N') default 'C'")
     private RoomStatus status;
 
-    private Date last_date;
+    private Date lastDate;
 
     public void setStatus(String value){
         this.status = RoomStatus.valueOf(value);
