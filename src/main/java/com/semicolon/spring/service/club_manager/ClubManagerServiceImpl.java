@@ -5,7 +5,6 @@ import com.semicolon.spring.dto.HeadDTO;
 import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.club.ClubRepository;
 import com.semicolon.spring.entity.club.club_follow.ClubFollow;
-import com.semicolon.spring.entity.club.club_head.ClubHeadRepository;
 import com.semicolon.spring.entity.club.club_manager.ClubManagerRepository;
 import com.semicolon.spring.entity.club.club_member.ClubMemberRepository;
 import com.semicolon.spring.entity.club.major.Major;
@@ -69,7 +68,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
 
         club.setStart_at();
 
-        club.setClose_at(request.getCloseAt());
+        club.setCloseAt(request.getCloseAt());
         clubRepository.save(club);
 
         for(Room room : roomRepository.findByClub(club)){
@@ -135,7 +134,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
             file.transferTo(new File(PATH+ fileString));
             clubRepository.findById(clubId)
                     .map(club -> {
-                        club.setHongbo_image("club/" + fileString);
+                        club.setHongboImage("club/" + fileString);
                         clubRepository.save(club);
                         return club;
                     });
@@ -157,7 +156,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
             file.transferTo(new File(PATH+ fileString));
             clubRepository.findById(clubId)
                     .map(club -> {
-                        club.setBanner_image("club/" + fileString);
+                        club.setBannerImage("club/" + fileString);
                         clubRepository.save(club);
                         return club;
                     });
@@ -206,8 +205,8 @@ public class ClubManagerServiceImpl implements ClubManagerService {
         clubRepository.findById(clubId)
                 .map(club -> {
                     majorRepository.deleteByClub(club);
-                    club.setStart_at(null);
-                    club.setClose_at(null);
+                    club.setStartAt(null);
+                    club.setCloseAt(null);
 
                     for(Room room : club.getRooms()){
                         if(room.getStatus().equals(RoomStatus.N)){
@@ -249,7 +248,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
             throw new NotClubHeadException();
         clubRepository.findById(clubId)
                 .map(club -> {
-                    club.setHongbo_image(null);
+                    club.setHongboImage(null);
                     return clubRepository.save(club);
                 });
         return new ClubDTO.MessageResponse("delete hongbo success");
