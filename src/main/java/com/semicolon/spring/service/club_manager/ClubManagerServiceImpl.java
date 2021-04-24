@@ -239,7 +239,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
         if(isNotClubManager(clubId))
             throw new NotClubHeadException();
         return new ClubDTO.Hongbo(clubRepository.findById(clubId)
-                .map(Club::getHongbo_image).orElseThrow(ClubNotFoundException::new));
+                .map(Club::getHongboImage).orElseThrow(ClubNotFoundException::new));
     }
 
     @Override
