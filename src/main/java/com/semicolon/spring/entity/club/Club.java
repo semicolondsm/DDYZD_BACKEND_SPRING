@@ -45,7 +45,7 @@ public class Club {
     private String bannerImage;
 
     @Column(nullable = false)
-    private String profile_image;
+    private String profileImage;
 
     @Column(nullable = false)
     private String hongboImage;
@@ -81,7 +81,7 @@ public class Club {
     }
 
     public void setProfile_image(String path){
-        this.profile_image = path;
+        this.profileImage = path;
     }
 
     public void setHongboImage(String path){
