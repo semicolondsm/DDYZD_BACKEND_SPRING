@@ -4,6 +4,9 @@ import com.semicolon.spring.dto.ClubDTO;
 import com.semicolon.spring.dto.HeadDTO;
 import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.club.ClubRepository;
+import com.semicolon.spring.entity.club.activity_detail.Activity;
+import com.semicolon.spring.entity.club.activity_detail.ActivityDetail;
+import com.semicolon.spring.entity.club.activity_detail.ActivityDetailRepository;
 import com.semicolon.spring.entity.club.club_follow.ClubFollow;
 import com.semicolon.spring.entity.club.club_head.ClubHead;
 import com.semicolon.spring.entity.club.club_head.ClubHeadRepository;
@@ -41,6 +44,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
     private final RoomRepository roomRepository;
     private final FcmService fcmService;
     private final AuthenticationFacade authenticationFacade;
+    private final ActivityDetailRepository activityDetailRepository;
 
     @Value("${file.club.path}")
     private String PATH;
@@ -314,6 +318,14 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         clubMemberRepository.save(ClubMember.builder()
                 .club(club)
                 .user(user)
+                .build()
+        );
+
+        activityDetailRepository.save(
+                ActivityDetail.builder()
+                .club(club)
+                .user(user)
+                .activity(Activity.JOIN)
                 .build()
         );
 
