@@ -72,8 +72,11 @@ public class FeedController {
     }
 
     @GetMapping("/feed/flag")
-    public List<GetFeed> getFlagFeed(){
-        return feedService.getFeedList();
+    public List<GetFeed> getFlagFeed(@RequestParam("page") int page){
+        if(page < 0){
+            throw new BadRequestException();
+        }
+        return feedService.getFlagList(page);
     }
 
     @GetMapping("/feed/{feed_id}/user")
