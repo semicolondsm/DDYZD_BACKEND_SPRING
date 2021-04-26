@@ -2,7 +2,6 @@ package com.semicolon.spring.entity.club.activity_detail;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.semicolon.spring.entity.club.Club;
-import com.semicolon.spring.entity.club.activity.Activity;
 import com.semicolon.spring.entity.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -37,6 +36,7 @@ public class ActivityDetail {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "activity_id")
+    @Enumerated(EnumType.ORDINAL)
     @JsonBackReference
     private Activity activity;
 }
