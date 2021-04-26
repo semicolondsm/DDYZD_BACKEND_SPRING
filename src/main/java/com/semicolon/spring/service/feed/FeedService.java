@@ -15,6 +15,6 @@ public interface FeedService {
     FeedDTO.GetFeed getFeed(int feedId);
     FeedDTO.MessageResponse deleteFeed(int feedId);
     FeedDTO.MessageResponse feedPin(int feedId);
-    List<FeedDTO.GetFeed> getFeedList();
+    List<FeedDTO.GetFeed> getFlagList(int page);
     List<FeedDTO.UserResponse> getFeedUser(int feedId);
 }
