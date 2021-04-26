@@ -188,7 +188,7 @@ public class FeedServiceImpl implements FeedService {
                     .uploadAt(feed.getUploadAt())
                     .media(getMediaPath(feed.getMedia()))
                     .content(feed.getContents())
-                    .profileImage(feed.getClub().getProfile_image())
+                    .profileImage(feed.getClub().getProfileImage())
                     .clubName(feed.getClub().getName())
                     .flags(feedFlagRepository.countByFeed(feed))
                     .isOwner(!isNotClubMember(feed.getClub().getClubId()))
@@ -242,7 +242,7 @@ public class FeedServiceImpl implements FeedService {
             GetFeedClub getFeedClub = GetFeedClub.builder()
                     .feedId(feed.getId())
                     .clubName(feed.getClub().getName())
-                    .profileImage(feed.getClub().getProfile_image())
+                    .profileImage(feed.getClub().getProfileImage())
                     .content(feed.getContents())
                     .media(getMediaPath(feed.getMedia()))
                     .uploadAt(feed.getUploadAt())
@@ -290,6 +290,7 @@ public class FeedServiceImpl implements FeedService {
     private boolean isNotClubHead(int clubId) {
         User user = authenticationFacade.getUser();
         Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
+        System.out.println(club.getClubHead().getUser().getName());
         clubHeadRepository.findByClubAndUser(club, user).orElseThrow(NotClubHeadException::new);
         return false;
     }
@@ -299,7 +300,7 @@ public class FeedServiceImpl implements FeedService {
                 .feedId(feed.getId())
                 .clubName(feed.getClub().getName())
                 .clubId(feed.getClub().getClubId())
-                .profileImage(feed.getClub().getProfile_image())
+                .profileImage(feed.getClub().getProfileImage())
                 .content(feed.getContents())
                 .media(getMediaPath(feed.getMedia()))
                 .uploadAt(feed.getUploadAt())
