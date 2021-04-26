@@ -4,6 +4,10 @@ import com.semicolon.spring.dto.ClubDTO;
 import com.semicolon.spring.dto.HeadDTO;
 import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.club.ClubRepository;
+import com.semicolon.spring.entity.club.activity_detail.Activity;
+import com.semicolon.spring.entity.club.activity_detail.ActivityDetail;
+import com.semicolon.spring.entity.club.activity_detail.ActivityDetailRepository;
+import com.semicolon.spring.entity.club.club_follow.ClubFollow;
 import com.semicolon.spring.entity.club.club_head.ClubHead;
 import com.semicolon.spring.entity.club.club_head.ClubHeadRepository;
 import com.semicolon.spring.entity.club.club_manager.ClubManager;
@@ -32,6 +36,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
     private final FcmService fcmService;
     private final AuthenticationFacade authenticationFacade;
+    private final ActivityDetailRepository activityDetailRepository;
 
     @Override
     public ClubDTO.MessageResponse changeHead(ClubDTO.ChangeHead request, int clubId) {
@@ -67,8 +72,14 @@ public class ClubHeadServiceImpl implements ClubHeadService{
                 .build()
         );
 
-        return new ClubDTO.MessageResponse("Insert Club Member Success");
+        activityDetailRepository.save(ActivityDetail.builder()
+                .club(club)
+                .user(user)
+                .activity(Activity.JOIN)
+                .build()
+        );
 
+        return new ClubDTO.MessageResponse("Insert Club Member Success");
     }
 
     @Override
@@ -115,7 +126,6 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         );
 
         return new ClubDTO.MessageResponse("Insert Club Manager Success");
-
     }
 
     @Override
