@@ -34,6 +34,21 @@ public class ClubHeadServiceImpl implements ClubHeadService{
     private final AuthenticationFacade authenticationFacade;
 
     @Override
+    public ClubDTO.MessageResponse changeHead(ClubDTO.ChangeHead request, int clubId) {
+        if(isNotClubHead(clubId))
+            throw new NotClubHeadException();
+        clubRepository.findById(clubId)
+                .map(club -> {
+                    ClubHead clubHead = club.getClubHead();
+                    clubHead.setUser(userRepository.findByGcn(request.getUserGcn()));
+                    clubHeadRepository.save(clubHead);
+                    return club;
+                });
+
+        return new ClubDTO.MessageResponse("club head change success");
+    }
+
+    @Override
     public ClubDTO.MessageResponse insertMember(int clubId, int userId) {
         if(isNotClubHead(clubId)){
             throw new NotClubHeadException();
@@ -57,18 +72,26 @@ public class ClubHeadServiceImpl implements ClubHeadService{
     }
 
     @Override
-    public ClubDTO.MessageResponse changeHead(ClubDTO.ChangeHead request, int clubId) {
-        if(isNotClubHead(clubId))
-            throw new NotClubHeadException();
-        clubRepository.findById(clubId)
-                .map(club -> {
-                    ClubHead clubHead = club.getClubHead();
-                    clubHead.setUser(userRepository.findByGcn(request.getUserGcn()));
-                    clubHeadRepository.save(clubHead);
-                    return club;
-                });
+    public ClubDTO.MessageResponse deportMember(int clubId, int userId) {
+        ClubDTO.Information information = checkDeport(clubId, userId);
 
-        return new ClubDTO.MessageResponse("club head change success");
+        User user = information.getUser();
+        Club club = information.getClub();
+
+        clubMemberRepository.findByUserAndClub(user, club).orElseThrow(ClubMemberNotFound::new);
+
+        clubMemberRepository.deleteByUserAndClub(user, club);
+
+        HeadDTO.FcmRequest request = HeadDTO.FcmRequest.builder()
+                .token(user.getDeviceToken())
+                .title(club.getName())
+                .message(user.getName() + "님이 " + club.getName() + "에서 추방당하셨습니다.")
+                .club(club.getClubId())
+                .build();
+
+        fcmService.send(request);
+
+        return new ClubDTO.MessageResponse("Club Member Deport Success");
     }
 
     @Override
@@ -102,34 +125,11 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         Club club = information.getClub();
         User user = information.getUser();
 
-        clubManagerRepository.findByClubAndUser(club, user).orElseThrow(NotClubManagerException::new);
+        clubManagerRepository.findByClubAndUser(club, user).orElseThrow(ClubManagerNotFound::new);
 
         clubManagerRepository.deleteByClubAndUser(club, user);
 
         return new ClubDTO.MessageResponse("Club Manager Deport Success");
-    }
-
-    @Override
-    public ClubDTO.MessageResponse deportMember(int clubId, int userId) {
-        ClubDTO.Information information = checkDeport(clubId, userId);
-
-        User user = information.getUser();
-        Club club = information.getClub();
-
-        clubMemberRepository.findByUserAndClub(user, club).orElseThrow(NotClubMemberException::new);
-
-        clubMemberRepository.deleteByUserAndClub(user, club);
-
-        HeadDTO.FcmRequest request = HeadDTO.FcmRequest.builder()
-                .token(user.getDeviceToken())
-                .title(club.getName())
-                .message(user.getName() + "님이 " + club.getName() + "에서 추방당하셨습니다.")
-                .club(club.getClubId())
-                .build();
-
-        fcmService.send(request);
-
-        return new ClubDTO.MessageResponse("Club Member Deport Success");
     }
 
     private User getUser(){
