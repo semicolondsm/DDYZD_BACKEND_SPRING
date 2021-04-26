@@ -12,6 +12,8 @@ import com.semicolon.spring.entity.feed.FeedRepository;
 import com.semicolon.spring.entity.user.User;
 import com.semicolon.spring.entity.user.UserRepository;
 import com.semicolon.spring.security.jwt.JwtTokenProvider;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +65,6 @@ public class FeedControllerTest {
 
         User user = userRepository.save(
                 User.builder()
-                .id(1)
                 .imagePath("test")
                 .name("이서준")
                 .gcn("2114")
@@ -71,16 +72,14 @@ public class FeedControllerTest {
         );
 
         accessToken = jwtTokenProvider.generateAccessToken(1);
-
         Club club = clubRepository.save(
                 Club.builder()
-                .clubId(1)
                 .name("SEMICOLON;")
-                .total_budget(0)
-                .current_budget(0)
-                .banner_image("test")
-                .profile_image("test")
-                .hongbo_image("test")
+                .totalBudget(0)
+                .currentBudget(0)
+                .bannerImage("test")
+                .profileImage("test")
+                .hongboImage("test")
                 .build()
         );
 
@@ -91,22 +90,15 @@ public class FeedControllerTest {
                 .build()
         );
 
-        clubHeadRepository.save(
-                ClubHead.builder()
-                        .club(club)
-                        .user(user)
-                        .build()
-        );
-
     }
 
     @AfterEach
     public void deleteAll(){
-        feedRepository.deleteAll();
-        clubHeadRepository.deleteAll();
-        clubMemberRepository.deleteAll();
-        clubRepository.deleteAll();
-        userRepository.deleteAll();
+//        feedRepository.deleteAll();
+//        clubHeadRepository.deleteAll();
+//        clubMemberRepository.deleteAll();
+//        clubRepository.deleteAll();
+//        userRepository.deleteAll();
     }
 
     @Test
