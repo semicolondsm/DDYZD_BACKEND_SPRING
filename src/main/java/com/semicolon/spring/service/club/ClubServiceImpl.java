@@ -41,7 +41,7 @@ public class ClubServiceImpl implements ClubService {
                         clubList.add(Club.builder()
                                 .clubId(club.getClubId())
                                 .clubName(club.getName())
-                                .clubImage(club.getProfile_image())
+                                .clubImage(club.getProfileImage())
                                 .clubDescription(club.getDescription())
                                 .build()
                         );
