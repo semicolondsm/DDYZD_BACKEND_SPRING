@@ -72,8 +72,14 @@ public class ClubHeadServiceImpl implements ClubHeadService{
                 .build()
         );
 
-        return new ClubDTO.MessageResponse("Insert Club Member Success");
+        activityDetailRepository.save(ActivityDetail.builder()
+                .club(club)
+                .user(user)
+                .activity(Activity.JOIN)
+                .build()
+        );
 
+        return new ClubDTO.MessageResponse("Insert Club Member Success");
     }
 
     @Override
@@ -118,16 +124,8 @@ public class ClubHeadServiceImpl implements ClubHeadService{
                 .user(user)
                 .build()
         );
-        activityDetailRepository.save(
-                ActivityDetail.builder()
-                .club(club)
-                .user(user)
-                .activity(Activity.JOIN)
-                .build()
-        );
 
-        return new ClubDTO.messageResponse("Insert Club Member Success");
-
+        return new ClubDTO.MessageResponse("Insert Club Manager Success");
     }
 
     @Override
