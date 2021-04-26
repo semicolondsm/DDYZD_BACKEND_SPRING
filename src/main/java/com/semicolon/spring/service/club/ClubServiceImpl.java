@@ -1,7 +1,6 @@
 package com.semicolon.spring.service.club;
 
-import com.semicolon.spring.dto.ClubDTO;
-import com.semicolon.spring.entity.club.Club;
+import com.semicolon.spring.dto.ClubDTO.*;
 import com.semicolon.spring.entity.club.ClubRepository;
 import com.semicolon.spring.entity.club.club_follow.ClubFollow;
 import com.semicolon.spring.entity.user.User;
@@ -25,21 +24,21 @@ public class ClubServiceImpl implements ClubService {
 
 
     @Override
-    public ClubDTO.followers getFollowers(int club_id) {
-        return new ClubDTO.followers(clubRepository.findById(club_id)
+    public Followers getFollowers(int clubId) {
+        return new Followers(clubRepository.findById(clubId)
                 .map(club -> club.getFollows().size())
                 .orElseThrow(ClubNotFoundException::new));
     }
 
     @Override
-    public List<ClubDTO.club> getClubs() {
+    public List<Club> getClubs() {
         User user = authenticationFacade.getUser();
-        List<ClubDTO.club> clubList = new ArrayList<>();
+        List<Club> clubList = new ArrayList<>();
         return userRepository.findById(user.getId())
                 .map(foundUser -> {
                     for(ClubFollow clubFollow : foundUser.getFollows()){
-                        Club club = clubFollow.getClub();
-                        clubList.add(ClubDTO.club.builder()
+                        com.semicolon.spring.entity.club.Club club = clubFollow.getClub();
+                        clubList.add(Club.builder()
                                 .clubId(club.getClubId())
                                 .clubName(club.getName())
                                 .clubImage(club.getProfile_image())

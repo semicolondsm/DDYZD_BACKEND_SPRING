@@ -7,17 +7,17 @@ import lombok.NoArgsConstructor;
 
 public class HeadDTO {
 
-    @AllArgsConstructor
-    @NoArgsConstructor
     @Getter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class MessageResponse{
         private String message;
     }
 
-    @AllArgsConstructor
-    @NoArgsConstructor
     @Getter
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class FcmRequest{
         private String token;
         private String title;

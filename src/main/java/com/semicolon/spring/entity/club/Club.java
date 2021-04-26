@@ -32,23 +32,23 @@ public class Club {
     private String name;
 
     @Column(nullable = false)
-    private int total_budget;
+    private int totalBudget;
 
     @Column(nullable = false)
-    private int current_budget;
+    private int currentBudget;
 
-    private Date start_at;
+    private Date startAt;
 
-    private Date close_at;
+    private Date closeAt;
 
     @Column(nullable = false)
-    private String banner_image;
+    private String bannerImage;
 
     @Column(nullable = false)
     private String profile_image;
 
     @Column(nullable = false)
-    private String hongbo_image;
+    private String hongboImage;
 
     private String description;
 
@@ -76,20 +76,20 @@ public class Club {
     @JsonManagedReference
     private final Set<Room> rooms = new HashSet<>();
 
-    public void setClose_at(Date close_at){
-        this.close_at = close_at;
+    public void setCloseAt(Date close_at){
+        this.closeAt = close_at;
     }
 
     public void setProfile_image(String path){
         this.profile_image = path;
     }
 
-    public void setHongbo_image (String path){
-        this.hongbo_image = path;
+    public void setHongboImage(String path){
+        this.hongboImage = path;
     }
 
-    public void setBanner_image(String path){
-        this.banner_image = path;
+    public void setBannerImage(String path){
+        this.bannerImage = path;
     }
 
     public void setClub_name(String name){
@@ -97,11 +97,11 @@ public class Club {
     }
 
     public void setStart_at(){
-        this.start_at = new Date();
+        this.startAt = new Date();
     }
 
-    public void setStart_at(Date date){
-        this.start_at = date;
+    public void setStartAt(Date date){
+        this.startAt = date;
     }
 
     public void setDescription(String description){

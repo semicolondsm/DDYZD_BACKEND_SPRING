@@ -7,16 +7,13 @@ import com.google.firebase.messaging.*;
 import com.semicolon.spring.dto.HeadDTO;
 import com.semicolon.spring.entity.user.User;
 import com.semicolon.spring.entity.user.UserRepository;
-import com.semicolon.spring.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.util.Date;
 
 @Service
 @Slf4j
@@ -74,11 +71,11 @@ public class FcmService {
     //@Scheduled(cron = "0 0,20 8 * * *", zone = "Asia/Seoul")
     public void sendSelfDiagnosis(){
         for(User user : userRepository.findAll()){
-            if(user.getDevice_token() != null){
+            if(user.getDeviceToken() != null){
                 this.send(HeadDTO.FcmRequest.builder()
                         .title(user.getName() + "님 자가진단 해주세요!")
                         .club(19)
-                        .token(user.getDevice_token())
+                        .token(user.getDeviceToken())
                         .message("자가진단 실시해주세요!")
                         .build()
                 );

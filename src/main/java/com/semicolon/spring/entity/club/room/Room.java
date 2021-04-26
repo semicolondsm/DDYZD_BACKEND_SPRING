@@ -30,16 +30,22 @@ public class Room {
     private Club club;
 
     @Column(columnDefinition = "TINYINT(1)")
-    private boolean user_looked;
+    private boolean userLooked;
 
     @Column(columnDefinition = "TINYINT(1)")
-    private boolean club_looked;
+    private boolean clubLooked;
+
+    @Column(columnDefinition = "INT default 0")
+    private int uOffset;
+
+    @Column(columnDefinition = "INT default 0")
+    private int cOffset;
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "ENUM('C', 'A', 'R', 'S', 'N') default 'C'")
     private RoomStatus status;
 
-    private Date last_date;
+    private Date lastDate;
 
     public void setStatus(String value){
         this.status = RoomStatus.valueOf(value);

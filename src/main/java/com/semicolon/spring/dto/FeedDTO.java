@@ -12,11 +12,11 @@ import java.util.List;
 
 public class FeedDTO {
 
-    @AllArgsConstructor
-    @NoArgsConstructor
     @Getter
     @Builder
-    public static class getFeed{
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GetFeed {
         private int feedId;
         private String clubName;
         private int clubId;
@@ -44,11 +44,11 @@ public class FeedDTO {
 
     }
 
-    @AllArgsConstructor
-    @NoArgsConstructor
     @Getter
     @Builder
-    public static class getFeedClub{
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class GetFeedClub {
         private int feedId;
         private String clubName;
         private String profileImage;
@@ -75,33 +75,33 @@ public class FeedDTO {
         }
     }
 
-    @AllArgsConstructor
-    @NoArgsConstructor
     @Getter
-    public static class feed{
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Feed {
         private String content;
     }
 
-    @AllArgsConstructor
-    @NoArgsConstructor
     @Getter
-    public static class writeFeedResponse{
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class WriteFeedResponse {
         private String msg;
         private int feedId;
     }
 
-    @AllArgsConstructor
-    @NoArgsConstructor
     @Getter
-    public static class messageResponse{
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MessageResponse {
         private String msg;
     }
 
-    @AllArgsConstructor
-    @NoArgsConstructor
     @Getter
     @Builder
-    public static class userResponse{
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UserResponse {
         private int userId;
         private String userName;
         private String imagePath;

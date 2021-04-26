@@ -31,23 +31,21 @@ public class User {
     @Column(length = 5)
     private String gcn;
 
-    private String image_path;
+    private String imagePath;
 
-    private String github_url;
+    private String githubUrl;
 
     @Column(length = 50)
     private String email;
 
     @Length(max = 4096)
-    private String device_token;
+    private String deviceToken;
 
     private String bio;
 
-    private String session_id;
+    private String mobileSessionId;
 
-    private String mobile_session_id;
-
-    private String desktop_session_id;
+    private String desktopSessionId;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     @JsonManagedReference

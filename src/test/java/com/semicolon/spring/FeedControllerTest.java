@@ -4,10 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.semicolon.spring.dto.FeedDTO;
 import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.club.ClubRepository;
-import com.semicolon.spring.entity.club.application.Application;
-import com.semicolon.spring.entity.club.application.ApplicationRepository;
 import com.semicolon.spring.entity.club.club_head.ClubHead;
 import com.semicolon.spring.entity.club.club_head.ClubHeadRepository;
+import com.semicolon.spring.entity.club.club_member.ClubMember;
+import com.semicolon.spring.entity.club.club_member.ClubMemberRepository;
 import com.semicolon.spring.entity.feed.FeedRepository;
 import com.semicolon.spring.entity.user.User;
 import com.semicolon.spring.entity.user.UserRepository;
@@ -20,14 +20,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
-@SpringBootTest
+@SpringBootTest(properties = {"spring.config.location=classpath:application-test.properties"})
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -43,10 +41,10 @@ public class FeedControllerTest {
     private ClubHeadRepository clubHeadRepository;
 
     @Autowired
-    private ApplicationRepository applicationRepository;
+    private FeedRepository feedRepository;
 
     @Autowired
-    private FeedRepository feedRepository;
+    private ClubMemberRepository clubMemberRepository;
 
     @Autowired
     private WebApplicationContext context;
@@ -63,29 +61,31 @@ public class FeedControllerTest {
     public void setup(){
         //mvc = webAppContextSetup(context).build();
 
-        accessToken = jwtTokenProvider.generateAccessToken(1);
-
         User user = userRepository.save(
                 User.builder()
-                .name("세미콜론")
-                .gcn("0000")
+                .id(1)
+                .imagePath("test")
+                .name("이서준")
+                .gcn("2114")
                 .build()
         );
+
+        accessToken = jwtTokenProvider.generateAccessToken(1);
 
         Club club = clubRepository.save(
                 Club.builder()
-                .club_name("SEMICOLON;")
+                .clubId(1)
+                .name("SEMICOLON;")
                 .total_budget(0)
                 .current_budget(0)
-                .banner_image("a")
-                .profile_image("a")
-                .hongbo_image("a")
+                .banner_image("test")
+                .profile_image("test")
+                .hongbo_image("test")
                 .build()
         );
 
-        applicationRepository.save(
-                Application.builder()
-                .result(true)
+        clubMemberRepository.save(
+                ClubMember.builder()
                 .user(user)
                 .club(club)
                 .build()
@@ -102,19 +102,24 @@ public class FeedControllerTest {
 
     @AfterEach
     public void deleteAll(){
+        feedRepository.deleteAll();
+        clubHeadRepository.deleteAll();
+        clubMemberRepository.deleteAll();
+        clubRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     @Test
     @Order(1)
     public void uploadFeed() throws Exception {
 
-        FeedDTO.feed request = new FeedDTO.feed("test");
+        FeedDTO.Feed request = new FeedDTO.Feed("test");
 
         mvc.perform(post("/feed/1")
                 .header("Authorization", "Bearer " + accessToken)
                 .content(new ObjectMapper().writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
 
     @Test
@@ -137,7 +142,7 @@ public class FeedControllerTest {
     @Order(4)
     public void feedModify() throws Exception {
 
-        FeedDTO.feed request = new FeedDTO.feed("modify");
+        FeedDTO.Feed request = new FeedDTO.Feed("modify");
 
         mvc.perform(put("/feed/1")
                 .header("Authorization", "Bearer " + accessToken)

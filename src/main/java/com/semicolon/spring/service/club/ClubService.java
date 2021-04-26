@@ -5,6 +5,6 @@ import com.semicolon.spring.dto.ClubDTO;
 import java.util.List;
 
 public interface ClubService {
-    ClubDTO.followers getFollowers(int club_id);
-    List<ClubDTO.club> getClubs();
+    ClubDTO.Followers getFollowers(int club_id);
+    List<ClubDTO.Club> getClubs();
 }
