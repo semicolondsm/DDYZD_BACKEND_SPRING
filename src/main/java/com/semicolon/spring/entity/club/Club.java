@@ -13,6 +13,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -37,7 +39,7 @@ public class Club {
     @Column(nullable = false)
     private int currentBudget;
 
-    private Date startAt;
+    private LocalDateTime startAt;
 
     private Date closeAt;
 
@@ -97,10 +99,10 @@ public class Club {
     }
 
     public void setStart_at(){
-        this.startAt = new Date();
+        this.startAt = LocalDateTime.now(ZoneOffset.of("+9"));
     }
 
-    public void setStartAt(Date date){
+    public void setStartAt(LocalDateTime date){
         this.startAt = date;
     }
 
