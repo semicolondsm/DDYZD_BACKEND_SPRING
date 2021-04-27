@@ -1,11 +1,9 @@
 package com.semicolon.spring.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.user.User;
 import lombok.*;
 
-import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 import java.util.List;
 
