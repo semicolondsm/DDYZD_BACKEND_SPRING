@@ -34,9 +34,7 @@ public class ActivityDetail {
     @JsonBackReference
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "activity_id")
     @Enumerated(EnumType.ORDINAL)
-    @JsonBackReference
     private Activity activity;
 }
