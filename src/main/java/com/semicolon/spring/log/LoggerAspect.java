@@ -11,7 +11,8 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,7 +40,7 @@ public class LoggerAspect {
             params.put("controller", controllerName);
             params.put("method", methodName);
             params.put("params", getParams(request));
-            params.put("log_time", new Date());
+            params.put("log_time", LocalDateTime.now(ZoneOffset.of("+9")));
             params.put("request_uri", request.getRequestURI());
             params.put("http_method", request.getMethod());
         } catch (Exception e) {
