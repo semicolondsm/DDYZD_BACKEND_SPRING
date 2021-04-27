@@ -6,10 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Builder
 @Getter
@@ -45,7 +44,7 @@ public class Room {
     @Column(columnDefinition = "ENUM('C', 'A', 'R', 'S', 'N') default 'C'")
     private RoomStatus status;
 
-    private Date lastDate;
+    private LocalDateTime lastDate;
 
     public void setStatus(String value){
         this.status = RoomStatus.valueOf(value);
