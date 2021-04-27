@@ -100,6 +100,13 @@ public class ClubHeadServiceImpl implements ClubHeadService{
                 .club(club.getClubId())
                 .build();
 
+        activityDetailRepository.save(ActivityDetail.builder()
+                .club(club)
+                .user(user)
+                .activity(Activity.DEPORT)
+                .build()
+        );
+
         fcmService.send(request);
 
         return new ClubDTO.MessageResponse("Club Member Deport Success");
