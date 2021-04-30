@@ -196,6 +196,7 @@ public class FeedControllerTest {
                 .andExpect(status().isOk());
     }
 
+    /*
     @Test
     @Order(9)
     public void fileUpload() throws Exception {
@@ -208,6 +209,8 @@ public class FeedControllerTest {
                 .queryParam("files", String.valueOf(multipartFile))
                 .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andExpect(status().isCreated());
+                
     }
+    */
 
 }
