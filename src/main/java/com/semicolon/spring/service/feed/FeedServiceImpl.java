@@ -159,9 +159,8 @@ public class FeedServiceImpl implements FeedService {
     public MessageResponse feedPin(int feedId) {
         com.semicolon.spring.entity.feed.Feed feed = feedRepository.findById(feedId).orElseThrow(FeedNotFoundException::new);
 
-        if (!isNotClubHead(feed.getClub().getClubId())) {
-            throw new NotClubHeadException();
-        }
+        isNotClubHead(feed.getClub().getClubId());
+
         if (!feed.isPin() && feedRepository.findByClubAndPinIsTrue(feed.getClub()).size() >= 1) {
             List<com.semicolon.spring.entity.feed.Feed> feedList = feedRepository.findByClubAndPinIsTrue(feed.getClub());
             for (com.semicolon.spring.entity.feed.Feed value : feedList) {
@@ -287,12 +286,11 @@ public class FeedServiceImpl implements FeedService {
         return clubMemberRepository.findByUserAndClub(authenticationFacade.getUser(), club).isEmpty();
     }
 
-    private boolean isNotClubHead(int clubId) {
+    private void isNotClubHead(int clubId) {
         User user = authenticationFacade.getUser();
         Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
         System.out.println(club.getClubHead().getUser().getName());
         clubHeadRepository.findByClubAndUser(club, user).orElseThrow(NotClubHeadException::new);
-        return false;
     }
 
     private GetFeed getFeed(com.semicolon.spring.entity.feed.Feed feed, User user) {
