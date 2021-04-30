@@ -90,6 +90,13 @@ public class FeedControllerTest {
                 .build()
         );
 
+        clubHeadRepository.save(
+                ClubHead.builder()
+                .user(user)
+                .club(club)
+                .build()
+        );
+
     }
 
     @AfterEach
@@ -158,13 +165,13 @@ public class FeedControllerTest {
                 .andExpect(status().isOk());
     }
 
-//    @Test
-//    @Order(7)
-//    public void feedPin() throws Exception {
-//        mvc.perform(put("/feed/1/pin")
-//                .header("Authorization", "Bearer " + accessToken))
-//                .andExpect(status().isOk());
-//    }
+    @Test
+    @Order(7)
+    public void feedPin() throws Exception {
+        mvc.perform(put("/feed/1/pin")
+                .header("Authorization", "Bearer " + accessToken))
+                .andExpect(status().isOk());
+    }
 
     @Test
     @Order(8)
