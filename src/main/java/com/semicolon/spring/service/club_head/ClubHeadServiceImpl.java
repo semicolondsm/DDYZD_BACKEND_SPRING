@@ -40,8 +40,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
     @Override
     public ClubDTO.MessageResponse changeHead(ClubDTO.ChangeHead request, int clubId) {
-        if(isNotClubHead(clubId))
-            throw new NotClubHeadException();
+        isNotClubHead(clubId);
         clubRepository.findById(clubId)
                 .map(club -> {
                     ClubHead clubHead = club.getClubHead();
@@ -55,9 +54,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
     @Override
     public ClubDTO.MessageResponse insertMember(int clubId, int userId) {
-        if(isNotClubHead(clubId)){
-            throw new NotClubHeadException();
-        }
+        isNotClubHead(clubId);
 
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
@@ -114,9 +111,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
     @Override
     public ClubDTO.MessageResponse insertManager(int clubId, int userId) {
-        if(isNotClubHead(clubId)){
-            throw new NotClubHeadException();
-        }
+        isNotClubHead(clubId);
 
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
@@ -153,17 +148,14 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         return authenticationFacade.getUser();
     }
 
-    private boolean isNotClubHead(int clubId){
+    private void isNotClubHead(int clubId){
         User user = authenticationFacade.getUser();
         Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
         clubHeadRepository.findByClubAndUser(club, user).orElseThrow(NotClubHeadException::new);
-        return false;
     }
 
     private ClubDTO.Information checkDeport(int clubId, int userId){
-        if(isNotClubHead(clubId)){
-            throw new NotClubHeadException();
-        }
+        isNotClubHead(clubId);
 
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
