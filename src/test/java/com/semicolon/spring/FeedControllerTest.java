@@ -20,9 +20,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -175,10 +181,33 @@ public class FeedControllerTest {
 
     @Test
     @Order(8)
+    public void RefeedPin() throws Exception {
+        uploadFeed();
+        mvc.perform(put("/feed/2/pin")
+                .header("Authorization", "Bearer " + accessToken))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @Order(8)
     public void deleteFeed() throws Exception {
         mvc.perform(delete("/feed/1")
                 .header("Authorization", "Bearer " + accessToken))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @Order(9)
+    public void fileUpload() throws Exception {
+        MockMultipartFile file = new MockMultipartFile("file",
+                "test.png",
+                MediaType.,
+                "Hello, World!".getBytes());
+        mvc.perform(post("/feed/2/medium")
+                .header("Authorization", "Bearer " + accessToken)
+                .queryParam("files", String.valueOf(multipartFile))
+                .contentType(MediaType.MULTIPART_FORM_DATA))
+                .andExpect(status().isCreated());
     }
 
 }
