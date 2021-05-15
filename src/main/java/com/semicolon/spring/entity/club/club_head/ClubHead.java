@@ -18,6 +18,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity(name = "club_head")
 public class ClubHead {
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
@@ -34,4 +35,5 @@ public class ClubHead {
     public void setUser(User user){
         this.user = user;
     }
+
 }
