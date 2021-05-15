@@ -16,6 +16,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity(name = "club_member")
 public class ClubMember {
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
