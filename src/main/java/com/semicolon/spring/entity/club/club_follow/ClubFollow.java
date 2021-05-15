@@ -8,8 +8,6 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-
 
 @Builder
 @NoArgsConstructor
@@ -17,6 +15,7 @@ import javax.validation.constraints.NotEmpty;
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"club_id", "user_id"}))
 @Entity(name = "club_follow")
 public class ClubFollow {
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
