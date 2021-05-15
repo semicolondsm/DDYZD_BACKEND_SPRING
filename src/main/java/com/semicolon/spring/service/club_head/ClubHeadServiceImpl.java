@@ -2,13 +2,10 @@ package com.semicolon.spring.service.club_head;
 
 import com.semicolon.spring.dto.ClubDTO;
 import com.semicolon.spring.dto.HeadDTO;
-import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.club.ClubRepository;
 import com.semicolon.spring.entity.club.activity_detail.Activity;
 import com.semicolon.spring.entity.club.activity_detail.ActivityDetail;
 import com.semicolon.spring.entity.club.activity_detail.ActivityDetailRepository;
-import com.semicolon.spring.entity.club.club_follow.ClubFollow;
-import com.semicolon.spring.entity.club.club_head.ClubHead;
 import com.semicolon.spring.entity.club.club_head.ClubHeadRepository;
 import com.semicolon.spring.entity.club.club_manager.ClubManager;
 import com.semicolon.spring.entity.club.club_manager.ClubManagerRepository;
@@ -43,7 +40,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         isNotClubHead(clubId);
         clubRepository.findById(clubId)
                 .map(club -> {
-                    ClubHead clubHead = club.getClubHead();
+                    var clubHead = club.getClubHead();
                     clubHead.setUser(userRepository.findByGcn(request.getUserGcn()));
                     clubHeadRepository.save(clubHead);
                     return club;
@@ -56,8 +53,8 @@ public class ClubHeadServiceImpl implements ClubHeadService{
     public ClubDTO.MessageResponse insertMember(int clubId, int userId) {
         isNotClubHead(clubId);
 
-        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
+        var user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        var club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
 
         if(clubMemberRepository.findByUserAndClub(user, club).isPresent()){
             throw new AlreadyClubMemberException();
@@ -81,10 +78,10 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
     @Override
     public ClubDTO.MessageResponse deportMember(int clubId, int userId) {
-        ClubDTO.Information information = checkDeport(clubId, userId);
+        var information = checkDeport(clubId, userId);
 
-        User user = information.getUser();
-        Club club = information.getClub();
+        var user = information.getUser();
+        var club = information.getClub();
 
         clubMemberRepository.findByUserAndClub(user, club).orElseThrow(ClubMemberNotFound::new);
 
@@ -113,8 +110,8 @@ public class ClubHeadServiceImpl implements ClubHeadService{
     public ClubDTO.MessageResponse insertManager(int clubId, int userId) {
         isNotClubHead(clubId);
 
-        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
+        var user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        var club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
 
         if(clubManagerRepository.findByClubAndUser(club, user).isPresent()){
             throw new AlreadyClubManagerException();
@@ -132,10 +129,10 @@ public class ClubHeadServiceImpl implements ClubHeadService{
 
     @Override
     public ClubDTO.MessageResponse deportManager(int clubId, int userId) {
-        ClubDTO.Information information = checkDeport(clubId, userId);
+        var information = checkDeport(clubId, userId);
 
-        Club club = information.getClub();
-        User user = information.getUser();
+        var club = information.getClub();
+        var user = information.getUser();
 
         clubManagerRepository.findByClubAndUser(club, user).orElseThrow(ClubManagerNotFound::new);
 
@@ -149,16 +146,16 @@ public class ClubHeadServiceImpl implements ClubHeadService{
     }
 
     private void isNotClubHead(int clubId){
-        User user = authenticationFacade.getUser();
-        Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
+        var user = authenticationFacade.getUser();
+        var club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
         clubHeadRepository.findByClubAndUser(club, user).orElseThrow(NotClubHeadException::new);
     }
 
     private ClubDTO.Information checkDeport(int clubId, int userId){
         isNotClubHead(clubId);
 
-        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
+        var user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        var club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
 
         if(user.getId().equals(getUser().getId())){
             throw new DontKickYourSelfException();
