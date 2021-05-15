@@ -15,6 +15,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity(name = "feed_medium")
 public class FeedMedium {
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
