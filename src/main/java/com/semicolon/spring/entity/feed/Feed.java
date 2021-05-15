@@ -22,6 +22,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity(name = "feed")
 public class Feed {
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
