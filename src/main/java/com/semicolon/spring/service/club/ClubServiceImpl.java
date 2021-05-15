@@ -32,12 +32,12 @@ public class ClubServiceImpl implements ClubService {
 
     @Override
     public List<Club> getClubs() {
-        User user = authenticationFacade.getUser();
+        var user = authenticationFacade.getUser();
         List<Club> clubList = new ArrayList<>();
         return userRepository.findById(user.getId())
                 .map(foundUser -> {
                     for(ClubFollow clubFollow : foundUser.getFollows()){
-                        com.semicolon.spring.entity.club.Club club = clubFollow.getClub();
+                        var club = clubFollow.getClub();
                         clubList.add(Club.builder()
                                 .clubId(club.getClubId())
                                 .clubName(club.getName())
