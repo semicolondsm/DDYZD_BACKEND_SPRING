@@ -15,6 +15,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity(name = "major")
 public class Major {
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
@@ -25,4 +26,5 @@ public class Major {
 
     @Column(length = 45)
     private String majorName;
+
 }
