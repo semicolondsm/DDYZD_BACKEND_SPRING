@@ -3,9 +3,9 @@ package com.semicolon.spring.service.club_head;
 import com.semicolon.spring.dto.ClubDTO;
 
 public interface ClubHeadService {
-    ClubDTO.MessageResponse deportMember(int club_id, int user_id);
-    ClubDTO.MessageResponse insertMember(int club_id, int user_id);
-    ClubDTO.MessageResponse changeHead(ClubDTO.ChangeHead request, int club_id);
-    ClubDTO.MessageResponse insertManager(int club_id, int user_id);
-    ClubDTO.MessageResponse deportManager(int club_id, int user_id);
+    ClubDTO.MessageResponse deportMember(int clubId, int userId);
+    ClubDTO.MessageResponse insertMember(int clubId, int userId);
+    ClubDTO.MessageResponse changeHead(ClubDTO.ChangeHead request, int clubId);
+    ClubDTO.MessageResponse insertManager(int clubId, int userId);
+    ClubDTO.MessageResponse deportManager(int clubId, int userId);
 }
