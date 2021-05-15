@@ -12,7 +12,6 @@ import com.semicolon.spring.entity.club.major.MajorRepository;
 import com.semicolon.spring.entity.club.room.Room;
 import com.semicolon.spring.entity.club.room.RoomRepository;
 import com.semicolon.spring.entity.club.room.RoomStatus;
-import com.semicolon.spring.entity.user.User;
 import com.semicolon.spring.exception.*;
 import com.semicolon.spring.security.AuthenticationFacade;
 import com.semicolon.spring.service.fcm.FcmService;
@@ -30,6 +29,9 @@ import java.util.*;
 @RequiredArgsConstructor
 @Slf4j
 public class ClubManagerServiceImpl implements ClubManagerService {
+
+    public static final String CLUB_PATH = "club/";
+
     private final ClubRepository clubRepository;
     private final ClubMemberRepository clubMemberRepository;
     private final ClubManagerRepository clubManagerRepository;
@@ -41,7 +43,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
     private final AuthenticationFacade authenticationFacade;
 
     @Value("${file.club.path}")
-    private String PATH;
+    private String path;
 
     @Override
     public ClubDTO.MessageResponse recruitment(ClubDTO.Recruitment request, int clubId) {
@@ -51,7 +53,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
         }
         if(request.getMajor().isEmpty())
             throw new BadRequestException();
-        Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
+        var club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
         majorRepository.deleteByClub(club);
         club.setMajors();
         Set<String> majorList = new HashSet<>(request.getMajor());
@@ -64,7 +66,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
             );
         }
 
-        club.setStart_at();
+        club.setStartAt();
 
         club.setCloseAt(request.getCloseAt());
         clubRepository.save(club);
@@ -77,9 +79,9 @@ public class ClubManagerServiceImpl implements ClubManagerService {
         }
 
         for(ClubFollow follow : club.getFollows()){
-            User follower = follow.getUser();
+            var follower = follow.getUser();
 
-            HeadDTO.FcmRequest fcmRequest = HeadDTO.FcmRequest.builder()
+            var fcmRequest = HeadDTO.FcmRequest.builder()
                     .token(follower.getDeviceToken())
                     .title(club.getName())
                     .message(follower.getName() + "님, 팔로우하신 " + club.getName() + "동아리의 모집이 시작되었습니다.")
@@ -103,12 +105,12 @@ public class ClubManagerServiceImpl implements ClubManagerService {
     public ClubDTO.MessageResponse clubProfile(MultipartFile file, int clubId) {
         isNotClubManager(clubId);
         try{
-            Random random = new Random(System.currentTimeMillis());
-            String fileString = random.nextInt() + file.getOriginalFilename();
-            file.transferTo(new File(PATH+ fileString));
+            var random = new Random(System.currentTimeMillis());
+            var fileString = random.nextInt() + file.getOriginalFilename();
+            file.transferTo(new File(path + fileString));
             clubRepository.findById(clubId)
                     .map(club-> {
-                        club.setProfile_image("club/" + fileString);
+                        club.setProfileImage(CLUB_PATH + fileString);
                         clubRepository.save(club);
                         return club;
                     });
@@ -124,12 +126,12 @@ public class ClubManagerServiceImpl implements ClubManagerService {
     public ClubDTO.MessageResponse clubHongbo(MultipartFile file, int clubId) {
         isNotClubManager(clubId);
         try{
-            Random random = new Random(System.currentTimeMillis());
-            String fileString = random.nextInt() + file.getOriginalFilename();
-            file.transferTo(new File(PATH+ fileString));
+            var random = new Random(System.currentTimeMillis());
+            var fileString = random.nextInt() + file.getOriginalFilename();
+            file.transferTo(new File(path + fileString));
             clubRepository.findById(clubId)
                     .map(club -> {
-                        club.setHongboImage("club/" + fileString);
+                        club.setHongboImage(CLUB_PATH + fileString);
                         clubRepository.save(club);
                         return club;
                     });
@@ -145,12 +147,12 @@ public class ClubManagerServiceImpl implements ClubManagerService {
     public ClubDTO.MessageResponse clubBanner(MultipartFile file, int clubId) {
         isNotClubManager(clubId);
         try{
-            Random random = new Random(System.currentTimeMillis());
-            String fileString = random.nextInt() + file.getOriginalFilename();
-            file.transferTo(new File(PATH+ fileString));
+            var random = new Random(System.currentTimeMillis());
+            var fileString = random.nextInt() + file.getOriginalFilename();
+            file.transferTo(new File(path + fileString));
             clubRepository.findById(clubId)
                     .map(club -> {
-                        club.setBannerImage("club/" + fileString);
+                        club.setBannerImage(CLUB_PATH + fileString);
                         clubRepository.save(club);
                         return club;
                     });
@@ -167,7 +169,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
         isNotClubManager(clubId);
         clubRepository.findById(clubId)
                 .map(club -> {
-                    club.setClub_name(request.getClubName());
+                    club.setClubName(request.getClubName());
                     clubRepository.save(club);
                     return club;
                 });
@@ -244,8 +246,8 @@ public class ClubManagerServiceImpl implements ClubManagerService {
     }
 
     private void isNotClubManager(int clubId){
-        User user = authenticationFacade.getUser();
-        Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
+        var user = authenticationFacade.getUser();
+        var club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
         clubManagerRepository.findByClubAndUser(club, user).orElseThrow(NotClubManagerException::new);
     }
 }
