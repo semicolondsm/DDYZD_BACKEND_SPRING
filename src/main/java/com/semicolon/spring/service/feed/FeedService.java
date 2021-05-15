@@ -7,9 +7,9 @@ import java.util.List;
 
 public interface FeedService {
     FeedDTO.MessageResponse fileUpload(List<MultipartFile> files, int feedId);
-    FeedDTO.WriteFeedResponse writeFeed(FeedDTO.Feed request, int club_id);
+    FeedDTO.WriteFeedResponse writeFeed(FeedDTO.Feed request, int clubId);
     List<FeedDTO.GetFeed> getFeedList(int page);
-    List<FeedDTO.GetFeedClub> getFeedClubList(int page, int club_id);
+    List<FeedDTO.GetFeedClub> getFeedClubList(int page, int clubId);
     FeedDTO.MessageResponse feedModify(FeedDTO.Feed request, int feedId);
     FeedDTO.MessageResponse feedFlag(int feedId);
     FeedDTO.GetFeed getFeed(int feedId);
