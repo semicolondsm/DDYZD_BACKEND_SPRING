@@ -26,8 +26,8 @@ public class FeedController {
 
     @PostMapping("/feed/{club_id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public WriteFeedResponse feedUpload(@RequestBody Feed request, @PathVariable("club_id") int club_id){
-        return feedService.writeFeed(request, club_id);
+    public WriteFeedResponse feedUpload(@RequestBody Feed request, @PathVariable("club_id") int clubId){
+        return feedService.writeFeed(request, clubId);
     }
 
     @GetMapping("/feed/list")
@@ -39,11 +39,11 @@ public class FeedController {
     }
 
     @GetMapping("/feed/{club_id}/list")
-    public List<GetFeedClub> getFeedClubList(@RequestParam("page") int page, @PathVariable("club_id") int club_id){
+    public List<GetFeedClub> getFeedClubList(@RequestParam("page") int page, @PathVariable("club_id") int clubId){
         if(page < 0){
             throw new BadRequestException();
         }
-        return feedService.getFeedClubList(page, club_id);
+        return feedService.getFeedClubList(page, clubId);
     }
 
     @PutMapping("/feed/{feed_id}")
