@@ -16,8 +16,8 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity(name = "club_manager")
 public class ClubManager {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @OneToOne
@@ -30,7 +30,8 @@ public class ClubManager {
     @JsonBackReference
     private User user;
 
-    public void setUser(User user){
+    public void setUser(User user) {
         this.user = user;
     }
+
 }
