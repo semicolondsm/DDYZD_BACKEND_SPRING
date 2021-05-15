@@ -15,7 +15,7 @@ public class JwtConfigure extends SecurityConfigurerAdapter<DefaultSecurityFilte
 
     @Override
     public void configure(HttpSecurity builder) throws Exception {
-        JwtTokenFilter tokenFilter = new JwtTokenFilter(jwtTokenProvider);
+        var tokenFilter = new JwtTokenFilter(jwtTokenProvider);
         builder.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
@@ -23,4 +23,5 @@ public class JwtConfigure extends SecurityConfigurerAdapter<DefaultSecurityFilte
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**");
     }
+
 }
