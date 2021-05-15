@@ -78,11 +78,11 @@ public class Club {
     @JsonManagedReference
     private final Set<Room> rooms = new HashSet<>();
 
-    public void setCloseAt(Date close_at){
-        this.closeAt = close_at;
+    public void setCloseAt(Date closeAt){
+        this.closeAt = closeAt;
     }
 
-    public void setProfile_image(String path){
+    public void setProfileImage(String path){
         this.profileImage = path;
     }
 
@@ -94,11 +94,11 @@ public class Club {
         this.bannerImage = path;
     }
 
-    public void setClub_name(String name){
+    public void setClubName(String name){
         this.name = name;
     }
 
-    public void setStart_at(){
+    public void setStartAt(){
         this.startAt = LocalDateTime.now(ZoneOffset.of("+9"));
     }
 
