@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 @Service
 @Slf4j
@@ -24,23 +25,23 @@ public class FcmService {
     private static final String FIREBASE_CONFIG_PATH = "ddyzd-firebase-adminsdk.json";
 
     @PostConstruct
-    public void initialize(){
-        try{
+    public void initialize() {
+        try {
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(new ClassPathResource(FIREBASE_CONFIG_PATH).getInputStream())).build();
-            if(FirebaseApp.getApps().isEmpty()){
+            if (FirebaseApp.getApps().isEmpty()) {
                 FirebaseApp.initializeApp(options);
                 log.info("Firebase application has been initialized");
             }
-        }catch (IOException e){
+        } catch (IOException e) {
             log.error(e.getMessage());
         }
     }
 
     public void send(HeadDTO.FcmRequest request) {
-        try{
-            if(request.getToken()!=null){
-                Message message = Message.builder()
+        try {
+            if (request.getToken() != null) {
+                var message = Message.builder()
                         .setToken(request.getToken())
                         .putData("club_id", request.getClub().toString())
                         .setNotification(Notification.builder() // setImage추가하기.
@@ -61,17 +62,19 @@ public class FcmService {
                 log.info("Sent Message" + response);
             }
 
-        }catch (Exception e){
+        } catch (ExecutionException e) {
             log.error(e.getMessage());
-            //throw new NotFoundException();
+        } catch (InterruptedException e){
+            log.error(e.getMessage());
+            Thread.currentThread().interrupt();
         }
 
     }
 
     //@Scheduled(cron = "0 0,20 8 * * *", zone = "Asia/Seoul")
-    public void sendSelfDiagnosis(){
-        for(User user : userRepository.findAll()){
-            if(user.getDeviceToken() != null){
+    public void sendSelfDiagnosis() {
+        for (User user : userRepository.findAll()) {
+            if (user.getDeviceToken() != null) {
                 this.send(HeadDTO.FcmRequest.builder()
                         .title(user.getName() + "님 자가진단 해주세요!")
                         .club(19)
