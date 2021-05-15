@@ -77,11 +77,12 @@ public class JwtTokenProvider {
     }
 
     public Authentication authentication(String token){
-        AuthDetails authDetails = authDetailsService.loadUserByUsername(getId(token));
+        var authDetails = authDetailsService.loadUserByUsername(getId(token));
         return new UsernamePasswordAuthenticationToken(authDetails, "", authDetails.getAuthorities());
     }
 
     private String getSigningKey() {
         return Base64.getEncoder().encodeToString(secretKey.getBytes());
     }
+
 }
