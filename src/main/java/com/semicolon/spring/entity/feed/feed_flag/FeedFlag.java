@@ -17,6 +17,7 @@ import javax.persistence.*;
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"feed_id", "user_id"}))
 @Entity(name = "feed_flag")
 public class FeedFlag {
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
@@ -27,6 +28,5 @@ public class FeedFlag {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
-
 
 }
