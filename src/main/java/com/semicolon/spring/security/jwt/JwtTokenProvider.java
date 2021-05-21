@@ -64,17 +64,17 @@ public class JwtTokenProvider {
         }
     }
 
-    public String getId(String token){
+    public Authentication authentication(String token){
+        var authDetails = authDetailsService.loadUserByUsername(getId(token));
+        return new UsernamePasswordAuthenticationToken(authDetails, "", authDetails.getAuthorities());
+    }
+
+    private String getId(String token){
         try{
             return getTokenBody(token).getSubject();
         }catch (Exception e){
             throw new InvalidTokenException();
         }
-    }
-
-    public Authentication authentication(String token){
-        var authDetails = authDetailsService.loadUserByUsername(getId(token));
-        return new UsernamePasswordAuthenticationToken(authDetails, "", authDetails.getAuthorities());
     }
 
     private String getSigningKey() {
@@ -83,7 +83,7 @@ public class JwtTokenProvider {
 
     private Claims getTokenBody(String token) {
         return Jwts.parser()
-                .setSigningKey(getSigningKey()).parseClaimsJws(token).getBody()
+                .setSigningKey(getSigningKey()).parseClaimsJws(token).getBody();
     }
 
 }
