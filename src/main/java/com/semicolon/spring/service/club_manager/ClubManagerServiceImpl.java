@@ -109,11 +109,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
             var fileString = random.nextInt() + file.getOriginalFilename();
             file.transferTo(new File(path + fileString));
             clubRepository.findById(clubId)
-                    .map(club-> {
-                        club.setProfileImage(CLUB_PATH + fileString);
-                        clubRepository.save(club);
-                        return club;
-                    });
+                    .map(club-> clubRepository.save(club.setProfileImage(CLUB_PATH + fileString)));
 
             return new ClubDTO.MessageResponse("club profile write success");
         }catch (IOException e){
@@ -130,11 +126,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
             var fileString = random.nextInt() + file.getOriginalFilename();
             file.transferTo(new File(path + fileString));
             clubRepository.findById(clubId)
-                    .map(club -> {
-                        club.setHongboImage(CLUB_PATH + fileString);
-                        clubRepository.save(club);
-                        return club;
-                    });
+                    .map(club -> clubRepository.save(club.setHongboImage(CLUB_PATH + fileString)));
 
             return new ClubDTO.MessageResponse("club hongbo write success");
         }catch (IOException e){
@@ -151,11 +143,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
             var fileString = random.nextInt() + file.getOriginalFilename();
             file.transferTo(new File(path + fileString));
             clubRepository.findById(clubId)
-                    .map(club -> {
-                        club.setBannerImage(CLUB_PATH + fileString);
-                        clubRepository.save(club);
-                        return club;
-                    });
+                    .map(club -> clubRepository.save(club.setBannerImage(CLUB_PATH + fileString)));
 
             return new ClubDTO.MessageResponse("club banner write success");
         }catch (IOException e){
@@ -168,11 +156,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
     public ClubDTO.MessageResponse modifyClub(ClubDTO.Modify request, int clubId) {
         isNotClubManager(clubId);
         clubRepository.findById(clubId)
-                .map(club -> {
-                    club.setClubName(request.getClubName());
-                    clubRepository.save(club);
-                    return club;
-                });
+                .map(club -> clubRepository.save(club.setClubName(request.getClubName())));
 
         return new ClubDTO.MessageResponse("club modify success");
     }
@@ -183,11 +167,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
     public ClubDTO.MessageResponse clubDescription(ClubDTO.Description request, int clubId) {
         isNotClubManager(clubId);
         clubRepository.findById(clubId)
-                .map(club -> {
-                    club.setDescription(request.getDescription());
-                    clubRepository.save(club);
-                    return club;
-                });
+                .map(club -> clubRepository.save(club.setDescription(request.getDescription())));
 
         return new ClubDTO.MessageResponse("description write success");
     }
@@ -238,10 +218,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
     public ClubDTO.MessageResponse deleteHongbo(int clubId) {
         isNotClubManager(clubId);
         clubRepository.findById(clubId)
-                .map(club -> {
-                    club.setHongboImage(null);
-                    return clubRepository.save(club);
-                });
+                .map(club -> clubRepository.save(club.setHongboImage(null)));
         return new ClubDTO.MessageResponse("delete hongbo success");
     }
 
