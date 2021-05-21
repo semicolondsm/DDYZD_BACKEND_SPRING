@@ -3,6 +3,7 @@ package com.semicolon.spring.security.jwt;
 import com.semicolon.spring.exception.InvalidTokenException;
 import com.semicolon.spring.security.jwt.auth.AuthDetails;
 import com.semicolon.spring.security.jwt.auth.AuthDetailsService;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
@@ -31,9 +32,6 @@ public class JwtTokenProvider {
     @Value("${jwt.exp.access}")
     private Long accessTokenExpiration;
 
-    @Value("${jwt.exp.refresh}")
-    private Long refreshTokenExpiration;
-
     private final AuthDetailsService authDetailsService;
 
     public String generateAccessToken(Integer id){
@@ -59,18 +57,8 @@ public class JwtTokenProvider {
 
     public boolean validateToken(String token){
         try{
-            Jwts.parser()
-                    .setSigningKey(getSigningKey()).parseClaimsJws(token).getBody().getSubject();
-            return true;
-        }catch (Exception e){
-            throw new InvalidTokenException();
-        }
-    }
-
-    public String getId(String token){
-        try{
-            return Jwts.parser()
-                    .setSigningKey(getSigningKey()).parseClaimsJws(token).getBody().getSubject();
+            return getTokenBody(token).getExpiration()
+                    .after(new Date());
         }catch (Exception e){
             throw new InvalidTokenException();
         }
@@ -81,8 +69,21 @@ public class JwtTokenProvider {
         return new UsernamePasswordAuthenticationToken(authDetails, "", authDetails.getAuthorities());
     }
 
+    private String getId(String token){
+        try{
+            return getTokenBody(token).getSubject();
+        }catch (Exception e){
+            throw new InvalidTokenException();
+        }
+    }
+
     private String getSigningKey() {
         return Base64.getEncoder().encodeToString(secretKey.getBytes());
+    }
+
+    private Claims getTokenBody(String token) {
+        return Jwts.parser()
+                .setSigningKey(getSigningKey()).parseClaimsJws(token).getBody();
     }
 
 }
