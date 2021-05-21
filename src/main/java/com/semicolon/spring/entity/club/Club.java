@@ -82,20 +82,24 @@ public class Club {
         this.closeAt = closeAt;
     }
 
-    public void setProfileImage(String path){
+    public Club setProfileImage(String path){
         this.profileImage = path;
+        return this;
     }
 
-    public void setHongboImage(String path){
+    public Club setHongboImage(String path){
         this.hongboImage = path;
+        return this;
     }
 
-    public void setBannerImage(String path){
+    public Club setBannerImage(String path){
         this.bannerImage = path;
+        return this;
     }
 
-    public void setClubName(String name){
+    public Club setClubName(String name){
         this.name = name;
+        return this;
     }
 
     public void setStartAt(){
@@ -106,8 +110,9 @@ public class Club {
         this.startAt = date;
     }
 
-    public void setDescription(String description){
+    public Club setDescription(String description){
         this.description = description;
+        return this;
     }
 
     public void setMajors(){
