@@ -39,12 +39,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
     public ClubDTO.MessageResponse changeHead(ClubDTO.ChangeHead request, int clubId) {
         isNotClubHead(clubId);
         clubRepository.findById(clubId)
-                .map(club -> {
-                    var clubHead = club.getClubHead();
-                    clubHead.setUser(userRepository.findByGcn(request.getUserGcn()));
-                    clubHeadRepository.save(clubHead);
-                    return club;
-                });
+                .map(club -> clubHeadRepository.save(club.getClubHead().setUser(userRepository.findByGcn(request.getUserGcn()))));
 
         return new ClubDTO.MessageResponse("club head change success");
     }
