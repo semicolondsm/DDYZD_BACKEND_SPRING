@@ -32,8 +32,9 @@ public class ClubHead {
     @JsonBackReference
     private User user;
 
-    public void setUser(User user){
+    public ClubHead setUser(User user){
         this.user = user;
+        return this;
     }
 
 }
