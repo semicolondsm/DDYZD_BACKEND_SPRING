@@ -1,10 +1,15 @@
 package com.semicolon.spring.service.feed;
 
-import com.semicolon.spring.dto.FeedDTO.*;
+import com.semicolon.spring.dto.feed.request.ContentRequest;
+import com.semicolon.spring.dto.feed.response.GetFeedClubResponse;
+import com.semicolon.spring.dto.feed.response.GetFeedResponse;
+import com.semicolon.spring.dto.user.response.UserInfoResponse;
+import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.club.ClubRepository;
-import com.semicolon.spring.entity.club.club_member.ClubMemberRepository;
 import com.semicolon.spring.entity.club.club_follow.ClubFollowRepository;
 import com.semicolon.spring.entity.club.club_head.ClubHeadRepository;
+import com.semicolon.spring.entity.club.club_member.ClubMemberRepository;
+import com.semicolon.spring.entity.feed.Feed;
 import com.semicolon.spring.entity.feed.FeedRepository;
 import com.semicolon.spring.entity.feed.MediaComparator;
 import com.semicolon.spring.entity.feed.feed_flag.FeedFlag;
@@ -26,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -43,10 +49,9 @@ public class FeedServiceImpl implements FeedService {
     @Value("${file.path}")
     private String path;
 
-    //Security Context에서 가져오는 User정보가 null이 아니라면 is follow와 isflag를 return한다. 만약 User정보가 null이라면 둘 다 false를 return한다.
 
     @Override
-    public MessageResponse fileUpload(List<MultipartFile> files, int feedId) { // feed가 자기 클럽이 쓴것인지 확인.
+    public void fileUpload(List<MultipartFile> files, int feedId) {
         if (isNotClubMember(feedRepository.findById(feedId).orElseThrow(FeedNotFoundException::new).getClub().getClubId()))
             throw new NotClubMemberException();
         try {
@@ -54,13 +59,13 @@ public class FeedServiceImpl implements FeedService {
                 if (file.getOriginalFilename() == null || file.getOriginalFilename().length() == 0)
                     throw new FileNotFoundException();
                 int index = file.getOriginalFilename().lastIndexOf(".");
-                var extension = file.getOriginalFilename().substring(index + 1);
+                String extension = file.getOriginalFilename().substring(index + 1);
 
                 if (!(extension.contains("jpg") || extension.contains("HEIC") || extension.contains("jpeg") || extension.contains("png") || extension.contains("heic"))) {
                     throw new BadFileExtensionException();
                 }
 
-                var fileString = UUID.randomUUID().toString() + "." + extension;
+                String fileString = UUID.randomUUID().toString() + "." + extension;
                 file.transferTo(new File(path + fileString));
                 feedRepository.findById(feedId)
                         .map(feed -> feedMediumRepository.save(FeedMedium.builder()
@@ -71,7 +76,6 @@ public class FeedServiceImpl implements FeedService {
 
             }
 
-            return new MessageResponse("File upload success.");
         } catch (IOException e) {
             e.printStackTrace();
             throw new FileSaveFailException();
@@ -79,52 +83,47 @@ public class FeedServiceImpl implements FeedService {
     }
 
     @Override
-    public WriteFeedResponse writeFeed(Feed request, int clubId) {
+    public void writeFeed(ContentRequest request, int clubId) {
         if (isNotClubMember(clubId))
             throw new NotClubMemberException();
 
-        return new WriteFeedResponse("feed writing success",
-                feedRepository.save(
-                        com.semicolon.spring.entity.feed.Feed.builder()
-                                .contents(request.getContent())
-                                .club(clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new))
-                                .build()
-                ).getId());
+        feedRepository.save(
+                Feed.builder()
+                        .contents(request.getContents())
+                        .club(clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new))
+                        .build());
     }
 
     @Override
-    public List<GetFeed> getFeedList(int page) {
+    public List<GetFeedResponse> getFeedList(int page) {
         return feedToResponse(getFeeds(page).getContent());
     }
 
     @Override
-    public List<GetFeedClub> getFeedClubList(int page, int clubId) {
+    public List<GetFeedClubResponse> getFeedClubList(int page, int clubId) {
         return feedClubToResponse(getFeedClub(page, clubId).getContent());
     }
 
     @Override
-    public MessageResponse feedModify(Feed request, int feedId) { // feed를 쓴 클럽인지 확인절차 추가.
-        var club = feedRepository.findById(feedId).orElseThrow(FeedNotFoundException::new).getClub();
+    public void feedModify(ContentRequest request, int feedId) {
+        Club club = feedRepository.findById(feedId).orElseThrow(FeedNotFoundException::new).getClub();
         if (isNotClubMember(club.getClubId()))
             throw new NotClubMemberException();
         feedRepository.findById(feedId)
                 .map(feed -> {
-                    feed.modify(request.getContent());
+                    feed.modify(request.getContents());
                     feedRepository.save(feed);
                     return feed;
                 }).orElseThrow(FeedNotFoundException::new);
-
-        return new MessageResponse("feed writing success");
     }
 
     @Override
-    public MessageResponse feedFlag(int feedId) {
-        var user = authenticationFacade.getUser();
-        var feed = feedRepository.findById(feedId).orElseThrow(FeedNotFoundException::new);
+    public void feedFlag(int feedId) {
+        User user = authenticationFacade.getUser();
+        Feed feed = feedRepository.findById(feedId).orElseThrow(FeedNotFoundException::new);
         if (isFlag(user, feed)) {
             feedFlagRepository.delete(feedFlagRepository.findByUserAndFeed(user, feed).orElseThrow(BadRequestException::new));
 
-            return new MessageResponse("Remove Feed Flag Success");
         } else {
             feedFlagRepository.save(
                     FeedFlag.builder()
@@ -133,30 +132,29 @@ public class FeedServiceImpl implements FeedService {
                             .build()
             );
 
-            return new MessageResponse("Add Feed Flag Success");
         }
     }
 
     @Override
-    public GetFeed getFeed(int feedId) {
-        var user = authenticationFacade.getUser();
+    public GetFeedResponse getFeed(int feedId) {
+        User user = authenticationFacade.getUser();
         return feedRepository.findById(feedId)
                 .map(feed -> getFeed(feed, user)).orElseThrow(FeedNotFoundException::new);
     }
 
     @Override
-    public MessageResponse deleteFeed(int feedId) {
-        var feed = feedRepository.findById(feedId).orElseThrow(FeedNotFoundException::new);
+    public void deleteFeed(int feedId) {
+        Feed feed = feedRepository.findById(feedId)
+                .orElseThrow(FeedNotFoundException::new);
         if (isNotClubMember(feed.getClub().getClubId()))
             throw new NotClubMemberException();
         feedRepository.delete(feed);
-
-        return new MessageResponse("Feed delete success.");
     }
 
     @Override
-    public MessageResponse feedPin(int feedId) {
-        var feed = feedRepository.findById(feedId).orElseThrow(FeedNotFoundException::new);
+    public void feedPin(int feedId) {
+        Feed feed = feedRepository.findById(feedId)
+                .orElseThrow(FeedNotFoundException::new);
 
 
         isNotClubHead(feed.getClub().getClubId());
@@ -172,50 +170,43 @@ public class FeedServiceImpl implements FeedService {
         feed.changePin();
         feedRepository.save(feed);
 
-        return new MessageResponse("feed pin change success");
     }
 
     @Override
-    public List<GetFeed> getFlagList(int page) {
-        var user = authenticationFacade.getUser();
-        Page<FeedFlag> flagList = feedFlagRepository.findByUser(user, PageRequest.of(page, 3, Sort.by("id").descending()));
-        List<GetFeed> feedList = new ArrayList<>();
-        for (FeedFlag flag : flagList) {
-            var feed = flag.getFeed();
-            feedList.add(GetFeed.builder()
-                    .feedId(feed.getId())
-                    .uploadAt(feed.getUploadAt())
-                    .media(getMediaPath(feed.getMedia()))
-                    .content(feed.getContents())
-                    .profileImage(feed.getClub().getProfileImage())
-                    .clubName(feed.getClub().getName())
-                    .flags(feedFlagRepository.countByFeed(feed))
-                    .isOwner(!isNotClubMember(feed.getClub().getClubId()))
-                    .isFlag(isFlag(user, feed))
-                    .isFollow(clubFollowRepository.findByUserAndClub(user, feed.getClub()).isPresent())
-                    .build()
-            );
-        }
-
-        return feedList;
+    public List<GetFeedResponse> getFlagList(int page) {
+        User user = authenticationFacade.getUser();
+        Page<FeedFlag> flagList = feedFlagRepository
+                .findByUser(user, PageRequest.of(page, 3, Sort.by("id").descending()));
+        return flagList.stream()
+                .map(flag -> {
+                    Feed feed = flag.getFeed();
+                    return GetFeedResponse.builder()
+                            .feedId(feed.getId())
+                            .uploadAt(feed.getUploadAt())
+                            .media(getMediaPath(feed.getMedia()))
+                            .content(feed.getContents())
+                            .profileImage(feed.getClub().getProfileImage())
+                            .clubName(feed.getClub().getName())
+                            .flags(feedFlagRepository.countByFeed(feed))
+                            .isOwner(!isNotClubMember(feed.getClub().getClubId()))
+                            .isFlag(isFlag(user, feed))
+                            .isFollow(clubFollowRepository.findByUserAndClub(user, feed.getClub()).isPresent())
+                            .build();
+                }).collect(Collectors.toList());
     }
 
     @Override
-    public List<UserResponse> getFeedUser(int feedId) {
-        List<UserResponse> responses = new ArrayList<>();
-        feedRepository.findById(feedId)
-                .map(feed -> {
-                    for (FeedFlag flag : feed.getFeedFlags()) {
-                        responses.add(UserResponse.builder()
-                                .userName(flag.getUser().getName())
-                                .imagePath(flag.getUser().getImagePath())
-                                .userId(flag.getUser().getId())
-                                .build()
-                        );
-                    }
-                    return responses;
-                }).orElseThrow(FeedNotFoundException::new);
-        return responses;
+    public List<UserInfoResponse> getFeedUser(int feedId) {
+        Feed feed = feedRepository.findById(feedId)
+                .orElseThrow(FeedNotFoundException::new);
+
+        return feed.getFeedFlags().stream()
+                .map(flag -> UserInfoResponse.builder()
+                        .userName(flag.getUser().getName())
+                        .imagePath(flag.getUser().getImagePath())
+                        .userId(flag.getUser().getId())
+                        .build())
+                .collect(Collectors.toList());
     }
 
     private boolean isFlag(User user, com.semicolon.spring.entity.feed.Feed feed) {
@@ -224,21 +215,20 @@ public class FeedServiceImpl implements FeedService {
         else throw new UserNotFoundException();
     }
 
-    public List<GetFeed> feedToResponse(List<com.semicolon.spring.entity.feed.Feed> feeds) { // 유저 정보가 있을 때 isFlag, isFollow
-        List<GetFeed> response = new ArrayList<>();
-        var user = authenticationFacade.getUser();
-        for (com.semicolon.spring.entity.feed.Feed feed : feeds) {
-            response.add(getFeed(feed, user));
-        }
+    public List<GetFeedResponse> feedToResponse(List<Feed> feeds) {
 
-        return response;
+        User user = authenticationFacade.getUser();
+
+        return feeds.stream()
+                .map(feed -> getFeed(feed, user))
+                .collect(Collectors.toList());
     }
 
-    public List<GetFeedClub> feedClubToResponse(List<com.semicolon.spring.entity.feed.Feed> feeds) { // 유저 정보가 있을 때 isFlag, isFollow
-        List<GetFeedClub> response = new ArrayList<>();
-        var user = authenticationFacade.getUser();
+    public List<GetFeedClubResponse> feedClubToResponse(List<com.semicolon.spring.entity.feed.Feed> feeds) {
+        List<GetFeedClubResponse> response = new ArrayList<>();
+        User user = authenticationFacade.getUser();
         for (com.semicolon.spring.entity.feed.Feed feed : feeds) {
-            var getFeedClub = GetFeedClub.builder()
+            GetFeedClubResponse getFeedClub = GetFeedClubResponse.builder()
                     .feedId(feed.getId())
                     .clubName(feed.getClub().getName())
                     .profileImage(feed.getClub().getProfileImage())
@@ -270,30 +260,32 @@ public class FeedServiceImpl implements FeedService {
     }
 
     public Page<com.semicolon.spring.entity.feed.Feed> getFeeds(int page) {
-        var pageRequest = PageRequest.of(page, 3, Sort.by("uploadAt").descending());
+        PageRequest pageRequest = PageRequest
+                .of(page, 3, Sort.by("uploadAt").descending());
         return feedRepository.findAll(pageRequest);
     }
 
     public Page<com.semicolon.spring.entity.feed.Feed> getFeedClub(int page, int clubId) {
-        var club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
-        var pageRequest = PageRequest.of(page, 3, Sort.by("pin").descending().and(Sort.by("uploadAt").descending()));
+        Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
+        PageRequest pageRequest = PageRequest.of(page, 3,
+                Sort.by("pin").descending().and(Sort.by("uploadAt").descending()));
         return feedRepository.findByClub(club, pageRequest);
     }
 
-    private boolean isNotClubMember(int clubId) { // user가 속해있지 않은 club_id를 보내는 테스트 해야함.
-        var club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
+    private boolean isNotClubMember(int clubId) {
+        Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
 
         return clubMemberRepository.findByUserAndClub(authenticationFacade.getUser(), club).isEmpty();
     }
 
     private void isNotClubHead(int clubId) {
-        var user = authenticationFacade.getUser();
-        var club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
+        User user = authenticationFacade.getUser();
+        Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
         clubHeadRepository.findByClubAndUser(club, user).orElseThrow(NotClubHeadException::new);
     }
 
-    private GetFeed getFeed(com.semicolon.spring.entity.feed.Feed feed, User user) {
-        var getFeed = GetFeed.builder()
+    private GetFeedResponse getFeed(com.semicolon.spring.entity.feed.Feed feed, User user) {
+        GetFeedResponse getFeed = GetFeedResponse.builder()
                 .feedId(feed.getId())
                 .clubName(feed.getClub().getName())
                 .clubId(feed.getClub().getClubId())

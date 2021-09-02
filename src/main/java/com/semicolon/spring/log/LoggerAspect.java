@@ -29,7 +29,7 @@ public class LoggerAspect {
     @Around("loggerPointCut()")
     public Object methodLogger(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         Object result = proceedingJoinPoint.proceed();
-        HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest(); // request 정보를 가져온다.
+        HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
 
         String controllerName = proceedingJoinPoint.getSignature().getDeclaringType().getSimpleName();
         String methodName = proceedingJoinPoint.getSignature().getName();
