@@ -2,17 +2,14 @@ package com.semicolon.spring.entity.club.room;
 
 import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.user.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Builder
 @Getter
-@NoArgsConstructor
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"club_id", "user_id"}))
 @Entity(name = "room")

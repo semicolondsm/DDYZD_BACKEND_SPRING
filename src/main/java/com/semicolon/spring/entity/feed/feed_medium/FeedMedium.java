@@ -2,17 +2,12 @@ package com.semicolon.spring.entity.feed.feed_medium;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.semicolon.spring.entity.feed.Feed;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Builder
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity(name = "feed_medium")
 public class FeedMedium {
 
@@ -26,5 +21,12 @@ public class FeedMedium {
     @JoinColumn(name = "feed_id")
     @JsonBackReference
     private Feed feed;
+
+
+    @Builder
+    public FeedMedium(String mediumPath, Feed feed) {
+        this.mediumPath = mediumPath;
+        this.feed = feed;
+    }
 
 }

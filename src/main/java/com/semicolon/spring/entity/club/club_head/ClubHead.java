@@ -3,7 +3,7 @@ package com.semicolon.spring.entity.club.club_head;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.user.User;
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,10 +12,8 @@ import javax.persistence.*;
 
 
 
-@Builder
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity(name = "club_head")
 public class ClubHead {
 
@@ -31,6 +29,12 @@ public class ClubHead {
     @JoinColumn(name = "user_id")
     @JsonBackReference
     private User user;
+
+    @Builder
+    public ClubHead(Club club, User user) {
+        this.club = club;
+        this.user = user;
+    }
 
     public ClubHead setUser(User user){
         this.user = user;

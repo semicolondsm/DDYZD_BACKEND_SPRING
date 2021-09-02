@@ -7,10 +7,7 @@ import com.semicolon.spring.entity.club.club_head.ClubHead;
 import com.semicolon.spring.entity.club.major.Major;
 import com.semicolon.spring.entity.club.room.Room;
 import com.semicolon.spring.entity.feed.Feed;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -19,10 +16,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-@Builder
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity(name = "club")
 public class Club {
 
@@ -53,6 +48,20 @@ public class Club {
     private String hongboImage;
 
     private String description;
+
+    public Club(String name, int totalBudget, int currentBudget,
+                LocalDateTime startAt, Date closeAt, String bannerImage,
+                String profileImage, String hongboImage, String description) {
+        this.name = name;
+        this.totalBudget = totalBudget;
+        this.currentBudget = currentBudget;
+        this.startAt = startAt;
+        this.closeAt = closeAt;
+        this.bannerImage = bannerImage;
+        this.profileImage = profileImage;
+        this.hongboImage = hongboImage;
+        this.description = description;
+    }
 
     @OneToMany(mappedBy = "club", fetch = FetchType.LAZY)
     @JsonManagedReference

@@ -2,17 +2,12 @@ package com.semicolon.spring.entity.club.major;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.semicolon.spring.entity.club.Club;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
-@Builder
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity(name = "major")
 public class Major {
 
@@ -26,5 +21,11 @@ public class Major {
 
     @Column(length = 45)
     private String majorName;
+
+    @Builder
+    public Major(Club club, String majorName) {
+        this.club = club;
+        this.majorName = majorName;
+    }
 
 }

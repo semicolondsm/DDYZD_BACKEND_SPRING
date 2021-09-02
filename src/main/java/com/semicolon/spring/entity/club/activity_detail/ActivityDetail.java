@@ -3,7 +3,7 @@ package com.semicolon.spring.entity.club.activity_detail;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.user.User;
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,10 +12,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Builder
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity(name = "activity_detail")
 public class ActivityDetail {
 
@@ -37,4 +35,13 @@ public class ActivityDetail {
 
     @Enumerated(EnumType.STRING)
     private Activity activity;
+
+    @Builder
+    public ActivityDetail(LocalDateTime date, Club club, User user, Activity activity) {
+        this.date = date;
+        this.club = club;
+        this.user = user;
+        this.activity = activity;
+    }
+
 }
