@@ -44,7 +44,7 @@ public class FcmService {
                 var message = Message.builder()
                         .setToken(request.getToken())
                         .putData("club_id", request.getClub().toString())
-                        .setNotification(Notification.builder() // setImage추가하기.
+                        .setNotification(Notification.builder()
                                 .setTitle(request.getTitle())
                                 .setBody(request.getMessage())
                                 .build()
@@ -69,21 +69,6 @@ public class FcmService {
             Thread.currentThread().interrupt();
         }
 
-    }
-
-    //@Scheduled(cron = "0 0,20 8 * * *", zone = "Asia/Seoul")
-    public void sendSelfDiagnosis() {
-        for (User user : userRepository.findAll()) {
-            if (user.getDeviceToken() != null) {
-                this.send(HeadDTO.FcmRequest.builder()
-                        .title(user.getName() + "님 자가진단 해주세요!")
-                        .club(19)
-                        .token(user.getDeviceToken())
-                        .message("자가진단 실시해주세요!")
-                        .build()
-                );
-            }
-        }
     }
 
 }
