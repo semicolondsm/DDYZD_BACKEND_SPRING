@@ -49,6 +49,7 @@ public class Club {
 
     private String description;
 
+    @Builder
     public Club(String name, int totalBudget, int currentBudget,
                 LocalDateTime startAt, Date closeAt, String bannerImage,
                 String profileImage, String hongboImage, String description) {
