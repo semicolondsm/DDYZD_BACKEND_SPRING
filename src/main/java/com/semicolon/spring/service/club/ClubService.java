@@ -1,10 +1,13 @@
 package com.semicolon.spring.service.club;
 
-import com.semicolon.spring.dto.ClubDTO;
+
+import com.semicolon.spring.dto.club.response.ClubResponse;
+import com.semicolon.spring.dto.club.response.FollowersResponse;
 
 import java.util.List;
 
+
 public interface ClubService {
-    ClubDTO.Followers getFollowers(int clubId);
-    List<ClubDTO.Club> getClubs();
+    FollowersResponse getFollowers(int clubId);
+    List<ClubResponse> getClubs();
 }

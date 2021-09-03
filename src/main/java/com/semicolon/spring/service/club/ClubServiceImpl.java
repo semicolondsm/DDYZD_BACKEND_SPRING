@@ -1,8 +1,9 @@
 package com.semicolon.spring.service.club;
 
-import com.semicolon.spring.dto.ClubDTO.*;
+import com.semicolon.spring.dto.club.response.ClubResponse;
+import com.semicolon.spring.dto.club.response.FollowersResponse;
+import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.club.ClubRepository;
-import com.semicolon.spring.entity.club.club_follow.ClubFollow;
 import com.semicolon.spring.entity.user.User;
 import com.semicolon.spring.entity.user.UserRepository;
 import com.semicolon.spring.exception.ClubNotFoundException;
@@ -24,28 +25,29 @@ public class ClubServiceImpl implements ClubService {
 
 
     @Override
-    public Followers getFollowers(int clubId) {
-        return new Followers(clubRepository.findById(clubId)
+    public FollowersResponse getFollowers(int clubId) {
+        return new FollowersResponse(clubRepository.findById(clubId)
                 .map(club -> club.getFollows().size())
                 .orElseThrow(ClubNotFoundException::new));
     }
 
     @Override
-    public List<Club> getClubs() {
-        var user = authenticationFacade.getUser();
-        List<Club> clubList = new ArrayList<>();
+    public List<ClubResponse> getClubs() {
+        User user = authenticationFacade.getUser();
+        List<ClubResponse> clubList = new ArrayList<>();
+
         return userRepository.findById(user.getId())
                 .map(foundUser -> {
-                    for(ClubFollow clubFollow : foundUser.getFollows()){
-                        var club = clubFollow.getClub();
-                        clubList.add(Club.builder()
+                    foundUser.getFollows().forEach(clubFollow -> {
+                        Club club = clubFollow.getClub();
+                        clubList.add(ClubResponse.builder()
                                 .clubId(club.getClubId())
                                 .clubName(club.getName())
                                 .clubImage(club.getProfileImage())
                                 .clubDescription(club.getDescription())
                                 .build()
                         );
-                    }
+                    });
                     return clubList;
                 }).orElseThrow(UserNotFoundException::new);
     }

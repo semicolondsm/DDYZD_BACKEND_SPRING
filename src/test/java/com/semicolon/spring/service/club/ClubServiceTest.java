@@ -1,6 +1,6 @@
 package com.semicolon.spring.service.club;
 
-import com.semicolon.spring.dto.ClubDTO;
+import com.semicolon.spring.dto.club.response.FollowersResponse;
 import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.club.ClubRepository;
 import com.semicolon.spring.entity.user.User;
@@ -44,9 +44,9 @@ public class ClubServiceTest {
         int clubId = 1;
 
         when(clubRepository.findById(clubId))
-                .thenReturn(Optional.of(new Club()));
+                .thenReturn(Optional.of(Club.builder().build()));
 
-        assertEquals(new ClubDTO.Followers(0).getFollowers(), clubService.getFollowers(clubId).getFollowers());
+        assertEquals(new FollowersResponse(0).getFollowers(), clubService.getFollowers(clubId).getFollowers());
     }
 
     @Test

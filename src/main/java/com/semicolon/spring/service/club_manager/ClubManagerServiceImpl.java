@@ -1,7 +1,10 @@
 package com.semicolon.spring.service.club_manager;
 
-import com.semicolon.spring.dto.ClubDTO;
 import com.semicolon.spring.dto.HeadDTO;
+import com.semicolon.spring.dto.club.request.ClubNameModifyRequest;
+import com.semicolon.spring.dto.club.request.DescriptionRequest;
+import com.semicolon.spring.dto.club.request.RecruitmentRequest;
+import com.semicolon.spring.dto.club.response.HongboResponse;
 import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.club.ClubRepository;
 import com.semicolon.spring.entity.club.club_follow.ClubFollow;
@@ -12,6 +15,7 @@ import com.semicolon.spring.entity.club.major.MajorRepository;
 import com.semicolon.spring.entity.club.room.Room;
 import com.semicolon.spring.entity.club.room.RoomRepository;
 import com.semicolon.spring.entity.club.room.RoomStatus;
+import com.semicolon.spring.entity.user.User;
 import com.semicolon.spring.exception.*;
 import com.semicolon.spring.security.AuthenticationFacade;
 import com.semicolon.spring.service.fcm.FcmService;
@@ -23,7 +27,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -46,7 +53,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
     private String path;
 
     @Override
-    public ClubDTO.MessageResponse recruitment(ClubDTO.Recruitment request, int clubId) {
+    public void recruitment(RecruitmentRequest request, int clubId) {
         isNotClubManager(clubId);
         if(request.getCloseAt().before(new Date())){
             throw new BadRecruitmentTimeException();
@@ -97,12 +104,10 @@ public class ClubManagerServiceImpl implements ClubManagerService {
             fcmService.send(fcmRequest);
 
         }
-
-        return new ClubDTO.MessageResponse("recruitment success");
     }
 
     @Override
-    public ClubDTO.MessageResponse clubProfile(MultipartFile file, int clubId) {
+    public void clubProfile(MultipartFile file, int clubId) {
         isNotClubManager(clubId);
         try{
             var random = new Random(System.currentTimeMillis());
@@ -110,8 +115,6 @@ public class ClubManagerServiceImpl implements ClubManagerService {
             file.transferTo(new File(path + fileString));
             clubRepository.findById(clubId)
                     .map(club-> clubRepository.save(club.setProfileImage(CLUB_PATH + fileString)));
-
-            return new ClubDTO.MessageResponse("club profile write success");
         }catch (IOException e){
             e.printStackTrace();
             throw new FileSaveFailException();
@@ -119,7 +122,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
     }
 
     @Override
-    public ClubDTO.MessageResponse clubHongbo(MultipartFile file, int clubId) {
+    public void clubHongbo(MultipartFile file, int clubId) {
         isNotClubManager(clubId);
         try{
             var random = new Random(System.currentTimeMillis());
@@ -127,8 +130,6 @@ public class ClubManagerServiceImpl implements ClubManagerService {
             file.transferTo(new File(path + fileString));
             clubRepository.findById(clubId)
                     .map(club -> clubRepository.save(club.setHongboImage(CLUB_PATH + fileString)));
-
-            return new ClubDTO.MessageResponse("club hongbo write success");
         }catch (IOException e){
             e.printStackTrace();
             throw new FileSaveFailException();
@@ -136,7 +137,7 @@ public class ClubManagerServiceImpl implements ClubManagerService {
     }
 
     @Override
-    public ClubDTO.MessageResponse clubBanner(MultipartFile file, int clubId) {
+    public void clubBanner(MultipartFile file, int clubId) {
         isNotClubManager(clubId);
         try{
             var random = new Random(System.currentTimeMillis());
@@ -144,8 +145,6 @@ public class ClubManagerServiceImpl implements ClubManagerService {
             file.transferTo(new File(path + fileString));
             clubRepository.findById(clubId)
                     .map(club -> clubRepository.save(club.setBannerImage(CLUB_PATH + fileString)));
-
-            return new ClubDTO.MessageResponse("club banner write success");
         }catch (IOException e){
             e.printStackTrace();
             throw new FileSaveFailException();
@@ -153,27 +152,23 @@ public class ClubManagerServiceImpl implements ClubManagerService {
     }
 
     @Override
-    public ClubDTO.MessageResponse modifyClub(ClubDTO.Modify request, int clubId) {
+    public void modifyClub(ClubNameModifyRequest request, int clubId) {
         isNotClubManager(clubId);
         clubRepository.findById(clubId)
                 .map(club -> clubRepository.save(club.setClubName(request.getClubName())));
-
-        return new ClubDTO.MessageResponse("club modify success");
     }
 
 
 
     @Override
-    public ClubDTO.MessageResponse clubDescription(ClubDTO.Description request, int clubId) {
+    public void clubDescription(DescriptionRequest request, int clubId) {
         isNotClubManager(clubId);
         clubRepository.findById(clubId)
                 .map(club -> clubRepository.save(club.setDescription(request.getDescription())));
-
-        return new ClubDTO.MessageResponse("description write success");
     }
 
     @Override
-    public ClubDTO.MessageResponse deleteRecruitment(int clubId) {
+    public void deleteRecruitment(int clubId) {
         isNotClubManager(clubId);
         clubRepository.findById(clubId)
                 .map(club -> {
@@ -203,28 +198,25 @@ public class ClubManagerServiceImpl implements ClubManagerService {
 
                     return clubRepository.save(club);
                 }).orElseThrow(ClubNotFoundException::new);
-
-        return new ClubDTO.MessageResponse("delete recruitment success");
     }
 
     @Override
-    public ClubDTO.Hongbo getHongbo(int clubId) {
+    public HongboResponse getHongbo(int clubId) {
         isNotClubManager(clubId);
-        return new ClubDTO.Hongbo(clubRepository.findById(clubId)
+        return new HongboResponse(clubRepository.findById(clubId)
                 .map(Club::getHongboImage).orElseThrow(ClubNotFoundException::new));
     }
 
     @Override
-    public ClubDTO.MessageResponse deleteHongbo(int clubId) {
+    public void deleteHongbo(int clubId) {
         isNotClubManager(clubId);
         clubRepository.findById(clubId)
                 .map(club -> clubRepository.save(club.setHongboImage(null)));
-        return new ClubDTO.MessageResponse("delete hongbo success");
     }
 
     private void isNotClubManager(int clubId){
-        var user = authenticationFacade.getUser();
-        var club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
+        User user = authenticationFacade.getUser();
+        Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
         clubManagerRepository.findByClubAndUser(club, user).orElseThrow(NotClubManagerException::new);
     }
 }

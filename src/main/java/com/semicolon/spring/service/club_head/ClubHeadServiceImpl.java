@@ -1,7 +1,9 @@
 package com.semicolon.spring.service.club_head;
 
-import com.semicolon.spring.dto.ClubDTO;
 import com.semicolon.spring.dto.HeadDTO;
+import com.semicolon.spring.dto.club.request.ChangeHeadRequest;
+import com.semicolon.spring.dto.club.response.InformationResponse;
+import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.club.ClubRepository;
 import com.semicolon.spring.entity.club.activity_detail.Activity;
 import com.semicolon.spring.entity.club.activity_detail.ActivityDetail;
@@ -36,20 +38,19 @@ public class ClubHeadServiceImpl implements ClubHeadService{
     private final ActivityDetailRepository activityDetailRepository;
 
     @Override
-    public ClubDTO.MessageResponse changeHead(ClubDTO.ChangeHead request, int clubId) {
+    public void changeHead(ChangeHeadRequest request, int clubId) {
         isNotClubHead(clubId);
         clubRepository.findById(clubId)
                 .map(club -> clubHeadRepository.save(club.getClubHead().setUser(userRepository.findByGcn(request.getUserGcn()))));
 
-        return new ClubDTO.MessageResponse("club head change success");
     }
 
     @Override
-    public ClubDTO.MessageResponse insertMember(int clubId, int userId) {
+    public void insertMember(int clubId, int userId) {
         isNotClubHead(clubId);
 
-        var user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        var club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
 
         if(clubMemberRepository.findByUserAndClub(user, club).isPresent()){
             throw new AlreadyClubMemberException();
@@ -67,13 +68,11 @@ public class ClubHeadServiceImpl implements ClubHeadService{
                 .activity(Activity.JOIN)
                 .build()
         );
-
-        return new ClubDTO.MessageResponse("Insert Club Member Success");
     }
 
     @Override
-    public ClubDTO.MessageResponse deportMember(int clubId, int userId) {
-        var information = checkDeport(clubId, userId);
+    public void deportMember(int clubId, int userId) {
+        InformationResponse information = checkDeport(clubId, userId);
 
         var user = information.getUser();
         var club = information.getClub();
@@ -97,16 +96,14 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         );
 
         fcmService.send(request);
-
-        return new ClubDTO.MessageResponse("Club Member Deport Success");
     }
 
     @Override
-    public ClubDTO.MessageResponse insertManager(int clubId, int userId) {
+    public void insertManager(int clubId, int userId) {
         isNotClubHead(clubId);
 
-        var user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
-        var club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
+        User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
+        Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
 
         if(clubManagerRepository.findByClubAndUser(club, user).isPresent()){
             throw new AlreadyClubManagerException();
@@ -118,22 +115,18 @@ public class ClubHeadServiceImpl implements ClubHeadService{
                 .user(user)
                 .build()
         );
-
-        return new ClubDTO.MessageResponse("Insert Club Manager Success");
     }
 
     @Override
-    public ClubDTO.MessageResponse deportManager(int clubId, int userId) {
-        var information = checkDeport(clubId, userId);
+    public void deportManager(int clubId, int userId) {
+        InformationResponse information = checkDeport(clubId, userId);
 
-        var club = information.getClub();
-        var user = information.getUser();
+        User user = information.getUser();
+        Club club = information.getClub();
 
         clubManagerRepository.findByClubAndUser(club, user).orElseThrow(ClubManagerNotFound::new);
 
         clubManagerRepository.deleteByClubAndUser(club, user);
-
-        return new ClubDTO.MessageResponse("Club Manager Deport Success");
     }
 
     private User getUser(){
@@ -141,12 +134,12 @@ public class ClubHeadServiceImpl implements ClubHeadService{
     }
 
     private void isNotClubHead(int clubId){
-        var user = authenticationFacade.getUser();
-        var club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
+        User user = authenticationFacade.getUser();
+        Club club = clubRepository.findById(clubId).orElseThrow(ClubNotFoundException::new);
         clubHeadRepository.findByClubAndUser(club, user).orElseThrow(NotClubHeadException::new);
     }
 
-    private ClubDTO.Information checkDeport(int clubId, int userId){
+    private InformationResponse checkDeport(int clubId, int userId){
         isNotClubHead(clubId);
 
         var user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
@@ -155,7 +148,7 @@ public class ClubHeadServiceImpl implements ClubHeadService{
         if(user.getId().equals(getUser().getId())){
             throw new DontKickYourSelfException();
         }
-        return new ClubDTO.Information(user, club);
+        return new InformationResponse(user, club);
     }
 
 }
