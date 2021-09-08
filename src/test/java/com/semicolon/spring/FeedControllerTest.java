@@ -145,7 +145,7 @@ class FeedControllerTest {
                 .header("Authorization", "Bearer " + accessToken)
                 .content(new ObjectMapper().writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @Test
@@ -153,7 +153,7 @@ class FeedControllerTest {
     void feedFlag() throws Exception {
         mvc.perform(put("/feed/1/flag")
                 .header("Authorization", "Bearer " + accessToken))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @Test
@@ -168,7 +168,7 @@ class FeedControllerTest {
     void feedPin() throws Exception {
         mvc.perform(put("/feed/1/pin")
                 .header("Authorization", "Bearer " + accessToken))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @Test
@@ -177,7 +177,7 @@ class FeedControllerTest {
         uploadFeed();
         mvc.perform(put("/feed/2/pin")
                 .header("Authorization", "Bearer " + accessToken))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @Test
@@ -185,7 +185,7 @@ class FeedControllerTest {
     void deleteFeed() throws Exception {
         mvc.perform(delete("/feed/1")
                 .header("Authorization", "Bearer " + accessToken))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     /*
