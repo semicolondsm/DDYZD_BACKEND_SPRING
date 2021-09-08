@@ -1,7 +1,7 @@
 package com.semicolon.spring;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.semicolon.spring.dto.FeedDTO;
+import com.semicolon.spring.dto.feed.request.ContentRequest;
 import com.semicolon.spring.entity.club.Club;
 import com.semicolon.spring.entity.club.ClubRepository;
 import com.semicolon.spring.entity.club.club_head.ClubHead;
@@ -12,23 +12,15 @@ import com.semicolon.spring.entity.feed.FeedRepository;
 import com.semicolon.spring.entity.user.User;
 import com.semicolon.spring.entity.user.UserRepository;
 import com.semicolon.spring.security.jwt.JwtTokenProvider;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -37,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @ExtendWith(SpringExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-public class FeedControllerTest {
+class FeedControllerTest {
 
     @Autowired
     private UserRepository userRepository;
@@ -66,7 +58,7 @@ public class FeedControllerTest {
     String accessToken;
 
     @BeforeEach
-    public void setup(){
+    void setup(){
         //mvc = webAppContextSetup(context).build();
 
         User user = userRepository.save(
@@ -106,7 +98,7 @@ public class FeedControllerTest {
     }
 
     @AfterEach
-    public void deleteAll(){
+    void deleteAll(){
 //        feedRepository.deleteAll();
 //        clubHeadRepository.deleteAll();
 //        clubMemberRepository.deleteAll();
@@ -116,9 +108,9 @@ public class FeedControllerTest {
 
     @Test
     @Order(1)
-    public void uploadFeed() throws Exception {
+    void uploadFeed() throws Exception {
 
-        FeedDTO.Feed request = new FeedDTO.Feed("test");
+        ContentRequest request = new ContentRequest("test");
 
         mvc.perform(post("/feed/1")
                 .header("Authorization", "Bearer " + accessToken)
@@ -129,7 +121,7 @@ public class FeedControllerTest {
 
     @Test
     @Order(2)
-    public void getFeedList() throws Exception {
+    void getFeedList() throws Exception {
         mvc.perform(get("/feed/list")
                 .param("page", String.valueOf(0)))
                 .andExpect(status().isOk());
@@ -137,7 +129,7 @@ public class FeedControllerTest {
 
     @Test
     @Order(3)
-    public void getClubFeedList() throws Exception {
+    void getClubFeedList() throws Exception {
         mvc.perform(get("/feed/1/list")
                 .param("page", String.valueOf(0)))
                 .andExpect(status().isOk());
@@ -145,9 +137,9 @@ public class FeedControllerTest {
 
     @Test
     @Order(4)
-    public void feedModify() throws Exception {
+    void feedModify() throws Exception {
 
-        FeedDTO.Feed request = new FeedDTO.Feed("modify");
+		ContentRequest request = new ContentRequest("modify");
 
         mvc.perform(put("/feed/1")
                 .header("Authorization", "Bearer " + accessToken)
@@ -158,7 +150,7 @@ public class FeedControllerTest {
 
     @Test
     @Order(5)
-    public void feedFlag() throws Exception {
+    void feedFlag() throws Exception {
         mvc.perform(put("/feed/1/flag")
                 .header("Authorization", "Bearer " + accessToken))
                 .andExpect(status().isOk());
@@ -166,14 +158,14 @@ public class FeedControllerTest {
 
     @Test
     @Order(6)
-    public void getFeed() throws Exception {
+    void getFeed() throws Exception {
         mvc.perform(get("/feed/1"))
                 .andExpect(status().isOk());
     }
 
     @Test
     @Order(7)
-    public void feedPin() throws Exception {
+    void feedPin() throws Exception {
         mvc.perform(put("/feed/1/pin")
                 .header("Authorization", "Bearer " + accessToken))
                 .andExpect(status().isOk());
@@ -181,7 +173,7 @@ public class FeedControllerTest {
 
     @Test
     @Order(8)
-    public void RefeedPin() throws Exception {
+    void RefeedPin() throws Exception {
         uploadFeed();
         mvc.perform(put("/feed/2/pin")
                 .header("Authorization", "Bearer " + accessToken))
@@ -190,7 +182,7 @@ public class FeedControllerTest {
 
     @Test
     @Order(8)
-    public void deleteFeed() throws Exception {
+    void deleteFeed() throws Exception {
         mvc.perform(delete("/feed/1")
                 .header("Authorization", "Bearer " + accessToken))
                 .andExpect(status().isOk());

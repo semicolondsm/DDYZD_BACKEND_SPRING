@@ -228,7 +228,7 @@ public class FeedServiceImpl implements FeedService {
         List<GetFeedClubResponse> response = new ArrayList<>();
         User user = authenticationFacade.getUser();
         for (com.semicolon.spring.entity.feed.Feed feed : feeds) {
-            GetFeedClubResponse getFeedClub = GetFeedClubResponse.builder()
+			GetFeedClubResponse getFeedClub = GetFeedClubResponse.getFeedClubResponseBuilder()
                     .feedId(feed.getId())
                     .clubName(feed.getClub().getName())
                     .profileImage(feed.getClub().getProfileImage())

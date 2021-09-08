@@ -11,7 +11,7 @@ public class GetFeedClubResponse extends GetFeedResponse {
 
     private boolean isPin;
 
-    @Builder
+    @Builder(builderMethodName = "getFeedClubResponseBuilder")
     public GetFeedClubResponse(int feedId, String clubName, int clubId,
                                String profileImage, boolean isFollow,
                                LocalDateTime uploadAt, String content, List<String> media,

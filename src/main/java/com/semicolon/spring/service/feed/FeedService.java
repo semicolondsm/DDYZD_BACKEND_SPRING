@@ -3,7 +3,6 @@ package com.semicolon.spring.service.feed;
 import com.semicolon.spring.dto.feed.request.ContentRequest;
 import com.semicolon.spring.dto.feed.response.GetFeedClubResponse;
 import com.semicolon.spring.dto.feed.response.GetFeedResponse;
-import com.semicolon.spring.dto.feed.response.WriteFeedResponse;
 import com.semicolon.spring.dto.user.response.UserInfoResponse;
 import org.springframework.web.multipart.MultipartFile;
 

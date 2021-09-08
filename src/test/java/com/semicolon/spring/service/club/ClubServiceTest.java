@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class ClubServiceTest {
+class ClubServiceTest {
     @Mock
     private ClubRepository clubRepository;
 
@@ -34,13 +34,13 @@ public class ClubServiceTest {
     private ClubService clubService;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.openMocks(this);
         clubService = new ClubServiceImpl(clubRepository, userRepository, authenticationFacade);
     }
 
     @Test
-    public void getFollowers_success() {
+    void getFollowers_success() {
         int clubId = 1;
 
         when(clubRepository.findById(clubId))
@@ -50,7 +50,7 @@ public class ClubServiceTest {
     }
 
     @Test
-    public void getFollowers_cannot_find_club() {
+    void getFollowers_cannot_find_club() {
         int clubId = 1;
 
         when(clubRepository.findById(clubId))
@@ -60,7 +60,7 @@ public class ClubServiceTest {
     }
 
     @Test
-    public void getClubs_success() {
+    void getClubs_success() {
         User user = User.builder()
                 .id(1)
                 .build();
@@ -75,7 +75,7 @@ public class ClubServiceTest {
     }
 
     @Test
-    public void getClubs_user_not_found() {
+    void getClubs_user_not_found() {
         User user = User.builder()
                 .id(1)
                 .build();
