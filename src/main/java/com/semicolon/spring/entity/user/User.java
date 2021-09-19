@@ -10,7 +10,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -39,7 +38,7 @@ public class User {
     @Column(length = 50)
     private String email;
 
-    @Length(max = 4096)
+    @Column(length = 4096)
     private String deviceToken;
 
     private String bio;

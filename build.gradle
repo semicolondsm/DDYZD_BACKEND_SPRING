@@ -21,7 +21,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web-services'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     compile 'mysql:mysql-connector-java'
@@ -30,8 +30,6 @@ dependencies {
     compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
     implementation group: 'org.jsoup', name: 'jsoup', version: '1.13.1'
     implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
-    compile group: 'org.hibernate', name: 'hibernate-validator', version: '7.0.1.Final'
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.2'
 
     implementation 'com.google.firebase:firebase-admin:7.3.0'
 
